@@ -1099,36 +1099,28 @@
             }
         }
 
-      // Carregar cargos
+// Exemplo para a função que carrega os cargos
 async function loadRoles() {
     try {
-        // Obtenha o token de autenticação salvo no navegador
-        const authToken = localStorage.getItem('token');
-        
-        // Se não houver token, pare a execução e trate o erro
-        if (!authToken) {
-            console.error('Token de autenticação não encontrado.');
-            renderRoles([]); // Renderiza o estado vazio ou um erro
-            return;
+        const token = localStorage.getItem('token'); // <--- Pega o token do navegador
+        if (!token) {
+            throw new Error('Token de autenticação não encontrado. Por favor, faça login novamente.');
         }
 
         const response = await fetch(`${API_BASE}/roles`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // <--- Adiciona o token no cabeçalho
+            }
         });
-        
-        // Trate a resposta, inclusive se houver erro
+
+        // ... o resto do seu código
         if (!response.ok) {
             throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
         }
-
-        const roles = await response.json();
-        
-        allRoles = roles;
-        renderRoles();
         
     } catch (error) {
-        console.error('Erro ao carregar cargos:', error);
-        renderRoles([]); // Renderiza o estado vazio
+        // ... (tratamento de erro)
     }
 }
 
