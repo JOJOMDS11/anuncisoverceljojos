@@ -1099,22 +1099,38 @@
             }
         }
 
-        // Carregar cargos
-        async function loadRoles() {
-            try {
-                const response = await fetch(`${API_BASE}/roles`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const roles = await response.json();
-                
-                allRoles = roles;
-                renderRoles();
-                
-            } catch (error) {
-                console.error('Erro ao carregar cargos:', error);
-                renderRoles([]); // Render empty state
-            }
+      // Carregar cargos
+async function loadRoles() {
+    try {
+        // Obtenha o token de autenticação salvo no navegador
+        const authToken = localStorage.getItem('token');
+        
+        // Se não houver token, pare a execução e trate o erro
+        if (!authToken) {
+            console.error('Token de autenticação não encontrado.');
+            renderRoles([]); // Renderiza o estado vazio ou um erro
+            return;
         }
+
+        const response = await fetch(`${API_BASE}/roles`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        
+        // Trate a resposta, inclusive se houver erro
+        if (!response.ok) {
+            throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+        }
+
+        const roles = await response.json();
+        
+        allRoles = roles;
+        renderRoles();
+        
+    } catch (error) {
+        console.error('Erro ao carregar cargos:', error);
+        renderRoles([]); // Renderiza o estado vazio
+    }
+}
 
         // Renderizar cargos
         function renderRoles(roles = allRoles) {
