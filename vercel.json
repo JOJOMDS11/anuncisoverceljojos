@@ -3,11 +3,19 @@
   "name": "discord-panel-admin",
   "builds": [
     {
+      "src": "bot.js",
+      "use": "@vercel/node"
+    },
+    {
       "src": "index.html",
       "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "bot.js"
+    },
     {
       "src": "/(.*)",
       "dest": "/index.html"
