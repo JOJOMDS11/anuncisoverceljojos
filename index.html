@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -994,7 +995,9 @@
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<div class="loading-spinner"></div>Entrando...';
             
-            loginBtn.addEventListener('click', async () => {
+
+loginBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); // impede o reload e o "?" na URL
     loginBtn.disabled = true;
     loginBtn.innerHTML = 'Verificando...';
 
@@ -1012,9 +1015,8 @@
         if (response.ok && result.token) {
             localStorage.setItem('authToken', result.token);
             showMessage('loginMessage', result.message || 'Login realizado com sucesso!', 'success');
-
             setTimeout(() => {
-                window.location.href = '/painel.html'; // ou a página principal do painel
+                window.location.href = '/painel.html';
             }, 1000);
         } else {
             showMessage('loginMessage', result.error || 'Senha incorreta ou erro no login.', 'error');
@@ -1027,7 +1029,6 @@
         loginBtn.innerHTML = 'Entrar';
     }
 });
-
 
         // Logout
         function logout() {
