@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Anúncios Discord</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            color: #5865f2;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .panel-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .panel-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .panel-section:hover {
+            transform: translateY(-5px);
+        }
+
+        .panel-section h2 {
+            color: #5865f2;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #444;
+        }
+
+        select, textarea, input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        select:focus, textarea:focus, input:focus {
+            outline: none;
+            border-color: #5865f2;
+            box-shadow: 0 0 0 3px rgba(88, 101, 242, 0.1);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+            font-family: inherit;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #5865f2, #4752c4);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(88, 101, 242, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6c757d, #5a6268);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+        }
+
+        .history-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .announcement-item {
+            background: #f8f9fa;
+            border-left: 4px solid #5865f2;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-radius: 0 10px 10px 0;
+            transition: all 0.3s ease;
+        }
+
+        .announcement-item:hover {
+            background: #e9ecef;
+        }
+
+        .announcement-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+        }
+
+        .announcement-content {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .template-item {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .template-info {
+            flex-grow: 1;
+        }
+
+        .template-name {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .template-preview {
+            font-size: 0.9rem;
+            color: #666;
+            max-width: 300px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .template-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+        }
+
+        .success, .error {
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .panel-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .template-item {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            
+            .template-actions {
+                justify-content: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🤖 Painel de Anúncios Discord</h1>
+            <p>Gerencie seus anúncios e templates de forma fácil e intuitiva</p>
+        </div>
+
+        <div class="panel-grid">
+            <div class="panel-section">
+                <h2>📢 Enviar Anúncio</h2>
+                <div id="message"></div>
+                <form id="announcementForm">
+                    <div class="form-group">
+                        <label for="channelSelect">Canal de Destino:</label>
+                        <select id="channelSelect" required>
+                            <option value="">Carregando canais...</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="templateSelect">Template (opcional):</label>
+                        <select id="templateSelect">
+                            <option value="">Selecione um template</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="announcementText">Mensagem do Anúncio:</label>
+                        <textarea id="announcementText" placeholder="Digite sua mensagem aqui..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn">Enviar Anúncio</button>
+                </form>
+            </div>
+
+            <div class="panel-section">
+                <h2>📝 Gerenciar Templates</h2>
+                <form id="templateForm">
+                    <div class="form-group">
+                        <label for="templateName">Nome do Template:</label>
+                        <input type="text" id="templateName" placeholder="Ex: Evento Semanal" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="templateContent">Conteúdo:</label>
+                        <textarea id="templateContent" placeholder="Conteúdo do template..." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-secondary">Salvar Template</button>
+                </form>
+                
+                <div id="templatesList" style="margin-top: 20px;"></div>
+            </div>
+        </div>
+
+        <div class="history-section">
+            <h2>📋 Histórico de Anúncios</h2>
+            <div id="announcementHistory"></div>
+            <div class="loading" id="loadingHistory">Carregando histórico...</div>
+        </div>
+    </div>
+
+    <script>
+        // Configuração da API - substitua pela URL do seu bot no Render
+        const API_BASE = 'https://discord-bot-anuncios.onrender.com/api'; // Produção (Render)
+        // const API_BASE = 'http://localhost:3001/api'; // Desenvolvimento local
+
+        // Carregar dados iniciais
+        document.addEventListener('DOMContentLoaded', function() {
+            loadChannels();
+            loadTemplates();
+            loadAnnouncementHistory();
+        });
+
+        // Carregar canais disponíveis
+        async function loadChannels() {
+            try {
+                const response = await fetch(`${API_BASE}/channels`);
+                const channels = await response.json();
+                
+                const channelSelect = document.getElementById('channelSelect');
+                channelSelect.innerHTML = '<option value="">Selecione um canal</option>';
+                
+                channels.forEach(channel => {
+                    const option = document.createElement('option');
+                    option.value = channel.id;
+                    option.textContent = `#${channel.name} (${channel.guild})`;
+                    channelSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Erro ao carregar canais:', error);
+                document.getElementById('channelSelect').innerHTML = '<option value="">Erro ao carregar canais</option>';
+            }
+        }
+
+        // Carregar templates
+        async function loadTemplates() {
+            try {
+                const response = await fetch(`${API_BASE}/templates`);
+                const templates = await response.json();
+                
+                const templateSelect = document.getElementById('templateSelect');
+                templateSelect.innerHTML = '<option value="">Selecione um template</option>';
+                
+                templates.forEach(template => {
+                    const option = document.createElement('option');
+                    option.value = template.content;
+                    option.textContent = template.name;
+                    templateSelect.appendChild(option);
+                });
+                
+                renderTemplatesList(templates);
+            } catch (error) {
+                console.error('Erro ao carregar templates:', error);
+            }
+        }
+
+        // Renderizar lista de templates
+        function renderTemplatesList(templates) {
+            const templatesList = document.getElementById('templatesList');
+            
+            if (templates.length === 0) {
+                templatesList.innerHTML = '<p style="color: #666; font-style: italic;">Nenhum template salvo ainda.</p>';
+                return;
+            }
+            
+            templatesList.innerHTML = templates.map(template => `
+                <div class="template-item">
+                    <div class="template-info">
+                        <div class="template-name">${template.name}</div>
+                        <div class="template-preview">${template.content}</div>
+                    </div>
+                    <div class="template-actions">
+                        <button class="btn btn-secondary btn-small" onclick="useTemplate('${template.content}')">Usar</button>
+                        <button class="btn btn-danger btn-small" onclick="deleteTemplate(${template.id})">Excluir</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Usar template
+        function useTemplate(content) {
+            document.getElementById('announcementText').value = content;
+        }
+
+        // Excluir template
+        async function deleteTemplate(templateId) {
+            if (!confirm('Tem certeza que deseja excluir este template?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE}/template/${templateId}`, {
+                    method: 'DELETE'
+                });
+                
+                if (response.ok) {
+                    showMessage('Template excluído com sucesso!', 'success');
+                    loadTemplates();
+                } else {
+                    showMessage('Erro ao excluir template.', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão.', 'error');
+            }
+        }
+
+        // Carregar histórico
+        async function loadAnnouncementHistory() {
+            const loading = document.getElementById('loadingHistory');
+            const historyDiv = document.getElementById('announcementHistory');
+            
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch(`${API_BASE}/announcements`);
+                const announcements = await response.json();
+                
+                loading.style.display = 'none';
+                
+                if (announcements.length === 0) {
+                    historyDiv.innerHTML = '<p style="color: #666; font-style: italic;">Nenhum anúncio enviado ainda.</p>';
+                    return;
+                }
+                
+                historyDiv.innerHTML = announcements.reverse().map(announcement => {
+                    const date = new Date(announcement.timestamp).toLocaleString('pt-BR');
+                    return `
+                        <div class="announcement-item">
+                            <div class="announcement-meta">
+                                📅 ${date} • Canal ID: ${announcement.channelId}
+                            </div>
+                            <div class="announcement-content">${announcement.content}</div>
+                        </div>
+                    `;
+                }).join('');
+            } catch (error) {
+                loading.style.display = 'none';
+                historyDiv.innerHTML = '<p style="color: #dc3545;">Erro ao carregar histórico.</p>';
+            }
+        }
+
+        // Event listeners
+        document.getElementById('templateSelect').addEventListener('change', function() {
+            if (this.value) {
+                document.getElementById('announcementText').value = this.value;
+            }
+        });
+
+        // Enviar anúncio
+        document.getElementById('announcementForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const channelId = document.getElementById('channelSelect').value;
+            const content = document.getElementById('announcementText').value;
+            
+            if (!channelId || !content) {
+                showMessage('Preencha todos os campos obrigatórios.', 'error');
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/announcement`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        channelId,
+                        content,
+                        authorId: 'web-panel'
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('Anúncio enviado com sucesso!', 'success');
+                    document.getElementById('announcementText').value = '';
+                    document.getElementById('templateSelect').value = '';
+                    loadAnnouncementHistory();
+                } else {
+                    showMessage(result.error || 'Erro ao enviar anúncio.', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão com o servidor.', 'error');
+            }
+        });
+
+        // Salvar template
+        document.getElementById('templateForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('templateName').value;
+            const content = document.getElementById('templateContent').value;
+            
+            try {
+                const response = await fetch(`${API_BASE}/template`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, content })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('Template salvo com sucesso!', 'success');
+                    document.getElementById('templateName').value = '';
+                    document.getElementById('templateContent').value = '';
+                    loadTemplates();
+                } else {
+                    showMessage(result.error || 'Erro ao salvar template.', 'error');
+                }
+            } catch (error) {
+                showMessage('Erro de conexão com o servidor.', 'error');
+            }
+        });
+
+        // Mostrar mensagem
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById('message');
+            messageDiv.innerHTML = `<div class="${type}">${message}</div>`;
+            setTimeout(() => {
+                messageDiv.innerHTML = '';
+            }, 5000);
+        }
+    </script>
+</body>
+</html>
