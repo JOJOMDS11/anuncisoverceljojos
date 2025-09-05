@@ -274,7 +274,7 @@
             }
         }
 
-        /* Roles Selection - CORRIGIDO PARA MÚLTIPLOS CARGOS */
+        /* Roles Selection */
         .roles-section {
             background: #f8f9fa;
             border-radius: 10px;
@@ -661,7 +661,6 @@
                                 <div class="announcement-type-icon">📹</div>
                                 <div class="announcement-type-name">VOD</div>
                             </div>
-
                             <div class="announcement-type" data-type="aviso">
                                 <div class="announcement-type-icon">⚠️</div>
                                 <div class="announcement-type-name">Aviso</div>
@@ -837,14 +836,14 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO CORRIGIDA PARA VERCEL
+        // CONFIGURAÇÃO
         const API_BASE = 'https://discord-anuncios.onrender.com/api';
 
         let authToken = localStorage.getItem('authToken');
-        let selectedRoles = []; // Array para múltiplos cargos
+        let selectedRoles = [];
         let selectedAnnouncementType = 'anuncio';
         let allRoles = [];
-        let selectedImage = null; // Para armazenar imagem selecionada
+        let selectedImage = null;
 
         // Verificar autenticação na inicialização
         document.addEventListener('DOMContentLoaded', function() {
@@ -853,7 +852,6 @@
             } else {
                 showLogin();
             }
-            
             setupEventListeners();
         });
 
@@ -893,20 +891,31 @@
             
             // Upload de imagem
             setupImageUpload();
+
+            // Submissões de formulários
+            setupForms();
         }
 
-        // SETUP PARA UPLOAD DE IMAGEM - CORRIGIDO
+        function setupForms() {
+            // Criar canal
+            document.getElementById('channelForm').addEventListener('submit', createChannel);
+
+            // Enviar anúncio
+            document.getElementById('announcementForm').addEventListener('submit', sendAnnouncement);
+
+            // Salvar template
+            document.getElementById('templateForm').addEventListener('submit', saveTemplate);
+        }
+
+        // Upload/Preview de imagem
         function setupImageUpload() {
             const imageUpload = document.getElementById('imageUpload');
             const imageInput = document.getElementById('imageInput');
-            const imagePreview = document.getElementById('imagePreview');
 
-            // Click para selecionar arquivo
             imageInput.addEventListener('change', function(e) {
                 handleImageSelect(e.target.files[0]);
             });
 
-            // Drag and drop
             imageUpload.addEventListener('dragover', function(e) {
                 e.preventDefault();
                 this.classList.add('dragover');
@@ -927,24 +936,21 @@
             });
         }
 
-        // FUNÇÃO CORRIGIDA PARA LIDAR COM SELEÇÃO DE IMAGEM
         function handleImageSelect(file) {
             if (!file) return;
 
-            // Validar arquivo
             if (!file.type.startsWith('image/')) {
                 showMessage('message', 'Por favor, selecione apenas arquivos de imagem.', 'error');
                 return;
             }
 
-            if (file.size > 8 * 1024 * 1024) { // 8MB
+            if (file.size > 8 * 1024 * 1024) {
                 showMessage('message', 'Imagem muito grande. Máximo 8MB.', 'error');
                 return;
             }
 
             selectedImage = file;
 
-            // Mostrar preview
             const reader = new FileReader();
             reader.onload = function(e) {
                 const imagePreview = document.getElementById('imagePreview');
@@ -968,7 +974,6 @@
             showMessage('message', 'Imagem removida.', 'info');
         }
 
-        // Verificar token
         async function verifyToken() {
             try {
                 const response = await fetch(`${API_BASE}/verify`, {
@@ -987,7 +992,6 @@
             }
         }
 
-        // Mostrar interfaces
         function showLogin() {
             document.getElementById('loginContainer').style.display = 'flex';
             document.getElementById('mainInterface').style.display = 'none';
@@ -1000,7 +1004,7 @@
             document.getElementById('mainInterface').style.display = 'block';
         }
 
-        // LOGIN CORRIGIDO
+        // LOGIN
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1040,14 +1044,12 @@
             }
         });
 
-        // Logout
         function logout() {
             localStorage.removeItem('authToken');
             authToken = null;
             showLogin();
         }
 
-        // Carregar todos os dados
         async function loadAllData() {
             await Promise.all([
                 loadStats(),
@@ -1058,7 +1060,6 @@
             ]);
         }
 
-        // Carregar estatísticas
         async function loadStats() {
             try {
                 const response = await fetch(`${API_BASE}/stats`, {
@@ -1074,7 +1075,6 @@
             }
         }
 
-        // Carregar canais
         async function loadChannels() {
             try {
                 const response = await fetch(`${API_BASE}/channels`, {
@@ -1085,7 +1085,6 @@
                 const channelSelect = document.getElementById('channelSelect');
                 channelSelect.innerHTML = '<option value="">Selecione um canal</option>';
                 
-                // Agrupar por servidor
                 Object.keys(data.channelsGrouped || {}).forEach(guildName => {
                     const optgroup = document.createElement('optgroup');
                     optgroup.label = guildName;
@@ -1106,16 +1105,13 @@
             }
         }
 
-        // Carregar categorias
         async function loadCategories() {
             try {
                 const response = await fetch(`${API_BASE}/categories`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                 
                 const data = await response.json();
                 const categories = data.categories || [];
@@ -1137,14 +1133,12 @@
             }
         }
 
-        // Atualizar categorias
         async function refreshCategories() {
             showMessage('message', 'Atualizando categorias...', 'info');
             await loadCategories();
             showMessage('message', 'Categorias atualizadas com sucesso!', 'success');
         }
 
-        // Preview do nome do canal
         function updateChannelPreview() {
             const channelNameInput = document.getElementById('channelName');
             const channelTypeSelect = document.getElementById('channelType');
@@ -1155,7 +1149,6 @@
             const rawName = channelNameInput.value.trim();
             
             if (rawName) {
-                // Formatar nome do canal (Discord format)
                 const formatted = rawName
                     .toLowerCase()
                     .replace(/\s+/g, '-')
@@ -1175,8 +1168,7 @@
             }
         }
 
-        // Criar canal
-        document.getElementById('channelForm').addEventListener('submit', async function(e) {
+        async function createChannel(e) {
             e.preventDefault();
             
             const channelName = document.getElementById('channelName').value;
@@ -1212,7 +1204,6 @@
                     showMessage('message', `Canal "${channelName}" criado com sucesso! 🎉`, 'success');
                     document.getElementById('channelForm').reset();
                     
-                    // Atualizar lista de canais após 2 segundos
                     setTimeout(async () => {
                         await loadChannels();
                         showMessage('message', 'Lista de canais atualizada!', 'info');
@@ -1229,18 +1220,15 @@
                 createBtn.disabled = false;
                 createBtn.innerHTML = '✨ Criar Canal';
             }
-        });
+        }
 
-        // CARREGAR CARGOS CORRIGIDO
         async function loadRoles() {
             try {
                 const response = await fetch(`${API_BASE}/roles`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 
-                if (!response.ok) {
-                    throw new Error(`Erro HTTP: ${response.status}`);
-                }
+                if (!response.ok) throw new Error(`Erro HTTP: ${response.status}`);
                 
                 const data = await response.json();
                 allRoles = data.roles || [];
@@ -1258,7 +1246,6 @@
             }
         }
 
-        // RENDERIZAR CARGOS COM MULTI-SELEÇÃO
         function renderRoles() {
             const rolesGrid = document.getElementById('rolesGrid');
             
@@ -1282,7 +1269,6 @@
                 `;
             }).join('');
             
-            // Adicionar event listeners para multi-seleção
             document.querySelectorAll('.role-item').forEach(roleItem => {
                 roleItem.addEventListener('click', function() {
                     const roleId = this.dataset.roleId;
@@ -1291,11 +1277,9 @@
                     const index = selectedRoles.indexOf(roleId);
                     
                     if (index > -1) {
-                        // Remover da seleção
                         selectedRoles.splice(index, 1);
                         this.classList.remove('selected');
                     } else {
-                        // Adicionar à seleção
                         selectedRoles.push(roleId);
                         this.classList.add('selected');
                     }
@@ -1305,13 +1289,13 @@
             });
         }
 
-        // ATUALIZAR PREVIEW DE MENÇÕES
         function updateMentionsPreview() {
             const mentionsPreview = document.getElementById('mentionsPreview');
             const mentionTags = document.getElementById('mentionTags');
             
             if (selectedRoles.length === 0) {
                 mentionsPreview.classList.remove('show');
+                mentionTags.innerHTML = '';
                 return;
             }
             
@@ -1327,26 +1311,23 @@
             ).join('');
         }
 
-        // Carregar templates
         async function loadTemplates() {
             try {
                 const response = await fetch(`${API_BASE}/templates`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                const allTemplates = await response.json();
-                
-                updateTemplateSelect(allTemplates);
+                const templates = await response.json();
+                updateTemplateSelect(templates);
             } catch (error) {
                 console.error('Erro ao carregar templates:', error);
             }
         }
 
-        // Atualizar select de templates
         function updateTemplateSelect(templates) {
             const templateSelect = document.getElementById('templateSelect');
             templateSelect.innerHTML = '<option value="">Selecione um template</option>';
             
-            templates.forEach(template => {
+            (templates || []).forEach(template => {
                 const option = document.createElement('option');
                 option.value = template.id;
                 option.textContent = `${template.name} (${template.category})`;
@@ -1354,7 +1335,6 @@
             });
         }
 
-        // Contadores de caracteres
         function updateCharCounter() {
             const text = document.getElementById('announcementText').value;
             const counter = document.getElementById('charCounter');
@@ -1387,14 +1367,12 @@
             }
         }
 
-        // Atualizar dados
         async function refreshChannels() {
             showMessage('message', 'Atualizando dados...', 'info');
             await Promise.all([loadChannels(), loadRoles(), loadCategories()]);
             showMessage('message', 'Dados atualizados com sucesso!', 'success');
         }
 
-        // Limpar formulário
         function clearForm() {
             document.getElementById('announcementText').value = '';
             document.getElementById('templateSelect').value = '';
@@ -1412,7 +1390,6 @@
             showMessage('message', 'Formulário limpo!', 'info');
         }
 
-        // Visualizar anúncio
         function previewAnnouncement() {
             const content = document.getElementById('announcementText').value;
             const channelSelect = document.getElementById('channelSelect');
@@ -1427,8 +1404,9 @@
                 'anuncio': '📢',
                 'novidade': '✨',
                 'atualizacao': '🔄',
-                'torneio': '🏆',
+                'draft': '🏆',
                 'evento': '🎉',
+                'vod': '📹',
                 'aviso': '⚠️'
             };
 
@@ -1436,8 +1414,9 @@
                 'anuncio': 'Anúncio',
                 'novidade': 'Novidade',
                 'atualizacao': 'Atualização',
-                'torneio': 'Inscrição de Torneio',
+                'draft': 'Inscrições draft',
                 'evento': 'Evento',
+                'vod': 'VOD',
                 'aviso': 'Aviso'
             };
             
@@ -1445,13 +1424,13 @@
                 `<div style="margin-bottom: 10px; color: #5865f2; font-weight: bold;">
                     Cargos mencionados: ${selectedRoles.map(roleId => {
                         const role = allRoles.find(r => r.id === roleId);
-                        return `@${role ? role.name : 'Cargo desconhecido'}`;
+                        return \`@\${role ? role.name : 'Cargo desconhecido'}\`;
                     }).join(', ')}
                 </div>` : '';
 
             const imagePreview = selectedImage ? 
                 `<div style="margin: 15px 0;">
-                    <img src="${URL.createObjectURL(selectedImage)}" style="max-width: 400px; max-height: 300px; border-radius: 8px;">
+                    <img src="\${URL.createObjectURL(selectedImage)}" style="max-width: 400px; max-height: 300px; border-radius: 8px;">
                 </div>` : '';
             
             const previewWindow = window.open('', '_blank', 'width=700,height=600');
@@ -1534,46 +1513,12 @@
             `);
         }
 
-        async function loadAnnouncementTypes() {
-    const res = await fetch('/api/announcement-types');
-    const types = await res.json();
-    const container = document.getElementById('announcement-types');
-    container.innerHTML = '';
-    types.forEach(t => {
-        const btn = document.createElement('div');
-        btn.className = 'announcement-type';
-        btn.innerHTML = `
-            <span class="announcement-type-icon">${t.icon}</span>
-            <span class="announcement-type-name">${t.name}</span>
-        `;
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.announcement-type').forEach(el => el.classList.remove('selected'));
-            btn.classList.add('selected');
-        });
-        container.appendChild(btn);
-    });
-}
-
-document.getElementById('add-type-btn').addEventListener('click', async () => {
-    const name = prompt('Nome do tipo:');
-    const icon = prompt('Ícone (emoji):', '📢');
-    if (!name) return;
-    await fetch('/api/announcement-types', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, icon })
-    });
-    loadAnnouncementTypes();
-});
-
-loadAnnouncementTypes();
-
-        // ENVIAR ANÚNCIO COM SUPORTE A IMAGENS E MÚLTIPLOS CARGOS
-        document.getElementById('announcementForm').addEventListener('submit', async function(e) {
+        async function sendAnnouncement(e) {
             e.preventDefault();
             
             const channelId = document.getElementById('channelSelect').value;
             const content = document.getElementById('announcementText').value;
+            const templateId = document.getElementById('templateSelect').value;
             const sendBtn = document.getElementById('sendBtn');
             
             if (!channelId || !content.trim()) {
@@ -1585,39 +1530,28 @@ loadAnnouncementTypes();
             sendBtn.innerHTML = '<div class="loading-spinner"></div>Enviando...';
             
             try {
-      document.getElementById('announcementForm').addEventListener('submit', async (e) => {
-    e.preventDefault();
+                const formData = new FormData();
+                formData.append('channelId', channelId);
+                formData.append('content', content);
+                formData.append('templateId', templateId || '');
+                formData.append('roles', JSON.stringify(selectedRoles));
+                formData.append('type', selectedAnnouncementType);
 
-    const formData = new FormData(e.target);
+                const selectedTypeEl = document.querySelector('.announcement-type.selected');
+                if (selectedTypeEl) {
+                    const iconEl = selectedTypeEl.querySelector('.announcement-type-icon');
+                    const nameEl = selectedTypeEl.querySelector('.announcement-type-name');
+                    formData.append('icon', iconEl ? iconEl.textContent.trim() : '📢');
+                    formData.append('typeName', nameEl ? nameEl.textContent.trim() : 'Anúncio');
+                }
 
-    // Captura o tipo selecionado e envia junto
-    const selectedTypeEl = document.querySelector('.announcement-type.selected');
-    if (selectedTypeEl) {
-        const iconEl = selectedTypeEl.querySelector('.announcement-type-icon');
-        const nameEl = selectedTypeEl.querySelector('.announcement-type-name');
-        formData.append('icon', iconEl ? iconEl.textContent.trim() : '📢');
-        formData.append('typeName', nameEl ? nameEl.textContent.trim() : 'Anúncio');
-    }
-
-    // Aqui continua o envio normal
-    const res = await fetch('/api/announcement', {
-        method: 'POST',
-        body: formData
-    });
-
-    const result = await res.json();
-    console.log(result);
-});
-
- (selectedImage) {
+                if (selectedImage) {
                     formData.append('image', selectedImage);
                 }
                 
                 const response = await fetch(`${API_BASE}/announcement`, {
                     method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    },
+                    headers: { 'Authorization': `Bearer ${authToken}` },
                     body: formData
                 });
                 
@@ -1637,10 +1571,9 @@ loadAnnouncementTypes();
                 sendBtn.disabled = false;
                 sendBtn.innerHTML = '📤 Enviar Anúncio';
             }
-        });
+        }
 
-        // Salvar template
-        document.getElementById('templateForm').addEventListener('submit', async function(e) {
+        async function saveTemplate(e) {
             e.preventDefault();
             
             const name = document.getElementById('templateName').value;
@@ -1683,16 +1616,11 @@ loadAnnouncementTypes();
                 saveBtn.disabled = false;
                 saveBtn.innerHTML = '💾 Salvar';
             }
-        });
+        }
 
-        // Função para mostrar mensagens
         function showMessage(containerId, message, type) {
             const messageDiv = document.getElementById(containerId);
-            const icons = {
-                success: '✅',
-                error: '❌',
-                info: 'ℹ️'
-            };
+            const icons = { success: '✅', error: '❌', info: 'ℹ️' };
             
             messageDiv.innerHTML = `
                 <div class="${type}">
@@ -1705,7 +1633,6 @@ loadAnnouncementTypes();
             }, 5000);
         }
 
-        // Função para escapar HTML
         function escapeHtml(text) {
             if (!text) return '';
             const map = {
@@ -1729,19 +1656,19 @@ loadAnnouncementTypes();
             }
             
             // Ctrl+L para limpar formulário
-            if (e.ctrlKey && e.key === 'l') {
+            if (e.ctrlKey && e.key.toLowerCase() === 'l') {
                 e.preventDefault();
                 clearForm();
             }
             
             // Ctrl+P para preview
-            if (e.ctrlKey && e.key === 'p') {
+            if (e.ctrlKey && e.key.toLowerCase() === 'p') {
                 e.preventDefault();
                 previewAnnouncement();
             }
             
             // Ctrl+N para criar novo canal
-            if (e.ctrlKey && e.key === 'n') {
+            if (e.ctrlKey && e.key.toLowerCase() === 'n') {
                 e.preventDefault();
                 document.getElementById('channelName').focus();
             }
