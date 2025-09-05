@@ -1673,6 +1673,79 @@
                 document.getElementById('channelName').focus();
             }
         });
-    </script>
+    
+// ==== TIPOS DE ANÚNCIOS CUSTOM ====
+let customTypes = JSON.parse(localStorage.getItem('customTypes') || '[]');
+
+function defaultTypes(){
+    return [
+        {icon:'📢',name:'Anúncio',id:'anuncio'},
+        {icon:'✨',name:'Novidade',id:'novidade'},
+        {icon:'🔄',name:'Atualização',id:'atualizacao'},
+        {icon:'🎉',name:'Evento',id:'evento'},
+        {icon:'⚠️',name:'Aviso',id:'aviso'}
+    ];
+}
+
+function renderCustomTypes(){
+    const grid=document.querySelector('.announcement-type-grid');
+    if(!grid) return;
+    // limpar
+    grid.innerHTML='';
+    [...defaultTypes(),...customTypes].forEach((t,i)=>{
+        const div=document.createElement('div');
+        div.className='announcement-type';
+        div.dataset.type=t.id||t.name.toLowerCase();
+        div.innerHTML=`<div class="announcement-type-icon">${t.icon}</div><div class="announcement-type-name">${t.name}</div>`;
+        if(i>=defaultTypes().length){
+            const del=document.createElement('button');
+            del.textContent='🗑️';
+            del.style.marginTop='5px';
+            del.onclick=(e)=>{e.stopPropagation();deleteType(i-defaultTypes().length);};
+            div.appendChild(del);
+        }
+        div.addEventListener('click',function(){
+            document.querySelectorAll('.announcement-type').forEach(el=>el.classList.remove('selected'));
+            this.classList.add('selected');
+            selectedAnnouncementType=this.dataset.type;
+        });
+        grid.appendChild(div);
+    });
+}
+
+function addType(icon,name){
+    customTypes.push({icon,name,id:name.toLowerCase()});
+    localStorage.setItem('customTypes',JSON.stringify(customTypes));
+    renderCustomTypes();
+}
+function deleteType(idx){
+    customTypes.splice(idx,1);
+    localStorage.setItem('customTypes',JSON.stringify(customTypes));
+    renderCustomTypes();
+}
+
+// Form para criar tipo
+document.addEventListener('DOMContentLoaded',()=>{
+    const container=document.querySelector('.panel-section');
+    if(container){
+        const form=document.createElement('form');
+        form.innerHTML=`
+            <h3>➕ Novo Tipo</h3>
+            <input type="text" id="newTypeIcon" placeholder="Ícone" maxlength="2" style="width:60px;padding:5px;">
+            <input type="text" id="newTypeName" placeholder="Nome do Tipo" style="padding:5px;">
+            <button type="submit" class="btn btn-small">Criar</button>
+        `;
+        form.addEventListener('submit',e=>{
+            e.preventDefault();
+            const icon=document.getElementById('newTypeIcon').value||'📢';
+            const name=document.getElementById('newTypeName').value.trim();
+            if(name){ addType(icon,name); form.reset(); }
+        });
+        container.appendChild(form);
+        renderCustomTypes();
+    }
+});
+
+</script>
 </body>
 </html>
