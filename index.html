@@ -986,21 +986,13 @@
 
         // Login
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const password = document.getElementById('password').value;
-            const loginBtn = document.getElementById('loginBtn');
-            
-            loginBtn.disabled = true;
-            loginBtn.innerHTML = '<div class="loading-spinner"></div>Entrando...';
-            
-
-loginBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // impede o reload e o "?" na URL
-    loginBtn.disabled = true;
-    loginBtn.innerHTML = 'Verificando...';
-
+    e.preventDefault();
+    
     const password = document.getElementById('password').value;
+    const loginBtn = document.getElementById('loginBtn');
+    
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = '<div class="loading-spinner"></div>Entrando...';
 
     try {
         const response = await fetch(`${API_BASE}/login`, {
@@ -1014,9 +1006,13 @@ loginBtn.addEventListener('click', async (e) => {
         if (response.ok && result.token) {
             localStorage.setItem('authToken', result.token);
             showMessage('loginMessage', result.message || 'Login realizado com sucesso!', 'success');
+
+            // Mostra o painel direto
             setTimeout(() => {
-                window.location.href = '/painel.html';
+                showMainInterface();
+                loadAllData();
             }, 1000);
+
         } else {
             showMessage('loginMessage', result.error || 'Senha incorreta ou erro no login.', 'error');
         }
@@ -1028,6 +1024,8 @@ loginBtn.addEventListener('click', async (e) => {
         loginBtn.innerHTML = 'Entrar';
     }
 });
+
+            
 
         // Logout
         function logout() {
