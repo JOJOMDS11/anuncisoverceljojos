@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "name": "discord-announcement-panel",
+  "name": "discord-panel-admin",
   "builds": [
     {
       "src": "index.html",
@@ -12,8 +12,5 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
-  ],
-  "env": {
-    "API_BASE_URL": "https://discord-anuncios.onrender.com/api"
-  }
+  ]
 }
