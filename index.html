@@ -989,10 +989,14 @@
     e.preventDefault();
     
     const password = document.getElementById('password').value;
-    const loginBtn = document.getElementById('loginBtn');
-    
+   const loginBtn = document.getElementById('loginBtn');
+
+loginBtn.addEventListener('click', async (e) => {
+    e.preventDefault(); // impede reload e o "?" na URL
     loginBtn.disabled = true;
-    loginBtn.innerHTML = '<div class="loading-spinner"></div>Entrando...';
+    loginBtn.innerHTML = 'Verificando...';
+
+    const password = document.getElementById('password').value;
 
     try {
         const response = await fetch(`${API_BASE}/login`, {
@@ -1006,13 +1010,9 @@
         if (response.ok && result.token) {
             localStorage.setItem('authToken', result.token);
             showMessage('loginMessage', result.message || 'Login realizado com sucesso!', 'success');
-
-            // Mostra o painel direto
             setTimeout(() => {
-                showMainInterface();
-                loadAllData();
+                window.location.href = '/painel.html';
             }, 1000);
-
         } else {
             showMessage('loginMessage', result.error || 'Senha incorreta ou erro no login.', 'error');
         }
@@ -1023,6 +1023,8 @@
         loginBtn.disabled = false;
         loginBtn.innerHTML = 'Entrar';
     }
+});
+
 });
 
             
