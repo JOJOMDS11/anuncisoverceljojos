@@ -1,15 +1,16 @@
 {
   "version": 2,
+  "name": "discord-panel-admin",
   "builds": [
     {
-      "src": "bot.js",
-      "use": "@vercel/node"
+      "src": "index.html",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "bot.js"
+      "dest": "/index.html"
     }
   ]
 }
