@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -995,34 +994,40 @@
             loginBtn.disabled = true;
             loginBtn.innerHTML = '<div class="loading-spinner"></div>Entrando...';
             
-            try {
-                const response = await fetch(`${API_BASE}/login`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    authToken = result.token;
-                    localStorage.setItem('authToken', authToken);
-                    showMessage('loginMessage', result.message, 'success');
-                    
-                    setTimeout(() => {
-                        showMainInterface();
-                        loadAllData();
-                    }, 1000);
-                } else {
-                    showMessage('loginMessage', result.error, 'error');
-                }
-            } catch (error) {
-                showMessage('loginMessage', 'Erro de conexão com o servidor.', 'error');
-            } finally {
-                loginBtn.disabled = false;
-                loginBtn.innerHTML = 'Entrar';
-            }
+            loginBtn.addEventListener('click', async () => {
+    loginBtn.disabled = true;
+    loginBtn.innerHTML = 'Verificando...';
+
+    const password = document.getElementById('password').value;
+
+    try {
+        const response = await fetch(`${API_BASE}/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ password })
         });
+
+        const result = await response.json();
+
+        if (response.ok && result.token) {
+            localStorage.setItem('authToken', result.token);
+            showMessage('loginMessage', result.message || 'Login realizado com sucesso!', 'success');
+
+            setTimeout(() => {
+                window.location.href = '/painel.html'; // ou a página principal do painel
+            }, 1000);
+        } else {
+            showMessage('loginMessage', result.error || 'Senha incorreta ou erro no login.', 'error');
+        }
+    } catch (error) {
+        console.error('Erro no login:', error);
+        showMessage('loginMessage', 'Erro de conexão com o servidor.', 'error');
+    } finally {
+        loginBtn.disabled = false;
+        loginBtn.innerHTML = 'Entrar';
+    }
+});
+
 
         // Logout
         function logout() {
