@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1102,25 +1103,28 @@
 // Exemplo para a função que carrega os cargos
 async function loadRoles() {
     try {
-        const token = localStorage.getItem('token'); // <--- Pega o token do navegador
-        if (!token) {
-            throw new Error('Token de autenticação não encontrado. Por favor, faça login novamente.');
-        }
+        const token = localStorage.getItem('authToken');
 
         const response = await fetch(`${API_BASE}/roles`, {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // <--- Adiciona o token no cabeçalho
+                'Authorization': `Bearer ${token}` // JWT do login
             }
         });
 
-        // ... o resto do seu código
         if (!response.ok) {
             throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
         }
-        
+
+        const data = await response.json();
+        console.log('Cargos recebidos:', data);
+
+        // Aqui você continua com o código que popula o select de cargos
+        // populateRoles(data.roles);
+
     } catch (error) {
-        // ... (tratamento de erro)
+        console.error('Erro ao carregar cargos:', error);
+        // Aqui você pode exibir uma mensagem no painel
     }
 }
 
