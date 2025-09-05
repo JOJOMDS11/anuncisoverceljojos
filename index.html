@@ -490,6 +490,31 @@
             display: inline-block;
         }
 
+        /* Channel Creation Section */
+        .channel-form-preview {
+            background: rgba(88, 101, 242, 0.1);
+            border: 1px solid #5865f2;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .channel-form-preview.show {
+            display: block;
+        }
+
+        .channel-preview {
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            color: #5865f2;
+        }
+
+        .channel-type-indicator {
+            display: inline-block;
+            margin-right: 5px;
+        }
+
         .success, .error, .info {
             padding: 15px;
             border-radius: 10px;
@@ -727,6 +752,49 @@
 
                 <!-- Seção de Gerenciamento -->
                 <div>
+                    <!-- Criação de Canais -->
+                    <div class="panel-section" style="margin-bottom: 20px;">
+                        <h2>📺 Criar Canal</h2>
+                        <form id="channelForm">
+                            <div class="form-group">
+                                <label for="channelName">Nome do Canal:</label>
+                                <input type="text" id="channelName" placeholder="Ex: novo-canal" required maxlength="100">
+                                <small style="color: #666; font-size: 12px;">Será convertido automaticamente para formato válido</small>
+                                <div class="channel-form-preview" id="channelPreview">
+                                    <div class="channel-preview">
+                                        <span class="channel-type-indicator" id="channelTypeIcon">💬</span>
+                                        <span id="formattedChannelName">#canal-exemplo</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="channelType">Tipo de Canal:</label>
+                                <select id="channelType">
+                                    <option value="text">💬 Texto</option>
+                                    <option value="voice">🔊 Voz</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="channelCategory">Categoria:</label>
+                                <select id="channelCategory">
+                                    <option value="">📋 Carregando categorias...</option>
+                                </select>
+                            </div>
+                            
+                            <div class="quick-actions">
+                                <button type="button" class="btn btn-secondary btn-small" onclick="refreshCategories()">
+                                    🔄 Atualizar Categorias
+                                </button>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success" id="createChannelBtn">
+                                ✨ Criar Canal
+                            </button>
+                        </form>
+                    </div>
+
                     <!-- Templates -->
                     <div class="panel-section" style="margin-bottom: 20px;">
                         <h2>📝 Template Rápido</h2>
@@ -813,6 +881,10 @@
             // Contadores de caracteres
             document.getElementById('announcementText').addEventListener('input', updateCharCounter);
             document.getElementById('templateContent').addEventListener('input', updateTemplateCharCounter);
+            
+            // Preview do nome do canal
+            document.getElementById('channelName').addEventListener('input', updateChannelPreview);
+            document.getElementById('channelType').addEventListener('change', updateChannelPreview);
             
             // Upload de imagem
             setupImageUpload();
@@ -976,7 +1048,8 @@
                 loadStats(),
                 loadChannels(),
                 loadRoles(),
-                loadTemplates()
+                loadTemplates(),
+                loadCategories()
             ]);
         }
 
@@ -1027,6 +1100,131 @@
                 document.getElementById('channelSelect').innerHTML = '<option value="">Erro ao carregar canais</option>';
             }
         }
+
+        // Carregar categorias
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/categories`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                const categories = data.categories || [];
+                
+                const categorySelect = document.getElementById('channelCategory');
+                categorySelect.innerHTML = '<option value="">Sem categoria</option>';
+                
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = `📁 ${category.name}`;
+                    categorySelect.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Erro ao carregar categorias:', error);
+                const categorySelect = document.getElementById('channelCategory');
+                categorySelect.innerHTML = '<option value="">Erro ao carregar categorias</option>';
+            }
+        }
+
+        // Atualizar categorias
+        async function refreshCategories() {
+            showMessage('message', 'Atualizando categorias...', 'info');
+            await loadCategories();
+            showMessage('message', 'Categorias atualizadas com sucesso!', 'success');
+        }
+
+        // Preview do nome do canal
+        function updateChannelPreview() {
+            const channelNameInput = document.getElementById('channelName');
+            const channelTypeSelect = document.getElementById('channelType');
+            const channelPreview = document.getElementById('channelPreview');
+            const formattedChannelName = document.getElementById('formattedChannelName');
+            const channelTypeIcon = document.getElementById('channelTypeIcon');
+            
+            const rawName = channelNameInput.value.trim();
+            
+            if (rawName) {
+                // Formatar nome do canal (Discord format)
+                const formatted = rawName
+                    .toLowerCase()
+                    .replace(/\s+/g, '-')
+                    .replace(/[^a-z0-9\-]/g, '')
+                    .replace(/-+/g, '-')
+                    .replace(/^-|-$/g, '');
+                
+                const channelType = channelTypeSelect.value;
+                const icon = channelType === 'voice' ? '🔊' : '💬';
+                const prefix = channelType === 'voice' ? '' : '#';
+                
+                channelTypeIcon.textContent = icon;
+                formattedChannelName.textContent = `${prefix}${formatted}`;
+                channelPreview.classList.add('show');
+            } else {
+                channelPreview.classList.remove('show');
+            }
+        }
+
+        // Criar canal
+        document.getElementById('channelForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const channelName = document.getElementById('channelName').value;
+            const channelType = document.getElementById('channelType').value;
+            const channelCategory = document.getElementById('channelCategory').value;
+            const createBtn = document.getElementById('createChannelBtn');
+            
+            if (!channelName.trim()) {
+                showMessage('message', 'Nome do canal é obrigatório.', 'error');
+                return;
+            }
+            
+            createBtn.disabled = true;
+            createBtn.innerHTML = '<div class="loading-spinner"></div>Criando...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/create-channel`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: channelName.trim(),
+                        type: channelType,
+                        categoryId: channelCategory || null
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('message', `Canal "${channelName}" criado com sucesso! 🎉`, 'success');
+                    document.getElementById('channelForm').reset();
+                    
+                    // Atualizar lista de canais após 2 segundos
+                    setTimeout(async () => {
+                        await loadChannels();
+                        showMessage('message', 'Lista de canais atualizada!', 'info');
+                    }, 2000);
+                    
+                    loadStats();
+                } else {
+                    showMessage('message', result.error || 'Erro ao criar canal.', 'error');
+                }
+            } catch (error) {
+                console.error('Erro ao criar canal:', error);
+                showMessage('message', 'Erro de conexão com o servidor.', 'error');
+            } finally {
+                createBtn.disabled = false;
+                createBtn.innerHTML = '✨ Criar Canal';
+            }
+        });
 
         // CARREGAR CARGOS CORRIGIDO
         async function loadRoles() {
@@ -1187,7 +1385,7 @@
         // Atualizar dados
         async function refreshChannels() {
             showMessage('message', 'Atualizando dados...', 'info');
-            await Promise.all([loadChannels(), loadRoles()]);
+            await Promise.all([loadChannels(), loadRoles(), loadCategories()]);
             showMessage('message', 'Dados atualizados com sucesso!', 'success');
         }
 
@@ -1484,6 +1682,12 @@
             if (e.ctrlKey && e.key === 'p') {
                 e.preventDefault();
                 previewAnnouncement();
+            }
+            
+            // Ctrl+N para criar novo canal
+            if (e.ctrlKey && e.key === 'n') {
+                e.preventDefault();
+                document.getElementById('channelName').focus();
             }
         });
     </script>
