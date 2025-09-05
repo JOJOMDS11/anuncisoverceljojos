@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel de Anúncios Discord</title>
+    <title>JOJO ANÚNCIOS - Painel Discord</title>
     <style>
         * {
             margin: 0;
@@ -19,7 +19,7 @@
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 20px;
         }
@@ -133,7 +133,7 @@
 
         .panel-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 2fr 1fr;
             gap: 30px;
             margin-bottom: 30px;
         }
@@ -247,6 +247,10 @@
             background: linear-gradient(135deg, #dc3545, #c82333);
         }
 
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #1e7e34);
+        }
+
         .btn-small {
             padding: 6px 12px;
             font-size: 14px;
@@ -269,7 +273,168 @@
             }
         }
 
-        .history-section, .templates-section {
+        /* Roles Selection */
+        .roles-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .roles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .role-item {
+            display: flex;
+            align-items: center;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .role-item:hover {
+            border-color: #5865f2;
+        }
+
+        .role-item.selected {
+            border-color: #5865f2;
+            background: rgba(88, 101, 242, 0.1);
+        }
+
+        .role-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .role-name {
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        /* Channel Creation */
+        .channel-creation {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .channel-type-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .channel-type-btn {
+            flex: 1;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .channel-type-btn.active {
+            border-color: #5865f2;
+            background: rgba(88, 101, 242, 0.1);
+            color: #5865f2;
+        }
+
+        /* Announcement Types */
+        .announcement-type-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .announcement-type {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .announcement-type:hover {
+            border-color: #5865f2;
+        }
+
+        .announcement-type.selected {
+            border-color: #5865f2;
+            background: rgba(88, 101, 242, 0.1);
+            color: #5865f2;
+        }
+
+        .announcement-type-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .announcement-type-name {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* Emoji Picker */
+        .emoji-picker {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(40px, 1fr));
+            gap: 5px;
+            max-height: 120px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .emoji-btn {
+            padding: 8px;
+            border: none;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .emoji-btn:hover {
+            background: #e9ecef;
+        }
+
+        /* Quick Actions */
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-actions button {
+            width: auto;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
+        /* Templates Section */
+        .history-section, .templates-section, .channels-section {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
@@ -278,7 +443,7 @@
             margin-bottom: 30px;
         }
 
-        .announcement-item {
+        .template-item, .channel-item {
             background: #f8f9fa;
             border-left: 4px solid #5865f2;
             padding: 20px;
@@ -287,39 +452,9 @@
             transition: all 0.3s ease;
         }
 
-        .announcement-item:hover {
+        .template-item:hover, .channel-item:hover {
             background: #e9ecef;
             transform: translateX(5px);
-        }
-
-        .announcement-meta {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 10px;
-        }
-
-        .announcement-content {
-            font-weight: 500;
-            color: #333;
-            line-height: 1.5;
-        }
-
-        .template-item {
-            background: #f8f9fa;
-            border: 2px solid #dee2e6;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            transition: all 0.3s ease;
-        }
-
-        .template-item:hover {
-            border-color: #5865f2;
-            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.1);
         }
 
         .template-header {
@@ -333,14 +468,14 @@
             flex-grow: 1;
         }
 
-        .template-name {
+        .template-name, .channel-name {
             font-weight: 700;
             color: #333;
             margin-bottom: 5px;
             font-size: 1.1rem;
         }
 
-        .template-category {
+        .template-category, .channel-type {
             font-size: 0.8rem;
             color: #5865f2;
             background: rgba(88, 101, 242, 0.1);
@@ -359,26 +494,10 @@
             position: relative;
         }
 
-        .template-preview::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            width: 30px;
-            height: 20px;
-            background: linear-gradient(to right, transparent, #f8f9fa);
-        }
-
         .template-actions {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
-        }
-
-        .template-stats {
-            font-size: 0.8rem;
-            color: #999;
-            margin-top: 10px;
         }
 
         .success, .error, .info {
@@ -409,44 +528,6 @@
             border: 1px solid #bee5eb;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            color: #666;
-            font-style: italic;
-            padding: 40px;
-        }
-
-        .empty-state {
-            text-align: center;
-            color: #666;
-            font-style: italic;
-            padding: 40px;
-        }
-
-        .empty-state-icon {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            opacity: 0.5;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-top: 20px;
-        }
-
-        .pagination button {
-            width: auto;
-            padding: 8px 15px;
-            font-size: 14px;
-        }
-
-        .pagination button.active {
-            background: linear-gradient(135deg, #5865f2, #4752c4);
-        }
-
         .filter-bar {
             display: flex;
             gap: 15px;
@@ -460,38 +541,37 @@
             min-width: 200px;
         }
 
-        .channel-group {
-            margin-bottom: 15px;
-        }
-
-        .channel-group-title {
-            font-weight: 600;
-            color: #5865f2;
+        /* Mentions Preview */
+        .mentions-preview {
             background: rgba(88, 101, 242, 0.1);
-            padding: 8px 12px;
+            border: 1px solid #5865f2;
             border-radius: 8px;
-            margin-bottom: 5px;
-            font-size: 0.9rem;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
         }
 
-        .quick-actions {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        .mentions-preview.show {
+            display: block;
         }
 
-        .quick-actions button {
-            width: auto;
-            padding: 8px 16px;
-            font-size: 14px;
+        .mention-tag {
+            background: #5865f2;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
+            display: inline-block;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 1200px) {
             .panel-grid {
                 grid-template-columns: 1fr;
             }
-            
+        }
+
+        @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 text-align: center;
@@ -501,22 +581,16 @@
                 font-size: 2rem;
             }
             
-            .template-item {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 15px;
+            .roles-grid {
+                grid-template-columns: 1fr;
             }
             
-            .template-actions {
-                justify-content: flex-end;
+            .announcement-type-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
             
-            .filter-bar {
-                flex-direction: column;
-            }
-            
-            .filter-bar input, .filter-bar select {
-                width: 100%;
+            .channel-creation {
+                grid-template-columns: 1fr;
             }
         }
 
@@ -529,21 +603,13 @@
         .fade-in {
             animation: fadeIn 0.5s ease forwards;
         }
-
-        /* Tema escuro */
-        .dark-mode {
-            --bg-color: #2c2f36;
-            --text-color: #fff;
-            --card-bg: rgba(44, 47, 54, 0.95);
-            --border-color: #4a4d55;
-        }
     </style>
 </head>
 <body>
     <!-- Tela de Login -->
     <div id="loginContainer" class="login-container">
         <div class="login-form">
-            <h1>🔐 Login Administrativo</h1>
+            <h1>📢 JOJO ANÚNCIOS</h1>
             <div id="loginMessage"></div>
             <form id="loginForm">
                 <div class="form-group">
@@ -562,8 +628,8 @@
         <div class="container">
             <div class="header">
                 <div class="header-content">
-                    <h1>🤖 Painel de Anúncios Discord</h1>
-                    <p>Gerencie seus anúncios e templates de forma fácil e intuitiva</p>
+                    <h1>🎯 JOJO ANÚNCIOS</h1>
+                    <p>Painel completo para gerenciar Discord - Anúncios, Canais & Templates</p>
                 </div>
                 <div class="header-actions">
                     <div class="stats-card">
@@ -575,24 +641,59 @@
                         <div class="stats-label">Canais</div>
                     </div>
                     <div class="stats-card">
-                        <span class="stats-number" id="statsTemplates">0</span>
-                        <div class="stats-label">Templates</div>
+                        <span class="stats-number" id="statsRoles">0</span>
+                        <div class="stats-label">Cargos</div>
                     </div>
                     <button class="logout-btn" onclick="logout()">🚪 Sair</button>
                 </div>
             </div>
 
             <div class="panel-grid">
+                <!-- Seção Principal de Anúncios -->
                 <div class="panel-section">
-                    <h2>📢 Enviar Anúncio</h2>
+                    <h2>📢 Criar Anúncio</h2>
                     <div id="message"></div>
+                    
+                    <!-- Tipo de Anúncio -->
+                    <div class="form-group">
+                        <label>Tipo de Anúncio:</label>
+                        <div class="announcement-type-grid">
+                            <div class="announcement-type selected" data-type="anuncio">
+                                <div class="announcement-type-icon">📢</div>
+                                <div class="announcement-type-name">Anúncio</div>
+                            </div>
+                            <div class="announcement-type" data-type="novidade">
+                                <div class="announcement-type-icon">✨</div>
+                                <div class="announcement-type-name">Novidade</div>
+                            </div>
+                            <div class="announcement-type" data-type="atualizacao">
+                                <div class="announcement-type-icon">🔄</div>
+                                <div class="announcement-type-name">Atualização</div>
+                            </div>
+                            <div class="announcement-type" data-type="torneio">
+                                <div class="announcement-type-icon">🏆</div>
+                                <div class="announcement-type-name">Inscrição de Torneio</div>
+                            </div>
+                            <div class="announcement-type" data-type="evento">
+                                <div class="announcement-type-icon">🎉</div>
+                                <div class="announcement-type-name">Evento</div>
+                            </div>
+                            <div class="announcement-type" data-type="aviso">
+                                <div class="announcement-type-icon">⚠️</div>
+                                <div class="announcement-type-name">Aviso</div>
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="quick-actions">
                         <button type="button" class="btn btn-secondary btn-small" onclick="refreshChannels()">
-                            🔄 Atualizar Canais
+                            🔄 Atualizar
                         </button>
                         <button type="button" class="btn btn-secondary btn-small" onclick="previewAnnouncement()">
                             👁️ Visualizar
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="clearForm()">
+                            🗑️ Limpar
                         </button>
                     </div>
                     
@@ -610,10 +711,44 @@
                                 <option value="">Selecione um template</option>
                             </select>
                         </div>
+
+                        <!-- Seleção de Cargos -->
+                        <div class="roles-section">
+                            <label>Cargos para Mencionar:</label>
+                            <div class="roles-grid" id="rolesGrid">
+                                <div class="role-item" data-loading="true">
+                                    <div class="loading-spinner"></div>
+                                    Carregando cargos...
+                                </div>
+                            </div>
+                            <div class="mentions-preview" id="mentionsPreview">
+                                <label style="margin-bottom: 5px; font-size: 12px;">Menções que serão enviadas:</label>
+                                <div id="mentionTags"></div>
+                            </div>
+                        </div>
+
+                        <!-- Seletor de Emojis -->
+                        <div class="emoji-picker">
+                            <label>Emojis Rápidos:</label>
+                            <div class="emoji-grid">
+                                <button type="button" class="emoji-btn" data-emoji="📢">📢</button>
+                                <button type="button" class="emoji-btn" data-emoji="🎉">🎉</button>
+                                <button type="button" class="emoji-btn" data-emoji="⚠️">⚠️</button>
+                                <button type="button" class="emoji-btn" data-emoji="🔥">🔥</button>
+                                <button type="button" class="emoji-btn" data-emoji="💎">💎</button>
+                                <button type="button" class="emoji-btn" data-emoji="🎯">🎯</button>
+                                <button type="button" class="emoji-btn" data-emoji="🚀">🚀</button>
+                                <button type="button" class="emoji-btn" data-emoji="⭐">⭐</button>
+                                <button type="button" class="emoji-btn" data-emoji="🏆">🏆</button>
+                                <button type="button" class="emoji-btn" data-emoji="💪">💪</button>
+                                <button type="button" class="emoji-btn" data-emoji="👑">👑</button>
+                                <button type="button" class="emoji-btn" data-emoji="✨">✨</button>
+                            </div>
+                        </div>
                         
                         <div class="form-group">
                             <label for="announcementText">Mensagem do Anúncio:</label>
-                            <textarea id="announcementText" placeholder="Digite sua mensagem aqui..." required maxlength="2000"></textarea>
+                            <textarea id="announcementText" placeholder="Digite sua mensagem aqui... Use emojis para deixar mais atrativo! 😊" required maxlength="2000"></textarea>
                             <div class="char-counter" id="charCounter">0/2000 caracteres</div>
                         </div>
                         
@@ -623,38 +758,81 @@
                     </form>
                 </div>
 
-                <div class="panel-section">
-                    <h2>📝 Gerenciar Templates</h2>
-                    <form id="templateForm">
-                        <div class="form-group">
-                            <label for="templateName">Nome do Template:</label>
-                            <input type="text" id="templateName" placeholder="Ex: Evento Semanal" required maxlength="100">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="templateCategory">Categoria:</label>
-                            <select id="templateCategory">
-                                <option value="Geral">Geral</option>
-                                <option value="Eventos">Eventos</option>
-                                <option value="Avisos">Avisos</option>
-                                <option value="Promoções">Promoções</option>
-                                <option value="Atualizações">Atualizações</option>
-                            </select>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="templateContent">Conteúdo:</label>
-                            <textarea id="templateContent" placeholder="Conteúdo do template..." required maxlength="2000"></textarea>
-                            <div class="char-counter" id="templateCharCounter">0/2000 caracteres</div>
-                        </div>
-                        
-                        <button type="submit" class="btn btn-secondary" id="saveTemplateBtn">
-                            💾 Salvar Template
-                        </button>
-                    </form>
+                <!-- Seção de Gerenciamento -->
+                <div>
+                    <!-- Templates -->
+                    <div class="panel-section" style="margin-bottom: 20px;">
+                        <h2>📝 Template Rápido</h2>
+                        <form id="templateForm">
+                            <div class="form-group">
+                                <label for="templateName">Nome:</label>
+                                <input type="text" id="templateName" placeholder="Ex: Evento Semanal" required maxlength="100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="templateCategory">Categoria:</label>
+                                <select id="templateCategory">
+                                    <option value="Geral">Geral</option>
+                                    <option value="Eventos">Eventos</option>
+                                    <option value="Avisos">Avisos</option>
+                                    <option value="Torneios">Torneios</option>
+                                    <option value="Atualizações">Atualizações</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="templateContent">Conteúdo:</label>
+                                <textarea id="templateContent" placeholder="Conteúdo do template..." required maxlength="2000"></textarea>
+                                <div class="char-counter" id="templateCharCounter">0/2000 caracteres</div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-secondary" id="saveTemplateBtn">
+                                💾 Salvar
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Criação de Canais -->
+                    <div class="panel-section">
+                        <h2>📺 Criar Canal</h2>
+                        <form id="channelForm">
+                            <div class="channel-type-selector">
+                                <div class="channel-type-btn active" data-type="text">
+                                    💬 Texto
+                                </div>
+                                <div class="channel-type-btn" data-type="voice">
+                                    🔊 Voz
+                                </div>
+                            </div>
+                            
+                            <div class="channel-creation">
+                                <div class="form-group">
+                                    <label for="channelName">Nome do Canal:</label>
+                                    <input type="text" id="channelName" placeholder="nome-do-canal" required>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="categorySelect">Categoria:</label>
+                                    <select id="categorySelect">
+                                        <option value="">Sem categoria</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="channelTopic">Tópico/Descrição:</label>
+                                <input type="text" id="channelTopic" placeholder="Descrição do canal (opcional)" maxlength="1024">
+                            </div>
+                            
+                            <button type="submit" class="btn btn-success" id="createChannelBtn">
+                                ➕ Criar Canal
+                            </button>
+                        </form>
+                    </div>
                 </div>
             </div>
 
+            <!-- Templates Salvos -->
             <div class="templates-section">
                 <h2>📚 Templates Salvos</h2>
                 <div class="filter-bar">
@@ -664,15 +842,28 @@
                         <option value="Geral">Geral</option>
                         <option value="Eventos">Eventos</option>
                         <option value="Avisos">Avisos</option>
-                        <option value="Promoções">Promoções</option>
+                        <option value="Torneios">Torneios</option>
                         <option value="Atualizações">Atualizações</option>
                     </select>
                 </div>
                 <div id="templatesList"></div>
             </div>
 
+            <!-- Canais Criados -->
+            <div class="channels-section">
+                <h2>📺 Canais Gerenciados</h2>
+                <div class="filter-bar">
+                    <input type="text" id="channelSearch" placeholder="🔍 Buscar canais...">
+                    <button class="btn btn-small btn-secondary" onclick="loadChannelTemplates()">
+                        🔄 Atualizar
+                    </button>
+                </div>
+                <div id="channelsList"></div>
+            </div>
+
+            <!-- Histórico -->
             <div class="history-section">
-                <h2>📋 Histórico de Anúncios</h2>
+                <h2>📋 Histórico de Atividades</h2>
                 <div class="filter-bar">
                     <input type="text" id="historySearch" placeholder="🔍 Buscar no histórico...">
                     <select id="historyChannelFilter">
@@ -680,8 +871,6 @@
                     </select>
                 </div>
                 <div id="announcementHistory"></div>
-                <div class="pagination" id="historyPagination"></div>
-                <div class="loading" id="loadingHistory">Carregando histórico...</div>
             </div>
         </div>
     </div>
@@ -690,29 +879,84 @@
         // Configuração da API
         const API_BASE = window.location.hostname === 'localhost' ? 
             'http://localhost:3001/api' : 
-            'https://discord-anuncios.onrender.com/api'; // Substitua pela URL do seu bot
+            'https://discord-anuncios.onrender.com/api';
 
         let authToken = localStorage.getItem('authToken');
-        let currentPage = 1;
+        let selectedRoles = [];
+        let selectedAnnouncementType = 'anuncio';
+        let selectedChannelType = 'text';
         let allTemplates = [];
-        let allAnnouncements = [];
+        let allChannels = [];
+        let allRoles = [];
 
-        // Verificar autenticação na inicialização
+        // Verificar autenticação
         document.addEventListener('DOMContentLoaded', function() {
             if (authToken) {
                 verifyToken();
             } else {
                 showLogin();
             }
+            
+            setupEventListeners();
         });
+
+        function setupEventListeners() {
+            // Seletores de tipo de anúncio
+            document.querySelectorAll('.announcement-type').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.announcement-type').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedAnnouncementType = this.dataset.type;
+                });
+            });
+
+            // Seletores de tipo de canal
+            document.querySelectorAll('.channel-type-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.channel-type-btn').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    selectedChannelType = this.dataset.type;
+                });
+            });
+
+            // Emojis
+            document.querySelectorAll('.emoji-btn').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const emoji = this.dataset.emoji;
+                    const textarea = document.getElementById('announcementText');
+                    const start = textarea.selectionStart;
+                    const end = textarea.selectionEnd;
+                    const text = textarea.value;
+                    textarea.value = text.substring(0, start) + emoji + text.substring(end);
+                    textarea.selectionStart = textarea.selectionEnd = start + emoji.length;
+                    textarea.focus();
+                    updateCharCounter();
+                });
+            });
+
+            // Contadores de caracteres
+            document.getElementById('announcementText').addEventListener('input', updateCharCounter);
+            document.getElementById('templateContent').addEventListener('input', updateTemplateCharCounter);
+            
+            // Templates
+            document.getElementById('templateSelect').addEventListener('change', function() {
+                if (this.value) {
+                    useTemplate(parseInt(this.value));
+                }
+            });
+
+            // Filtros
+            document.getElementById('templateSearch').addEventListener('input', renderTemplatesList);
+            document.getElementById('categoryFilter').addEventListener('change', renderTemplatesList);
+            document.getElementById('channelSearch').addEventListener('input', renderChannelsList);
+        }
 
         // Verificar token
         async function verifyToken() {
             try {
                 const response = await fetch(`${API_BASE}/verify`, {
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`
-                    }
+                    headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 
                 if (response.ok) {
@@ -727,7 +971,7 @@
             }
         }
 
-        // Mostrar tela de login
+        // Mostrar interfaces
         function showLogin() {
             document.getElementById('loginContainer').style.display = 'flex';
             document.getElementById('mainInterface').style.display = 'none';
@@ -735,7 +979,6 @@
             authToken = null;
         }
 
-        // Mostrar interface principal
         function showMainInterface() {
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('mainInterface').style.display = 'block';
@@ -754,9 +997,7 @@
             try {
                 const response = await fetch(`${API_BASE}/login`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ password })
                 });
                 
@@ -793,8 +1034,10 @@
             await Promise.all([
                 loadStats(),
                 loadChannels(),
+                loadRoles(),
                 loadTemplates(),
-                loadAnnouncementHistory()
+                loadCategories(),
+                loadHistory()
             ]);
         }
 
@@ -806,21 +1049,23 @@
                 });
                 const stats = await response.json();
                 
-                document.getElementById('statsAnnouncements').textContent = stats.totalAnnouncements;
-                document.getElementById('statsChannels').textContent = stats.channels;
-                document.getElementById('statsTemplates').textContent = stats.templates;
+                document.getElementById('statsAnnouncements').textContent = stats.totalAnnouncements || 0;
+                document.getElementById('statsChannels').textContent = stats.channels || 0;
+                document.getElementById('statsRoles').textContent = stats.roles || 0;
             } catch (error) {
                 console.error('Erro ao carregar estatísticas:', error);
             }
         }
 
-        // Carregar canais disponíveis
+        // Carregar canais
         async function loadChannels() {
             try {
                 const response = await fetch(`${API_BASE}/channels`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 const data = await response.json();
+                
+                allChannels = data.channels || [];
                 
                 const channelSelect = document.getElementById('channelSelect');
                 const historyChannelFilter = document.getElementById('historyChannelFilter');
@@ -829,7 +1074,7 @@
                 historyChannelFilter.innerHTML = '<option value="">Todos os canais</option>';
                 
                 // Agrupar por servidor
-                Object.keys(data.channelsGrouped).forEach(guildName => {
+                Object.keys(data.channelsGrouped || {}).forEach(guildName => {
                     const optgroup = document.createElement('optgroup');
                     optgroup.label = guildName;
                     
@@ -839,7 +1084,6 @@
                         option.textContent = `#${channel.name} ${channel.category ? `(${channel.category})` : ''}`;
                         optgroup.appendChild(option);
                         
-                        // Para o filtro do histórico
                         const historyOption = option.cloneNode(true);
                         historyChannelFilter.appendChild(historyOption);
                     });
@@ -847,17 +1091,114 @@
                     channelSelect.appendChild(optgroup);
                 });
                 
+                renderChannelsList();
+                
             } catch (error) {
                 console.error('Erro ao carregar canais:', error);
                 document.getElementById('channelSelect').innerHTML = '<option value="">Erro ao carregar canais</option>';
             }
         }
 
-        // Atualizar canais manualmente
-        async function refreshChannels() {
-            showMessage('message', 'Atualizando lista de canais...', 'info');
-            await loadChannels();
-            showMessage('message', 'Canais atualizados com sucesso!', 'success');
+        // Carregar cargos
+        async function loadRoles() {
+            try {
+                const response = await fetch(`${API_BASE}/roles`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const roles = await response.json();
+                
+                allRoles = roles;
+                renderRoles();
+                
+            } catch (error) {
+                console.error('Erro ao carregar cargos:', error);
+                renderRoles([]); // Render empty state
+            }
+        }
+
+        // Renderizar cargos
+        function renderRoles(roles = allRoles) {
+            const rolesGrid = document.getElementById('rolesGrid');
+            
+            if (!roles || roles.length === 0) {
+                rolesGrid.innerHTML = `
+                    <div class="role-item" style="grid-column: 1/-1; text-align: center; color: #666;">
+                        <div style="margin-right: 8px;">⚠️</div>
+                        Nenhum cargo encontrado ou bot sem permissões
+                    </div>
+                `;
+                return;
+            }
+            
+            rolesGrid.innerHTML = roles.map(role => `
+                <div class="role-item" data-role-id="${role.id}" onclick="toggleRole('${role.id}')">
+                    <div class="role-color" style="background-color: ${role.color || '#99aab5'};"></div>
+                    <div class="role-name">${escapeHtml(role.name)}</div>
+                </div>
+            `).join('');
+            
+            updateMentionsPreview();
+        }
+
+        // Toggle seleção de cargo
+        function toggleRole(roleId) {
+            const roleElement = document.querySelector(`[data-role-id="${roleId}"]`);
+            const index = selectedRoles.indexOf(roleId);
+            
+            if (index > -1) {
+                selectedRoles.splice(index, 1);
+                roleElement.classList.remove('selected');
+            } else {
+                selectedRoles.push(roleId);
+                roleElement.classList.add('selected');
+            }
+            
+            updateMentionsPreview();
+        }
+
+        // Atualizar preview das menções
+        function updateMentionsPreview() {
+            const mentionsPreview = document.getElementById('mentionsPreview');
+            const mentionTags = document.getElementById('mentionTags');
+            
+            if (selectedRoles.length === 0) {
+                mentionsPreview.classList.remove('show');
+                return;
+            }
+            
+            mentionsPreview.classList.add('show');
+            
+            const selectedRoleNames = selectedRoles.map(roleId => {
+                const role = allRoles.find(r => r.id === roleId);
+                return role ? role.name : 'Cargo não encontrado';
+            });
+            
+            mentionTags.innerHTML = selectedRoleNames.map(name => 
+                `<span class="mention-tag">@${escapeHtml(name)}</span>`
+            ).join('');
+        }
+
+        // Carregar categorias
+        async function loadCategories() {
+            try {
+                const response = await fetch(`${API_BASE}/categories`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const categories = await response.json();
+                
+                const categorySelect = document.getElementById('categorySelect');
+                categorySelect.innerHTML = '<option value="">Sem categoria</option>';
+                
+                categories.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.textContent = category.name;
+                    categorySelect.appendChild(option);
+                });
+                
+            } catch (error) {
+                console.error('Erro ao carregar categorias:', error);
+            }
         }
 
         // Carregar templates
@@ -872,7 +1213,68 @@
                 renderTemplatesList();
             } catch (error) {
                 console.error('Erro ao carregar templates:', error);
+                allTemplates = [];
+                renderTemplatesList();
             }
+        }
+
+        // Carregar histórico
+        async function loadHistory() {
+            try {
+                const response = await fetch(`${API_BASE}/history`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const history = await response.json();
+                
+                renderHistory(history);
+            } catch (error) {
+                console.error('Erro ao carregar histórico:', error);
+                renderHistory([]);
+            }
+        }
+
+        // Renderizar histórico
+        function renderHistory(history) {
+            const historyContainer = document.getElementById('announcementHistory');
+            
+            if (!history || history.length === 0) {
+                historyContainer.innerHTML = `
+                    <div style="text-align: center; color: #666; padding: 40px;">
+                        <div style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;">📋</div>
+                        <p>Nenhuma atividade registrada.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            historyContainer.innerHTML = history.map(item => {
+                const typeIcons = {
+                    'anuncio': '📢',
+                    'novidade': '✨',
+                    'atualizacao': '🔄',
+                    'torneio': '🏆',
+                    'evento': '🎉',
+                    'aviso': '⚠️'
+                };
+                
+                return `
+                    <div class="template-item fade-in">
+                        <div class="template-header">
+                            <div class="template-info">
+                                <div class="template-name">
+                                    ${typeIcons[item.type] || '📢'} ${escapeHtml(item.type || 'Anúncio')}
+                                </div>
+                                <div class="template-category">${escapeHtml(item.channelName || 'Canal desconhecido')}</div>
+                                <div class="template-preview">${escapeHtml(item.content || 'Sem conteúdo')}</div>
+                                <div style="font-size: 0.8rem; color: #999; margin-top: 10px;">
+                                    Enviado em ${new Date(item.createdAt || Date.now()).toLocaleString('pt-BR')}
+                                    ${item.mentions ? ` • ${item.mentions} menções` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // Atualizar select de templates
@@ -888,7 +1290,7 @@
             });
         }
 
-        // Renderizar lista de templates com filtros
+        // Renderizar lista de templates
         function renderTemplatesList() {
             const templatesList = document.getElementById('templatesList');
             const searchTerm = document.getElementById('templateSearch').value.toLowerCase();
@@ -903,8 +1305,8 @@
             
             if (filteredTemplates.length === 0) {
                 templatesList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📝</div>
+                    <div style="text-align: center; color: #666; padding: 40px;">
+                        <div style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;">📝</div>
                         <p>Nenhum template encontrado.</p>
                     </div>
                 `;
@@ -918,7 +1320,7 @@
                             <div class="template-name">${escapeHtml(template.name)}</div>
                             <div class="template-category">${template.category}</div>
                             <div class="template-preview">${escapeHtml(template.content)}</div>
-                            <div class="template-stats">
+                            <div style="font-size: 0.8rem; color: #999; margin-top: 10px;">
                                 Criado em ${new Date(template.createdAt).toLocaleDateString('pt-BR')}
                                 ${template.usageCount ? ` • Usado ${template.usageCount} vezes` : ''}
                             </div>
@@ -939,9 +1341,51 @@
             `).join('');
         }
 
-        // Event listeners para filtros de template
-        document.getElementById('templateSearch').addEventListener('input', renderTemplatesList);
-        document.getElementById('categoryFilter').addEventListener('change', renderTemplatesList);
+        // Renderizar lista de canais
+        function renderChannelsList() {
+            const channelsList = document.getElementById('channelsList');
+            const searchTerm = document.getElementById('channelSearch').value.toLowerCase();
+            
+            let filteredChannels = allChannels.filter(channel => 
+                channel.name.toLowerCase().includes(searchTerm) || 
+                (channel.guild && channel.guild.toLowerCase().includes(searchTerm))
+            );
+            
+            if (filteredChannels.length === 0) {
+                channelsList.innerHTML = `
+                    <div style="text-align: center; color: #666; padding: 40px;">
+                        <div style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;">📺</div>
+                        <p>Nenhum canal encontrado.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            // Agrupar por servidor
+            const channelsByGuild = filteredChannels.reduce((groups, channel) => {
+                const guildName = channel.guild || 'Servidor desconhecido';
+                if (!groups[guildName]) {
+                    groups[guildName] = [];
+                }
+                groups[guildName].push(channel);
+                return groups;
+            }, {});
+            
+            channelsList.innerHTML = Object.keys(channelsByGuild).map(guildName => `
+                <div style="margin-bottom: 20px;">
+                    <h3 style="color: #5865f2; margin-bottom: 10px; font-size: 1.1rem;">🛡️ ${escapeHtml(guildName)}</h3>
+                    ${channelsByGuild[guildName].map(channel => `
+                        <div class="channel-item">
+                            <div class="channel-name">#${escapeHtml(channel.name)}</div>
+                            <div class="channel-type">${channel.category || 'Sem categoria'}</div>
+                            <div style="font-size: 0.8rem; color: #999; margin-top: 5px;">
+                                ID: ${channel.id} • Tipo: ${channel.type || 'texto'}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `).join('');
+        }
 
         // Usar template
         function useTemplate(templateId) {
@@ -952,8 +1396,22 @@
                 updateCharCounter();
                 showMessage('message', `Template "${template.name}" carregado!`, 'info');
                 
-                // Scroll para o formulário
                 document.getElementById('announcementForm').scrollIntoView({ behavior: 'smooth' });
+                
+                // Incrementar contador de uso (opcional)
+                incrementTemplateUsage(templateId);
+            }
+        }
+
+        // Incrementar uso do template
+        async function incrementTemplateUsage(templateId) {
+            try {
+                await fetch(`${API_BASE}/template/${templateId}/use`, {
+                    method: 'POST',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+            } catch (error) {
+                console.error('Erro ao incrementar uso do template:', error);
             }
         }
 
@@ -965,14 +1423,11 @@
                 document.getElementById('templateCategory').value = template.category;
                 document.getElementById('templateContent').value = template.content;
                 
-                // Mudar o botão para modo edição
                 const saveBtn = document.getElementById('saveTemplateBtn');
-                saveBtn.textContent = '✏️ Atualizar Template';
+                saveBtn.textContent = '✏️ Atualizar';
                 saveBtn.dataset.editId = templateId;
                 
                 updateTemplateCharCounter();
-                
-                // Scroll para o formulário
                 document.getElementById('templateForm').scrollIntoView({ behavior: 'smooth' });
             }
         }
@@ -1000,114 +1455,7 @@
             }
         }
 
-        // Carregar histórico de anúncios
-        async function loadAnnouncementHistory(page = 1) {
-            const loading = document.getElementById('loadingHistory');
-            const historyDiv = document.getElementById('announcementHistory');
-            
-            loading.style.display = 'block';
-            currentPage = page;
-            
-            try {
-                const response = await fetch(`${API_BASE}/announcements?page=${page}&limit=10`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const data = await response.json();
-                
-                allAnnouncements = data.announcements;
-                loading.style.display = 'none';
-                
-                renderAnnouncementHistory();
-                renderPagination(data.pagination);
-            } catch (error) {
-                loading.style.display = 'none';
-                historyDiv.innerHTML = '<p style="color: #dc3545;">Erro ao carregar histórico.</p>';
-            }
-        }
-
-        // Renderizar histórico com filtros
-        function renderAnnouncementHistory() {
-            const historyDiv = document.getElementById('announcementHistory');
-            const searchTerm = document.getElementById('historySearch').value.toLowerCase();
-            const channelFilter = document.getElementById('historyChannelFilter').value;
-            
-            let filteredAnnouncements = allAnnouncements.filter(announcement => {
-                const matchesSearch = announcement.content.toLowerCase().includes(searchTerm);
-                const matchesChannel = !channelFilter || announcement.channelId === channelFilter;
-                return matchesSearch && matchesChannel;
-            });
-            
-            if (filteredAnnouncements.length === 0) {
-                historyDiv.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📋</div>
-                        <p>Nenhum anúncio encontrado.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            historyDiv.innerHTML = filteredAnnouncements.map(announcement => {
-                const date = new Date(announcement.timestamp).toLocaleString('pt-BR');
-                return `
-                    <div class="announcement-item fade-in">
-                        <div class="announcement-meta">
-                            <span>📅 ${date}</span>
-                            <span>📺 #${announcement.channelName || 'Canal desconhecido'}</span>
-                            <span>🏛️ ${announcement.guildName || 'Servidor'}</span>
-                            <span>👤 ${announcement.authorTag || 'Sistema'}</span>
-                        </div>
-                        <div class="announcement-content">${escapeHtml(announcement.content)}</div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Event listeners para filtros do histórico
-        document.getElementById('historySearch').addEventListener('input', renderAnnouncementHistory);
-        document.getElementById('historyChannelFilter').addEventListener('change', renderAnnouncementHistory);
-
-        // Renderizar paginação
-        function renderPagination(pagination) {
-            const paginationDiv = document.getElementById('historyPagination');
-            
-            if (pagination.totalPages <= 1) {
-                paginationDiv.innerHTML = '';
-                return;
-            }
-            
-            let paginationHTML = '';
-            
-            // Botão anterior
-            if (pagination.page > 1) {
-                paginationHTML += `<button onclick="loadAnnouncementHistory(${pagination.page - 1})">← Anterior</button>`;
-            }
-            
-            // Números das páginas
-            const startPage = Math.max(1, pagination.page - 2);
-            const endPage = Math.min(pagination.totalPages, pagination.page + 2);
-            
-            for (let i = startPage; i <= endPage; i++) {
-                const activeClass = i === pagination.page ? ' active' : '';
-                paginationHTML += `<button class="btn-small${activeClass}" onclick="loadAnnouncementHistory(${i})">${i}</button>`;
-            }
-            
-            // Botão próximo
-            if (pagination.page < pagination.totalPages) {
-                paginationHTML += `<button onclick="loadAnnouncementHistory(${pagination.page + 1})">Próximo →</button>`;
-            }
-            
-            paginationDiv.innerHTML = paginationHTML;
-        }
-
-        // Event listeners principais
-        document.getElementById('templateSelect').addEventListener('change', function() {
-            if (this.value) {
-                useTemplate(parseInt(this.value));
-            }
-        });
-
-        // Contador de caracteres
+        // Contadores de caracteres
         function updateCharCounter() {
             const text = document.getElementById('announcementText').value;
             const counter = document.getElementById('charCounter');
@@ -1140,8 +1488,34 @@
             }
         }
 
-        document.getElementById('announcementText').addEventListener('input', updateCharCounter);
-        document.getElementById('templateContent').addEventListener('input', updateTemplateCharCounter);
+        // Atualizar dados
+        async function refreshChannels() {
+            showMessage('message', 'Atualizando dados...', 'info');
+            await Promise.all([loadChannels(), loadRoles(), loadCategories()]);
+            showMessage('message', 'Dados atualizados com sucesso!', 'success');
+        }
+
+        // Carregar templates de canais
+        async function loadChannelTemplates() {
+            showMessage('message', 'Atualizando lista de canais...', 'info');
+            await loadChannels();
+            showMessage('message', 'Lista de canais atualizada!', 'success');
+        }
+
+        // Limpar formulário
+        function clearForm() {
+            document.getElementById('announcementText').value = '';
+            document.getElementById('templateSelect').value = '';
+            document.getElementById('channelSelect').value = '';
+            selectedRoles = [];
+            document.querySelectorAll('.role-item').forEach(item => item.classList.remove('selected'));
+            document.querySelectorAll('.announcement-type').forEach(item => item.classList.remove('selected'));
+            document.querySelector('.announcement-type[data-type="anuncio"]').classList.add('selected');
+            selectedAnnouncementType = 'anuncio';
+            updateCharCounter();
+            updateMentionsPreview();
+            showMessage('message', 'Formulário limpo!', 'info');
+        }
 
         // Visualizar anúncio
         function previewAnnouncement() {
@@ -1153,12 +1527,38 @@
                 showMessage('message', 'Digite uma mensagem para visualizar.', 'error');
                 return;
             }
+
+            const typeIcons = {
+                'anuncio': '📢',
+                'novidade': '✨',
+                'atualizacao': '🔄',
+                'torneio': '🏆',
+                'evento': '🎉',
+                'aviso': '⚠️'
+            };
+
+            const typeNames = {
+                'anuncio': 'Anúncio',
+                'novidade': 'Novidade',
+                'atualizacao': 'Atualização',
+                'torneio': 'Inscrição de Torneio',
+                'evento': 'Evento',
+                'aviso': 'Aviso'
+            };
             
-            const previewWindow = window.open('', '_blank', 'width=600,height=400');
+            const mentionsText = selectedRoles.length > 0 ? 
+                `<div style="margin-bottom: 10px; color: #5865f2; font-weight: bold;">
+                    Cargos mencionados: ${selectedRoles.map(roleId => {
+                        const role = allRoles.find(r => r.id === roleId);
+                        return `@${role ? role.name : 'Cargo desconhecido'}`;
+                    }).join(', ')}
+                </div>` : '';
+            
+            const previewWindow = window.open('', '_blank', 'width=700,height=500');
             previewWindow.document.write(`
                 <html>
                 <head>
-                    <title>Visualização do Anúncio</title>
+                    <title>JOJO ANÚNCIOS - Visualização</title>
                     <style>
                         body { 
                             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
@@ -1172,40 +1572,60 @@
                             border-left: 4px solid #5865f2;
                             border-radius: 8px;
                             padding: 20px;
-                            max-width: 500px;
+                            max-width: 600px;
                         }
                         .embed-title { 
                             color: #fff; 
                             font-weight: bold; 
-                            margin-bottom: 10px; 
-                            font-size: 18px;
+                            margin-bottom: 15px; 
+                            font-size: 20px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
                         }
                         .embed-description { 
-                            line-height: 1.5; 
+                            line-height: 1.6; 
                             white-space: pre-wrap; 
+                            font-size: 16px;
                         }
                         .embed-footer { 
                             margin-top: 15px; 
                             font-size: 12px; 
                             color: #72767d; 
+                            border-top: 1px solid #40444b;
+                            padding-top: 10px;
                         }
                         .channel-info {
                             background: #40444b;
-                            padding: 10px;
-                            border-radius: 4px;
-                            margin-bottom: 15px;
+                            padding: 15px;
+                            border-radius: 8px;
+                            margin-bottom: 20px;
                             font-size: 14px;
+                        }
+                        .mentions-info {
+                            background: rgba(88, 101, 242, 0.1);
+                            border: 1px solid #5865f2;
+                            padding: 10px;
+                            border-radius: 6px;
+                            margin-bottom: 15px;
                         }
                     </style>
                 </head>
                 <body>
                     <div class="channel-info">
-                        <strong>Canal de destino:</strong> ${channelName}
+                        <strong>🎯 JOJO ANÚNCIOS - PREVIEW</strong><br>
+                        <strong>Canal:</strong> ${channelName}<br>
+                        <strong>Tipo:</strong> ${typeNames[selectedAnnouncementType]}
                     </div>
+                    ${mentionsText ? `<div class="mentions-info">${mentionsText}</div>` : ''}
                     <div class="embed">
-                        <div class="embed-title">📢 Anúncio</div>
+                        <div class="embed-title">
+                            ${typeIcons[selectedAnnouncementType]} ${typeNames[selectedAnnouncementType]}
+                        </div>
                         <div class="embed-description">${content.replace(/\n/g, '<br>')}</div>
-                        <div class="embed-footer">Sistema de Anúncios • ${new Date().toLocaleString('pt-BR')}</div>
+                        <div class="embed-footer">
+                            JOJO ANÚNCIOS POR PAINEL WEB • ${new Date().toLocaleString('pt-BR')}
+                        </div>
                     </div>
                 </body>
                 </html>
@@ -1235,27 +1655,21 @@
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${authToken}`
                     },
-                    body: JSON.stringify({ channelId, content })
+                    body: JSON.stringify({ 
+                        channelId, 
+                        content, 
+                        roles: selectedRoles,
+                        type: selectedAnnouncementType
+                    })
                 });
                 
                 const result = await response.json();
                 
                 if (response.ok) {
                     showMessage('message', 'Anúncio enviado com sucesso! 🎉', 'success');
-                    document.getElementById('announcementText').value = '';
-                    document.getElementById('templateSelect').value = '';
-                    updateCharCounter();
-                    loadAnnouncementHistory();
+                    clearForm();
                     loadStats();
-                    
-                    // Incrementar contador de uso do template se usado
-                    const selectedTemplate = document.getElementById('templateSelect').value;
-                    if (selectedTemplate) {
-                        const template = allTemplates.find(t => t.id === parseInt(selectedTemplate));
-                        if (template) {
-                            template.usageCount = (template.usageCount || 0) + 1;
-                        }
-                    }
+                    loadHistory();
                 } else {
                     showMessage('message', result.error || 'Erro ao enviar anúncio.', 'error');
                 }
@@ -1267,7 +1681,7 @@
             }
         });
 
-        // Salvar/Atualizar template
+        // Salvar template
         document.getElementById('templateForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1319,7 +1733,7 @@
                     updateTemplateCharCounter();
                     
                     // Resetar botão
-                    saveBtn.textContent = '💾 Salvar Template';
+                    saveBtn.textContent = '💾 Salvar';
                     delete saveBtn.dataset.editId;
                     
                     loadTemplates();
@@ -1331,7 +1745,62 @@
                 showMessage('message', 'Erro de conexão com o servidor.', 'error');
             } finally {
                 saveBtn.disabled = false;
-                saveBtn.innerHTML = isEditing ? '✏️ Atualizar Template' : '💾 Salvar Template';
+                saveBtn.innerHTML = isEditing ? '✏️ Atualizar' : '💾 Salvar';
+            }
+        });
+
+        // Criar canal
+        document.getElementById('channelForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('channelName').value.trim().toLowerCase().replace(/\s+/g, '-');
+            const topic = document.getElementById('channelTopic').value.trim();
+            const categoryId = document.getElementById('categorySelect').value;
+            const createBtn = document.getElementById('createChannelBtn');
+            
+            if (!name) {
+                showMessage('message', 'Nome do canal é obrigatório.', 'error');
+                return;
+            }
+            
+            createBtn.disabled = true;
+            createBtn.innerHTML = '<div class="loading-spinner"></div>Criando...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/channel`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
+                    },
+                    body: JSON.stringify({ 
+                        name, 
+                        topic, 
+                        type: selectedChannelType,
+                        categoryId: categoryId || null
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('message', 'Canal criado com sucesso! 📺', 'success');
+                    
+                    // Limpar formulário
+                    document.getElementById('channelName').value = '';
+                    document.getElementById('channelTopic').value = '';
+                    document.getElementById('categorySelect').value = '';
+                    
+                    loadChannels();
+                    loadStats();
+                } else {
+                    showMessage('message', result.error || 'Erro ao criar canal.', 'error');
+                }
+            } catch (error) {
+                showMessage('message', 'Erro de conexão com o servidor.', 'error');
+            } finally {
+                createBtn.disabled = false;
+                createBtn.innerHTML = '➕ Criar Canal';
             }
         });
 
@@ -1357,6 +1826,7 @@
 
         // Função para escapar HTML
         function escapeHtml(text) {
+            if (!text) return '';
             const map = {
                 '&': '&amp;',
                 '<': '&lt;',
@@ -1364,111 +1834,239 @@
                 '"': '&quot;',
                 "'": '&#039;'
             };
-            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+            return text.toString().replace(/[&<>"']/g, function(m) { return map[m]; });
         }
 
-        // Atalhos do teclado
+        // Atalhos de teclado
         document.addEventListener('keydown', function(e) {
-            // Ctrl + Enter para enviar anúncio
+            // Ctrl+Enter para enviar anúncio
             if (e.ctrlKey && e.key === 'Enter') {
-                const announcementForm = document.getElementById('announcementForm');
-                if (document.activeElement.closest('#announcementForm')) {
-                    e.preventDefault();
-                    announcementForm.dispatchEvent(new Event('submit'));
+                const announcementText = document.getElementById('announcementText');
+                if (document.activeElement === announcementText) {
+                    document.getElementById('sendBtn').click();
                 }
             }
             
-            // Ctrl + S para salvar template
-            if (e.ctrlKey && e.key === 's') {
-                const templateForm = document.getElementById('templateForm');
-                if (document.activeElement.closest('#templateForm')) {
-                    e.preventDefault();
-                    templateForm.dispatchEvent(new Event('submit'));
+            // Ctrl+L para limpar formulário
+            if (e.ctrlKey && e.key === 'l') {
+                e.preventDefault();
+                clearForm();
+            }
+            
+            // Ctrl+P para preview
+            if (e.ctrlKey && e.key === 'p') {
+                e.preventDefault();
+                previewAnnouncement();
+            }
+        });
+
+        // Adicionar tooltips informativos
+        function addTooltips() {
+            const tooltipElements = [
+                { id: 'channelSelect', text: 'Selecione o canal onde o anúncio será enviado' },
+                { id: 'templateSelect', text: 'Escolha um template salvo para preencher automaticamente' },
+                { id: 'announcementText', text: 'Digite sua mensagem. Use Ctrl+Enter para enviar rapidamente' }
+            ];
+            
+            tooltipElements.forEach(({ id, text }) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.title = text;
                 }
-            }
-            
-            // Escape para cancelar edição de template
-            if (e.key === 'Escape') {
-                const saveBtn = document.getElementById('saveTemplateBtn');
-                if (saveBtn.dataset.editId) {
-                    // Limpar formulário e resetar botão
-                    document.getElementById('templateName').value = '';
-                    document.getElementById('templateContent').value = '';
-                    document.getElementById('templateCategory').value = 'Geral';
-                    updateTemplateCharCounter();
-                    
-                    saveBtn.textContent = '💾 Salvar Template';
-                    delete saveBtn.dataset.editId;
-                    
-                    showMessage('message', 'Edição cancelada.', 'info');
-                }
-            }
-        });
-
-        // Auto-refresh dos dados a cada 5 minutos
-        setInterval(() => {
-            if (authToken && document.getElementById('mainInterface').style.display !== 'none') {
-                loadStats();
-                loadChannels();
-            }
-        }, 5 * 60 * 1000);
-
-        // Detectar perda de conexão
-        window.addEventListener('online', () => {
-            showMessage('message', 'Conexão restaurada! 🌐', 'success');
-            loadAllData();
-        });
-
-        window.addEventListener('offline', () => {
-            showMessage('message', 'Conexão perdida. Verifique sua internet. 📡', 'error');
-        });
-
-        // Toast notifications para melhor UX
-        function showToast(message, type = 'info', duration = 3000) {
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.style.cssText = `
-                position: fixed;
-                top: 20px;
-                right: 20px;
-                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
-                color: white;
-                padding: 15px 20px;
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-                z-index: 10000;
-                transform: translateX(400px);
-                transition: transform 0.3s ease;
-            `;
-            toast.textContent = message;
-            
-            document.body.appendChild(toast);
-            
-            // Animar entrada
-            setTimeout(() => toast.style.transform = 'translateX(0)', 100);
-            
-            // Remover após duração especificada
-            setTimeout(() => {
-                toast.style.transform = 'translateX(400px)';
-                setTimeout(() => document.body.removeChild(toast), 300);
-            }, duration);
+            });
         }
 
-        // Confirmação antes de sair da página se há dados não salvos
-        window.addEventListener('beforeunload', function(e) {
-            const hasUnsavedData = 
-                document.getElementById('announcementText').value.trim() ||
-                document.getElementById('templateName').value.trim() ||
-                document.getElementById('templateContent').value.trim();
+        // Auto-save do conteúdo do formulário
+        function enableAutoSave() {
+            const textArea = document.getElementById('announcementText');
+            const AUTOSAVE_KEY = 'jojo_anuncios_draft';
+            
+            // Carregar draft ao iniciar
+            const savedDraft = localStorage.getItem(AUTOSAVE_KEY);
+            if (savedDraft && !textArea.value) {
+                textArea.value = savedDraft;
+                updateCharCounter();
+                showMessage('message', 'Rascunho recuperado automaticamente.', 'info');
+            }
+            
+            // Salvar automaticamente enquanto digita
+            let saveTimer;
+            textArea.addEventListener('input', function() {
+                clearTimeout(saveTimer);
+                saveTimer = setTimeout(() => {
+                    if (this.value.trim()) {
+                        localStorage.setItem(AUTOSAVE_KEY, this.value);
+                    } else {
+                        localStorage.removeItem(AUTOSAVE_KEY);
+                    }
+                }, 1000);
+            });
+            
+            // Limpar draft ao enviar
+            document.getElementById('announcementForm').addEventListener('submit', function() {
+                localStorage.removeItem(AUTOSAVE_KEY);
+            });
+        }
+
+        // Validação em tempo real
+        function setupFormValidation() {
+            const channelSelect = document.getElementById('channelSelect');
+            const announcementText = document.getElementById('announcementText');
+            const sendBtn = document.getElementById('sendBtn');
+            
+            function validateForm() {
+                const isValid = channelSelect.value && announcementText.value.trim();
+                sendBtn.disabled = !isValid;
                 
-            if (hasUnsavedData) {
-                e.preventDefault();
-                e.returnValue = '';
+                if (!isValid) {
+                    sendBtn.style.opacity = '0.5';
+                } else {
+                    sendBtn.style.opacity = '1';
+                }
+            }
+            
+            channelSelect.addEventListener('change', validateForm);
+            announcementText.addEventListener('input', validateForm);
+            
+            // Validação inicial
+            validateForm();
+        }
+
+        // Melhorar experiência de busca
+        function enhanceSearch() {
+            // Debounce para os filtros de busca
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+            
+            // Aplicar debounce aos campos de busca
+            const searches = [
+                { id: 'templateSearch', callback: renderTemplatesList },
+                { id: 'channelSearch', callback: renderChannelsList },
+                { id: 'historySearch', callback: () => loadHistory() }
+            ];
+            
+            searches.forEach(({ id, callback }) => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.addEventListener('input', debounce(callback, 300));
+                }
+            });
+        }
+
+        // Contador de caracteres em tempo real melhorado
+        function enhanceCharCounters() {
+            const counters = [
+                { textId: 'announcementText', counterId: 'charCounter', max: 2000 },
+                { textId: 'templateContent', counterId: 'templateCharCounter', max: 2000 }
+            ];
+            
+            counters.forEach(({ textId, counterId, max }) => {
+                const textElement = document.getElementById(textId);
+                const counterElement = document.getElementById(counterId);
+                
+                if (textElement && counterElement) {
+                    textElement.addEventListener('input', function() {
+                        const length = this.value.length;
+                        const remaining = max - length;
+                        
+                        let text = `${length}/${max} caracteres`;
+                        if (remaining < 200) {
+                            text += ` (${remaining} restantes)`;
+                        }
+                        
+                        counterElement.textContent = text;
+                        
+                        // Atualizar classes
+                        counterElement.className = 'char-counter';
+                        if (length > max * 0.9) {
+                            counterElement.className += ' danger';
+                        } else if (length > max * 0.75) {
+                            counterElement.className += ' warning';
+                        }
+                    });
+                }
+            });
+        }
+
+        // Inicializar funcionalidades extras
+        function initializeExtraFeatures() {
+            addTooltips();
+            enableAutoSave();
+            setupFormValidation();
+            enhanceSearch();
+            enhanceCharCounters();
+        }
+
+        // Chamar inicialização extra após carregar a interface
+        const originalShowMainInterface = showMainInterface;
+        showMainInterface = function() {
+            originalShowMainInterface();
+            setTimeout(initializeExtraFeatures, 100);
+        };
+
+        // Easter egg - Konami Code
+        let konamiCode = [];
+        const konami = [38,38,40,40,37,39,37,39,66,65];
+        
+        document.addEventListener('keydown', function(e) {
+            konamiCode.push(e.keyCode);
+            if (konamiCode.length > konami.length) {
+                konamiCode.shift();
+            }
+            
+            if (konamiCode.join(',') === konami.join(',')) {
+                showMessage('message', '🎉 JOJO MODE ATIVADO! Você descobriu o código secreto!', 'success');
+                document.body.style.animation = 'rainbow 2s linear infinite';
+                
+                const style = document.createElement('style');
+                style.textContent = `
+                    @keyframes rainbow {
+                        0% { filter: hue-rotate(0deg); }
+                        100% { filter: hue-rotate(360deg); }
+                    }
+                `;
+                document.head.appendChild(style);
+                
+                setTimeout(() => {
+                    document.body.style.animation = '';
+                    style.remove();
+                }, 10000);
+                
+                konamiCode = [];
             }
         });
 
-        console.log('🚀 Painel de Anúncios Discord carregado com sucesso!');
-        console.log('📧 Para suporte: contato@seudominio.com');
+        // Animações de entrada
+        function animateElements() {
+            const elements = document.querySelectorAll('.panel-section, .template-item, .channel-item');
+            elements.forEach((el, index) => {
+                el.style.opacity = '0';
+                el.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    el.style.transition = 'all 0.5s ease';
+                    el.style.opacity = '1';
+                    el.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        }
+
+        // Chamar animações quando carregar dados
+        const originalLoadAllData = loadAllData;
+        loadAllData = async function() {
+            await originalLoadAllData();
+            setTimeout(animateElements, 200);
+        };
+
     </script>
 </body>
 </html>
