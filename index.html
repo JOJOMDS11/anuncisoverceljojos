@@ -24,26 +24,111 @@
             padding: 20px;
         }
 
+        /* Login Form */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-form {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .login-form h1 {
+            color: #5865f2;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .login-form .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        /* Main Interface */
+        .main-interface {
+            display: none;
+        }
+
         .header {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
-            text-align: center;
             margin-bottom: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
-        .header h1 {
+        .header-content h1 {
             color: #5865f2;
             font-size: 2.5rem;
             margin-bottom: 10px;
             font-weight: 700;
         }
 
-        .header p {
+        .header-content p {
             color: #666;
             font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .stats-card {
+            background: rgba(88, 101, 242, 0.1);
+            border: 2px solid #5865f2;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            min-width: 120px;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #5865f2;
+            display: block;
+        }
+
+        .stats-label {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(220, 53, 69, 0.3);
         }
 
         .panel-grid {
@@ -94,6 +179,7 @@
             font-size: 16px;
             transition: all 0.3s ease;
             background: white;
+            font-family: inherit;
         }
 
         select:focus, textarea:focus, input:focus {
@@ -105,7 +191,22 @@
         textarea {
             resize: vertical;
             min-height: 120px;
-            font-family: inherit;
+        }
+
+        .char-counter {
+            text-align: right;
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .char-counter.warning {
+            color: #ff6b35;
+        }
+
+        .char-counter.danger {
+            color: #dc3545;
+            font-weight: bold;
         }
 
         .btn {
@@ -119,6 +220,8 @@
             font-weight: 600;
             transition: all 0.3s ease;
             width: 100%;
+            position: relative;
+            overflow: hidden;
         }
 
         .btn:hover {
@@ -130,6 +233,12 @@
             transform: translateY(0);
         }
 
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
         .btn-secondary {
             background: linear-gradient(135deg, #6c757d, #5a6268);
         }
@@ -138,47 +247,86 @@
             background: linear-gradient(135deg, #dc3545, #c82333);
         }
 
-        .history-section {
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 14px;
+            width: auto;
+        }
+
+        .loading-spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid transparent;
+            border-top: 2px solid currentColor;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .history-section, .templates-section {
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             border-radius: 20px;
             padding: 30px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            margin-bottom: 30px;
         }
 
         .announcement-item {
             background: #f8f9fa;
             border-left: 4px solid #5865f2;
-            padding: 15px;
+            padding: 20px;
             margin-bottom: 15px;
-            border-radius: 0 10px 10px 0;
+            border-radius: 0 15px 15px 0;
             transition: all 0.3s ease;
         }
 
         .announcement-item:hover {
             background: #e9ecef;
+            transform: translateX(5px);
         }
 
         .announcement-meta {
             font-size: 0.9rem;
             color: #666;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .announcement-content {
             font-weight: 500;
             color: #333;
+            line-height: 1.5;
         }
 
         .template-item {
             background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
+            border: 2px solid #dee2e6;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .template-item:hover {
+            border-color: #5865f2;
+            box-shadow: 0 5px 15px rgba(88, 101, 242, 0.1);
+        }
+
+        .template-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            align-items: flex-start;
+            margin-bottom: 15px;
         }
 
         .template-info {
@@ -186,43 +334,61 @@
         }
 
         .template-name {
-            font-weight: 600;
+            font-weight: 700;
             color: #333;
             margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .template-category {
+            font-size: 0.8rem;
+            color: #5865f2;
+            background: rgba(88, 101, 242, 0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
         }
 
         .template-preview {
             font-size: 0.9rem;
             color: #666;
-            max-width: 300px;
+            line-height: 1.4;
+            max-height: 60px;
             overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            position: relative;
+        }
+
+        .template-preview::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 30px;
+            height: 20px;
+            background: linear-gradient(to right, transparent, #f8f9fa);
         }
 
         .template-actions {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
-        .btn-small {
-            padding: 6px 12px;
-            font-size: 14px;
-            width: auto;
+        .template-stats {
+            font-size: 0.8rem;
+            color: #999;
+            margin-top: 10px;
         }
 
-        .loading {
-            display: none;
-            text-align: center;
-            color: #666;
-            font-style: italic;
-        }
-
-        .success, .error {
-            padding: 12px;
+        .success, .error, .info {
+            padding: 15px;
             border-radius: 10px;
             margin-bottom: 20px;
             font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .success {
@@ -237,9 +403,98 @@
             border: 1px solid #f5c6cb;
         }
 
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 40px;
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pagination button {
+            width: auto;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        .pagination button.active {
+            background: linear-gradient(135deg, #5865f2, #4752c4);
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-bar input, .filter-bar select {
+            width: auto;
+            min-width: 200px;
+        }
+
+        .channel-group {
+            margin-bottom: 15px;
+        }
+
+        .channel-group-title {
+            font-weight: 600;
+            color: #5865f2;
+            background: rgba(88, 101, 242, 0.1);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-bottom: 5px;
+            font-size: 0.9rem;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .quick-actions button {
+            width: auto;
+            padding: 8px 16px;
+            font-size: 14px;
+        }
+
         @media (max-width: 768px) {
             .panel-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
             }
             
             .header h1 {
@@ -255,215 +510,707 @@
             .template-actions {
                 justify-content: flex-end;
             }
+            
+            .filter-bar {
+                flex-direction: column;
+            }
+            
+            .filter-bar input, .filter-bar select {
+                width: 100%;
+            }
+        }
+
+        /* Animações */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        /* Tema escuro */
+        .dark-mode {
+            --bg-color: #2c2f36;
+            --text-color: #fff;
+            --card-bg: rgba(44, 47, 54, 0.95);
+            --border-color: #4a4d55;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🤖 Painel de Anúncios Discord</h1>
-            <p>Gerencie seus anúncios e templates de forma fácil e intuitiva</p>
+    <!-- Tela de Login -->
+    <div id="loginContainer" class="login-container">
+        <div class="login-form">
+            <h1>🔐 Login Administrativo</h1>
+            <div id="loginMessage"></div>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="password">Senha de Administrador:</label>
+                    <input type="password" id="password" placeholder="Digite a senha..." required>
+                </div>
+                <button type="submit" class="btn" id="loginBtn">
+                    Entrar
+                </button>
+            </form>
         </div>
+    </div>
 
-        <div class="panel-grid">
-            <div class="panel-section">
-                <h2>📢 Enviar Anúncio</h2>
-                <div id="message"></div>
-                <form id="announcementForm">
-                    <div class="form-group">
-                        <label for="channelSelect">Canal de Destino:</label>
-                        <select id="channelSelect" required>
-                            <option value="">Carregando canais...</option>
-                        </select>
+    <!-- Interface Principal -->
+    <div id="mainInterface" class="main-interface">
+        <div class="container">
+            <div class="header">
+                <div class="header-content">
+                    <h1>🤖 Painel de Anúncios Discord</h1>
+                    <p>Gerencie seus anúncios e templates de forma fácil e intuitiva</p>
+                </div>
+                <div class="header-actions">
+                    <div class="stats-card">
+                        <span class="stats-number" id="statsAnnouncements">0</span>
+                        <div class="stats-label">Anúncios</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="templateSelect">Template (opcional):</label>
-                        <select id="templateSelect">
-                            <option value="">Selecione um template</option>
-                        </select>
+                    <div class="stats-card">
+                        <span class="stats-number" id="statsChannels">0</span>
+                        <div class="stats-label">Canais</div>
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="announcementText">Mensagem do Anúncio:</label>
-                        <textarea id="announcementText" placeholder="Digite sua mensagem aqui..." required></textarea>
+                    <div class="stats-card">
+                        <span class="stats-number" id="statsTemplates">0</span>
+                        <div class="stats-label">Templates</div>
                     </div>
-                    
-                    <button type="submit" class="btn">Enviar Anúncio</button>
-                </form>
+                    <button class="logout-btn" onclick="logout()">🚪 Sair</button>
+                </div>
             </div>
 
-            <div class="panel-section">
-                <h2>📝 Gerenciar Templates</h2>
-                <form id="templateForm">
-                    <div class="form-group">
-                        <label for="templateName">Nome do Template:</label>
-                        <input type="text" id="templateName" placeholder="Ex: Evento Semanal" required>
+            <div class="panel-grid">
+                <div class="panel-section">
+                    <h2>📢 Enviar Anúncio</h2>
+                    <div id="message"></div>
+                    
+                    <div class="quick-actions">
+                        <button type="button" class="btn btn-secondary btn-small" onclick="refreshChannels()">
+                            🔄 Atualizar Canais
+                        </button>
+                        <button type="button" class="btn btn-secondary btn-small" onclick="previewAnnouncement()">
+                            👁️ Visualizar
+                        </button>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="templateContent">Conteúdo:</label>
-                        <textarea id="templateContent" placeholder="Conteúdo do template..." required></textarea>
-                    </div>
-                    
-                    <button type="submit" class="btn btn-secondary">Salvar Template</button>
-                </form>
-                
-                <div id="templatesList" style="margin-top: 20px;"></div>
-            </div>
-        </div>
+                    <form id="announcementForm">
+                        <div class="form-group">
+                            <label for="channelSelect">Canal de Destino:</label>
+                            <select id="channelSelect" required>
+                                <option value="">Carregando canais...</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="templateSelect">Template (opcional):</label>
+                            <select id="templateSelect">
+                                <option value="">Selecione um template</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="announcementText">Mensagem do Anúncio:</label>
+                            <textarea id="announcementText" placeholder="Digite sua mensagem aqui..." required maxlength="2000"></textarea>
+                            <div class="char-counter" id="charCounter">0/2000 caracteres</div>
+                        </div>
+                        
+                        <button type="submit" class="btn" id="sendBtn">
+                            📤 Enviar Anúncio
+                        </button>
+                    </form>
+                </div>
 
-        <div class="history-section">
-            <h2>📋 Histórico de Anúncios</h2>
-            <div id="announcementHistory"></div>
-            <div class="loading" id="loadingHistory">Carregando histórico...</div>
+                <div class="panel-section">
+                    <h2>📝 Gerenciar Templates</h2>
+                    <form id="templateForm">
+                        <div class="form-group">
+                            <label for="templateName">Nome do Template:</label>
+                            <input type="text" id="templateName" placeholder="Ex: Evento Semanal" required maxlength="100">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="templateCategory">Categoria:</label>
+                            <select id="templateCategory">
+                                <option value="Geral">Geral</option>
+                                <option value="Eventos">Eventos</option>
+                                <option value="Avisos">Avisos</option>
+                                <option value="Promoções">Promoções</option>
+                                <option value="Atualizações">Atualizações</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="templateContent">Conteúdo:</label>
+                            <textarea id="templateContent" placeholder="Conteúdo do template..." required maxlength="2000"></textarea>
+                            <div class="char-counter" id="templateCharCounter">0/2000 caracteres</div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-secondary" id="saveTemplateBtn">
+                            💾 Salvar Template
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="templates-section">
+                <h2>📚 Templates Salvos</h2>
+                <div class="filter-bar">
+                    <input type="text" id="templateSearch" placeholder="🔍 Buscar templates...">
+                    <select id="categoryFilter">
+                        <option value="">Todas as categorias</option>
+                        <option value="Geral">Geral</option>
+                        <option value="Eventos">Eventos</option>
+                        <option value="Avisos">Avisos</option>
+                        <option value="Promoções">Promoções</option>
+                        <option value="Atualizações">Atualizações</option>
+                    </select>
+                </div>
+                <div id="templatesList"></div>
+            </div>
+
+            <div class="history-section">
+                <h2>📋 Histórico de Anúncios</h2>
+                <div class="filter-bar">
+                    <input type="text" id="historySearch" placeholder="🔍 Buscar no histórico...">
+                    <select id="historyChannelFilter">
+                        <option value="">Todos os canais</option>
+                    </select>
+                </div>
+                <div id="announcementHistory"></div>
+                <div class="pagination" id="historyPagination"></div>
+                <div class="loading" id="loadingHistory">Carregando histórico...</div>
+            </div>
         </div>
     </div>
 
     <script>
-        // Configuração da API - substitua pela URL do seu bot no Render
-        const API_BASE = 'https://discord-bot-anuncios.onrender.com/api'; // Produção (Render)
-        // const API_BASE = 'http://localhost:3001/api'; // Desenvolvimento local
+        // Configuração da API
+        const API_BASE = window.location.hostname === 'localhost' ? 
+            'http://localhost:3001/api' : 
+            'https://seu-bot-url.onrender.com/api'; // Substitua pela URL do seu bot
 
-        // Carregar dados iniciais
+        let authToken = localStorage.getItem('authToken');
+        let currentPage = 1;
+        let allTemplates = [];
+        let allAnnouncements = [];
+
+        // Verificar autenticação na inicialização
         document.addEventListener('DOMContentLoaded', function() {
-            loadChannels();
-            loadTemplates();
-            loadAnnouncementHistory();
+            if (authToken) {
+                verifyToken();
+            } else {
+                showLogin();
+            }
         });
+
+        // Verificar token
+        async function verifyToken() {
+            try {
+                const response = await fetch(`${API_BASE}/verify`, {
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`
+                    }
+                });
+                
+                if (response.ok) {
+                    showMainInterface();
+                    loadAllData();
+                } else {
+                    showLogin();
+                }
+            } catch (error) {
+                console.error('Erro ao verificar token:', error);
+                showLogin();
+            }
+        }
+
+        // Mostrar tela de login
+        function showLogin() {
+            document.getElementById('loginContainer').style.display = 'flex';
+            document.getElementById('mainInterface').style.display = 'none';
+            localStorage.removeItem('authToken');
+            authToken = null;
+        }
+
+        // Mostrar interface principal
+        function showMainInterface() {
+            document.getElementById('loginContainer').style.display = 'none';
+            document.getElementById('mainInterface').style.display = 'block';
+        }
+
+        // Login
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<div class="loading-spinner"></div>Entrando...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ password })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    authToken = result.token;
+                    localStorage.setItem('authToken', authToken);
+                    showMessage('loginMessage', result.message, 'success');
+                    
+                    setTimeout(() => {
+                        showMainInterface();
+                        loadAllData();
+                    }, 1000);
+                } else {
+                    showMessage('loginMessage', result.error, 'error');
+                }
+            } catch (error) {
+                showMessage('loginMessage', 'Erro de conexão com o servidor.', 'error');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Entrar';
+            }
+        });
+
+        // Logout
+        function logout() {
+            localStorage.removeItem('authToken');
+            showLogin();
+        }
+
+        // Carregar todos os dados
+        async function loadAllData() {
+            await Promise.all([
+                loadStats(),
+                loadChannels(),
+                loadTemplates(),
+                loadAnnouncementHistory()
+            ]);
+        }
+
+        // Carregar estatísticas
+        async function loadStats() {
+            try {
+                const response = await fetch(`${API_BASE}/stats`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const stats = await response.json();
+                
+                document.getElementById('statsAnnouncements').textContent = stats.totalAnnouncements;
+                document.getElementById('statsChannels').textContent = stats.channels;
+                document.getElementById('statsTemplates').textContent = stats.templates;
+            } catch (error) {
+                console.error('Erro ao carregar estatísticas:', error);
+            }
+        }
 
         // Carregar canais disponíveis
         async function loadChannels() {
             try {
-                const response = await fetch(`${API_BASE}/channels`);
-                const channels = await response.json();
+                const response = await fetch(`${API_BASE}/channels`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
                 
                 const channelSelect = document.getElementById('channelSelect');
-                channelSelect.innerHTML = '<option value="">Selecione um canal</option>';
+                const historyChannelFilter = document.getElementById('historyChannelFilter');
                 
-                channels.forEach(channel => {
-                    const option = document.createElement('option');
-                    option.value = channel.id;
-                    option.textContent = `#${channel.name} (${channel.guild})`;
-                    channelSelect.appendChild(option);
+                channelSelect.innerHTML = '<option value="">Selecione um canal</option>';
+                historyChannelFilter.innerHTML = '<option value="">Todos os canais</option>';
+                
+                // Agrupar por servidor
+                Object.keys(data.channelsGrouped).forEach(guildName => {
+                    const optgroup = document.createElement('optgroup');
+                    optgroup.label = guildName;
+                    
+                    data.channelsGrouped[guildName].forEach(channel => {
+                        const option = document.createElement('option');
+                        option.value = channel.id;
+                        option.textContent = `#${channel.name} ${channel.category ? `(${channel.category})` : ''}`;
+                        optgroup.appendChild(option);
+                        
+                        // Para o filtro do histórico
+                        const historyOption = option.cloneNode(true);
+                        historyChannelFilter.appendChild(historyOption);
+                    });
+                    
+                    channelSelect.appendChild(optgroup);
                 });
+                
             } catch (error) {
                 console.error('Erro ao carregar canais:', error);
                 document.getElementById('channelSelect').innerHTML = '<option value="">Erro ao carregar canais</option>';
             }
         }
 
+        // Atualizar canais manualmente
+        async function refreshChannels() {
+            showMessage('message', 'Atualizando lista de canais...', 'info');
+            await loadChannels();
+            showMessage('message', 'Canais atualizados com sucesso!', 'success');
+        }
+
         // Carregar templates
         async function loadTemplates() {
             try {
-                const response = await fetch(`${API_BASE}/templates`);
-                const templates = await response.json();
-                
-                const templateSelect = document.getElementById('templateSelect');
-                templateSelect.innerHTML = '<option value="">Selecione um template</option>';
-                
-                templates.forEach(template => {
-                    const option = document.createElement('option');
-                    option.value = template.content;
-                    option.textContent = template.name;
-                    templateSelect.appendChild(option);
+                const response = await fetch(`${API_BASE}/templates`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
                 });
+                allTemplates = await response.json();
                 
-                renderTemplatesList(templates);
+                updateTemplateSelect();
+                renderTemplatesList();
             } catch (error) {
                 console.error('Erro ao carregar templates:', error);
             }
         }
 
-        // Renderizar lista de templates
-        function renderTemplatesList(templates) {
-            const templatesList = document.getElementById('templatesList');
+        // Atualizar select de templates
+        function updateTemplateSelect() {
+            const templateSelect = document.getElementById('templateSelect');
+            templateSelect.innerHTML = '<option value="">Selecione um template</option>';
             
-            if (templates.length === 0) {
-                templatesList.innerHTML = '<p style="color: #666; font-style: italic;">Nenhum template salvo ainda.</p>';
+            allTemplates.forEach(template => {
+                const option = document.createElement('option');
+                option.value = template.id;
+                option.textContent = `${template.name} (${template.category})`;
+                templateSelect.appendChild(option);
+            });
+        }
+
+        // Renderizar lista de templates com filtros
+        function renderTemplatesList() {
+            const templatesList = document.getElementById('templatesList');
+            const searchTerm = document.getElementById('templateSearch').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            
+            let filteredTemplates = allTemplates.filter(template => {
+                const matchesSearch = template.name.toLowerCase().includes(searchTerm) || 
+                                    template.content.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || template.category === categoryFilter;
+                return matchesSearch && matchesCategory;
+            });
+            
+            if (filteredTemplates.length === 0) {
+                templatesList.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <p>Nenhum template encontrado.</p>
+                    </div>
+                `;
                 return;
             }
             
-            templatesList.innerHTML = templates.map(template => `
-                <div class="template-item">
-                    <div class="template-info">
-                        <div class="template-name">${template.name}</div>
-                        <div class="template-preview">${template.content}</div>
-                    </div>
-                    <div class="template-actions">
-                        <button class="btn btn-secondary btn-small" onclick="useTemplate('${template.content}')">Usar</button>
-                        <button class="btn btn-danger btn-small" onclick="deleteTemplate(${template.id})">Excluir</button>
+            templatesList.innerHTML = filteredTemplates.map(template => `
+                <div class="template-item fade-in">
+                    <div class="template-header">
+                        <div class="template-info">
+                            <div class="template-name">${escapeHtml(template.name)}</div>
+                            <div class="template-category">${template.category}</div>
+                            <div class="template-preview">${escapeHtml(template.content)}</div>
+                            <div class="template-stats">
+                                Criado em ${new Date(template.createdAt).toLocaleDateString('pt-BR')}
+                                ${template.usageCount ? ` • Usado ${template.usageCount} vezes` : ''}
+                            </div>
+                        </div>
+                        <div class="template-actions">
+                            <button class="btn btn-secondary btn-small" onclick="useTemplate(${template.id})">
+                                ✏️ Usar
+                            </button>
+                            <button class="btn btn-secondary btn-small" onclick="editTemplate(${template.id})">
+                                📝 Editar
+                            </button>
+                            <button class="btn btn-danger btn-small" onclick="deleteTemplate(${template.id})">
+                                🗑️ Excluir
+                            </button>
+                        </div>
                     </div>
                 </div>
             `).join('');
         }
 
+        // Event listeners para filtros de template
+        document.getElementById('templateSearch').addEventListener('input', renderTemplatesList);
+        document.getElementById('categoryFilter').addEventListener('change', renderTemplatesList);
+
         // Usar template
-        function useTemplate(content) {
-            document.getElementById('announcementText').value = content;
+        function useTemplate(templateId) {
+            const template = allTemplates.find(t => t.id === templateId);
+            if (template) {
+                document.getElementById('announcementText').value = template.content;
+                document.getElementById('templateSelect').value = templateId;
+                updateCharCounter();
+                showMessage('message', `Template "${template.name}" carregado!`, 'info');
+                
+                // Scroll para o formulário
+                document.getElementById('announcementForm').scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Editar template
+        function editTemplate(templateId) {
+            const template = allTemplates.find(t => t.id === templateId);
+            if (template) {
+                document.getElementById('templateName').value = template.name;
+                document.getElementById('templateCategory').value = template.category;
+                document.getElementById('templateContent').value = template.content;
+                
+                // Mudar o botão para modo edição
+                const saveBtn = document.getElementById('saveTemplateBtn');
+                saveBtn.textContent = '✏️ Atualizar Template';
+                saveBtn.dataset.editId = templateId;
+                
+                updateTemplateCharCounter();
+                
+                // Scroll para o formulário
+                document.getElementById('templateForm').scrollIntoView({ behavior: 'smooth' });
+            }
         }
 
         // Excluir template
         async function deleteTemplate(templateId) {
-            if (!confirm('Tem certeza que deseja excluir este template?')) return;
+            const template = allTemplates.find(t => t.id === templateId);
+            if (!confirm(`Tem certeza que deseja excluir o template "${template.name}"?`)) return;
             
             try {
                 const response = await fetch(`${API_BASE}/template/${templateId}`, {
-                    method: 'DELETE'
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
                 });
                 
                 if (response.ok) {
-                    showMessage('Template excluído com sucesso!', 'success');
+                    showMessage('message', 'Template excluído com sucesso!', 'success');
                     loadTemplates();
+                    loadStats();
                 } else {
-                    showMessage('Erro ao excluir template.', 'error');
+                    showMessage('message', 'Erro ao excluir template.', 'error');
                 }
             } catch (error) {
-                showMessage('Erro de conexão.', 'error');
+                showMessage('message', 'Erro de conexão.', 'error');
             }
         }
 
-        // Carregar histórico
-        async function loadAnnouncementHistory() {
+        // Carregar histórico de anúncios
+        async function loadAnnouncementHistory(page = 1) {
             const loading = document.getElementById('loadingHistory');
             const historyDiv = document.getElementById('announcementHistory');
             
             loading.style.display = 'block';
+            currentPage = page;
             
             try {
-                const response = await fetch(`${API_BASE}/announcements`);
-                const announcements = await response.json();
+                const response = await fetch(`${API_BASE}/announcements?page=${page}&limit=10`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                const data = await response.json();
                 
+                allAnnouncements = data.announcements;
                 loading.style.display = 'none';
                 
-                if (announcements.length === 0) {
-                    historyDiv.innerHTML = '<p style="color: #666; font-style: italic;">Nenhum anúncio enviado ainda.</p>';
-                    return;
-                }
-                
-                historyDiv.innerHTML = announcements.reverse().map(announcement => {
-                    const date = new Date(announcement.timestamp).toLocaleString('pt-BR');
-                    return `
-                        <div class="announcement-item">
-                            <div class="announcement-meta">
-                                📅 ${date} • Canal ID: ${announcement.channelId}
-                            </div>
-                            <div class="announcement-content">${announcement.content}</div>
-                        </div>
-                    `;
-                }).join('');
+                renderAnnouncementHistory();
+                renderPagination(data.pagination);
             } catch (error) {
                 loading.style.display = 'none';
                 historyDiv.innerHTML = '<p style="color: #dc3545;">Erro ao carregar histórico.</p>';
             }
         }
 
-        // Event listeners
+        // Renderizar histórico com filtros
+        function renderAnnouncementHistory() {
+            const historyDiv = document.getElementById('announcementHistory');
+            const searchTerm = document.getElementById('historySearch').value.toLowerCase();
+            const channelFilter = document.getElementById('historyChannelFilter').value;
+            
+            let filteredAnnouncements = allAnnouncements.filter(announcement => {
+                const matchesSearch = announcement.content.toLowerCase().includes(searchTerm);
+                const matchesChannel = !channelFilter || announcement.channelId === channelFilter;
+                return matchesSearch && matchesChannel;
+            });
+            
+            if (filteredAnnouncements.length === 0) {
+                historyDiv.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📋</div>
+                        <p>Nenhum anúncio encontrado.</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            historyDiv.innerHTML = filteredAnnouncements.map(announcement => {
+                const date = new Date(announcement.timestamp).toLocaleString('pt-BR');
+                return `
+                    <div class="announcement-item fade-in">
+                        <div class="announcement-meta">
+                            <span>📅 ${date}</span>
+                            <span>📺 #${announcement.channelName || 'Canal desconhecido'}</span>
+                            <span>🏛️ ${announcement.guildName || 'Servidor'}</span>
+                            <span>👤 ${announcement.authorTag || 'Sistema'}</span>
+                        </div>
+                        <div class="announcement-content">${escapeHtml(announcement.content)}</div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Event listeners para filtros do histórico
+        document.getElementById('historySearch').addEventListener('input', renderAnnouncementHistory);
+        document.getElementById('historyChannelFilter').addEventListener('change', renderAnnouncementHistory);
+
+        // Renderizar paginação
+        function renderPagination(pagination) {
+            const paginationDiv = document.getElementById('historyPagination');
+            
+            if (pagination.totalPages <= 1) {
+                paginationDiv.innerHTML = '';
+                return;
+            }
+            
+            let paginationHTML = '';
+            
+            // Botão anterior
+            if (pagination.page > 1) {
+                paginationHTML += `<button onclick="loadAnnouncementHistory(${pagination.page - 1})">← Anterior</button>`;
+            }
+            
+            // Números das páginas
+            const startPage = Math.max(1, pagination.page - 2);
+            const endPage = Math.min(pagination.totalPages, pagination.page + 2);
+            
+            for (let i = startPage; i <= endPage; i++) {
+                const activeClass = i === pagination.page ? ' active' : '';
+                paginationHTML += `<button class="btn-small${activeClass}" onclick="loadAnnouncementHistory(${i})">${i}</button>`;
+            }
+            
+            // Botão próximo
+            if (pagination.page < pagination.totalPages) {
+                paginationHTML += `<button onclick="loadAnnouncementHistory(${pagination.page + 1})">Próximo →</button>`;
+            }
+            
+            paginationDiv.innerHTML = paginationHTML;
+        }
+
+        // Event listeners principais
         document.getElementById('templateSelect').addEventListener('change', function() {
             if (this.value) {
-                document.getElementById('announcementText').value = this.value;
+                useTemplate(parseInt(this.value));
             }
         });
+
+        // Contador de caracteres
+        function updateCharCounter() {
+            const text = document.getElementById('announcementText').value;
+            const counter = document.getElementById('charCounter');
+            const length = text.length;
+            
+            counter.textContent = `${length}/2000 caracteres`;
+            
+            if (length > 1800) {
+                counter.className = 'char-counter danger';
+            } else if (length > 1500) {
+                counter.className = 'char-counter warning';
+            } else {
+                counter.className = 'char-counter';
+            }
+        }
+
+        function updateTemplateCharCounter() {
+            const text = document.getElementById('templateContent').value;
+            const counter = document.getElementById('templateCharCounter');
+            const length = text.length;
+            
+            counter.textContent = `${length}/2000 caracteres`;
+            
+            if (length > 1800) {
+                counter.className = 'char-counter danger';
+            } else if (length > 1500) {
+                counter.className = 'char-counter warning';
+            } else {
+                counter.className = 'char-counter';
+            }
+        }
+
+        document.getElementById('announcementText').addEventListener('input', updateCharCounter);
+        document.getElementById('templateContent').addEventListener('input', updateTemplateCharCounter);
+
+        // Visualizar anúncio
+        function previewAnnouncement() {
+            const content = document.getElementById('announcementText').value;
+            const channelSelect = document.getElementById('channelSelect');
+            const channelName = channelSelect.options[channelSelect.selectedIndex]?.text || 'Canal não selecionado';
+            
+            if (!content.trim()) {
+                showMessage('message', 'Digite uma mensagem para visualizar.', 'error');
+                return;
+            }
+            
+            const previewWindow = window.open('', '_blank', 'width=600,height=400');
+            previewWindow.document.write(`
+                <html>
+                <head>
+                    <title>Visualização do Anúncio</title>
+                    <style>
+                        body { 
+                            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                            background: #36393f; 
+                            color: #dcddde; 
+                            padding: 20px; 
+                            margin: 0;
+                        }
+                        .embed {
+                            background: #2f3136;
+                            border-left: 4px solid #5865f2;
+                            border-radius: 8px;
+                            padding: 20px;
+                            max-width: 500px;
+                        }
+                        .embed-title { 
+                            color: #fff; 
+                            font-weight: bold; 
+                            margin-bottom: 10px; 
+                            font-size: 18px;
+                        }
+                        .embed-description { 
+                            line-height: 1.5; 
+                            white-space: pre-wrap; 
+                        }
+                        .embed-footer { 
+                            margin-top: 15px; 
+                            font-size: 12px; 
+                            color: #72767d; 
+                        }
+                        .channel-info {
+                            background: #40444b;
+                            padding: 10px;
+                            border-radius: 4px;
+                            margin-bottom: 15px;
+                            font-size: 14px;
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="channel-info">
+                        <strong>Canal de destino:</strong> ${channelName}
+                    </div>
+                    <div class="embed">
+                        <div class="embed-title">📢 Anúncio</div>
+                        <div class="embed-description">${content.replace(/\n/g, '<br>')}</div>
+                        <div class="embed-footer">Sistema de Anúncios • ${new Date().toLocaleString('pt-BR')}</div>
+                    </div>
+                </body>
+                </html>
+            `);
+        }
 
         // Enviar anúncio
         document.getElementById('announcementForm').addEventListener('submit', async function(e) {
@@ -471,79 +1218,257 @@
             
             const channelId = document.getElementById('channelSelect').value;
             const content = document.getElementById('announcementText').value;
+            const sendBtn = document.getElementById('sendBtn');
             
-            if (!channelId || !content) {
-                showMessage('Preencha todos os campos obrigatórios.', 'error');
+            if (!channelId || !content.trim()) {
+                showMessage('message', 'Preencha todos os campos obrigatórios.', 'error');
                 return;
             }
+            
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = '<div class="loading-spinner"></div>Enviando...';
             
             try {
                 const response = await fetch(`${API_BASE}/announcement`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
                     },
-                    body: JSON.stringify({
-                        channelId,
-                        content,
-                        authorId: 'web-panel'
-                    })
+                    body: JSON.stringify({ channelId, content })
                 });
                 
                 const result = await response.json();
                 
                 if (response.ok) {
-                    showMessage('Anúncio enviado com sucesso!', 'success');
+                    showMessage('message', 'Anúncio enviado com sucesso! 🎉', 'success');
                     document.getElementById('announcementText').value = '';
                     document.getElementById('templateSelect').value = '';
+                    updateCharCounter();
                     loadAnnouncementHistory();
+                    loadStats();
+                    
+                    // Incrementar contador de uso do template se usado
+                    const selectedTemplate = document.getElementById('templateSelect').value;
+                    if (selectedTemplate) {
+                        const template = allTemplates.find(t => t.id === parseInt(selectedTemplate));
+                        if (template) {
+                            template.usageCount = (template.usageCount || 0) + 1;
+                        }
+                    }
                 } else {
-                    showMessage(result.error || 'Erro ao enviar anúncio.', 'error');
+                    showMessage('message', result.error || 'Erro ao enviar anúncio.', 'error');
                 }
             } catch (error) {
-                showMessage('Erro de conexão com o servidor.', 'error');
+                showMessage('message', 'Erro de conexão com o servidor.', 'error');
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = '📤 Enviar Anúncio';
             }
         });
 
-        // Salvar template
+        // Salvar/Atualizar template
         document.getElementById('templateForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('templateName').value;
-            const content = document.getElementById('templateContent').value;
+            const name = document.getElementById('templateName').value.trim();
+            const content = document.getElementById('templateContent').value.trim();
+            const category = document.getElementById('templateCategory').value;
+            const saveBtn = document.getElementById('saveTemplateBtn');
+            const isEditing = saveBtn.dataset.editId;
+            
+            if (!name || !content) {
+                showMessage('message', 'Nome e conteúdo são obrigatórios.', 'error');
+                return;
+            }
+            
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = isEditing ? 
+                '<div class="loading-spinner"></div>Atualizando...' : 
+                '<div class="loading-spinner"></div>Salvando...';
             
             try {
-                const response = await fetch(`${API_BASE}/template`, {
-                    method: 'POST',
+                const url = isEditing ? 
+                    `${API_BASE}/template/${isEditing}` : 
+                    `${API_BASE}/template`;
+                
+                const method = isEditing ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method,
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${authToken}`
                     },
-                    body: JSON.stringify({ name, content })
+                    body: JSON.stringify({ name, content, category })
                 });
                 
                 const result = await response.json();
                 
                 if (response.ok) {
-                    showMessage('Template salvo com sucesso!', 'success');
+                    const successMessage = isEditing ? 
+                        'Template atualizado com sucesso! ✏️' : 
+                        'Template salvo com sucesso! 💾';
+                    
+                    showMessage('message', successMessage, 'success');
+                    
+                    // Limpar formulário
                     document.getElementById('templateName').value = '';
                     document.getElementById('templateContent').value = '';
+                    document.getElementById('templateCategory').value = 'Geral';
+                    updateTemplateCharCounter();
+                    
+                    // Resetar botão
+                    saveBtn.textContent = '💾 Salvar Template';
+                    delete saveBtn.dataset.editId;
+                    
                     loadTemplates();
+                    loadStats();
                 } else {
-                    showMessage(result.error || 'Erro ao salvar template.', 'error');
+                    showMessage('message', result.error || 'Erro ao salvar template.', 'error');
                 }
             } catch (error) {
-                showMessage('Erro de conexão com o servidor.', 'error');
+                showMessage('message', 'Erro de conexão com o servidor.', 'error');
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = isEditing ? '✏️ Atualizar Template' : '💾 Salvar Template';
             }
         });
 
-        // Mostrar mensagem
-        function showMessage(message, type) {
-            const messageDiv = document.getElementById('message');
-            messageDiv.innerHTML = `<div class="${type}">${message}</div>`;
+        // Função para mostrar mensagens
+        function showMessage(containerId, message, type) {
+            const messageDiv = document.getElementById(containerId);
+            const icons = {
+                success: '✅',
+                error: '❌',
+                info: 'ℹ️'
+            };
+            
+            messageDiv.innerHTML = `
+                <div class="${type}">
+                    ${icons[type] || ''} ${message}
+                </div>
+            `;
+            
             setTimeout(() => {
                 messageDiv.innerHTML = '';
             }, 5000);
         }
+
+        // Função para escapar HTML
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+        }
+
+        // Atalhos do teclado
+        document.addEventListener('keydown', function(e) {
+            // Ctrl + Enter para enviar anúncio
+            if (e.ctrlKey && e.key === 'Enter') {
+                const announcementForm = document.getElementById('announcementForm');
+                if (document.activeElement.closest('#announcementForm')) {
+                    e.preventDefault();
+                    announcementForm.dispatchEvent(new Event('submit'));
+                }
+            }
+            
+            // Ctrl + S para salvar template
+            if (e.ctrlKey && e.key === 's') {
+                const templateForm = document.getElementById('templateForm');
+                if (document.activeElement.closest('#templateForm')) {
+                    e.preventDefault();
+                    templateForm.dispatchEvent(new Event('submit'));
+                }
+            }
+            
+            // Escape para cancelar edição de template
+            if (e.key === 'Escape') {
+                const saveBtn = document.getElementById('saveTemplateBtn');
+                if (saveBtn.dataset.editId) {
+                    // Limpar formulário e resetar botão
+                    document.getElementById('templateName').value = '';
+                    document.getElementById('templateContent').value = '';
+                    document.getElementById('templateCategory').value = 'Geral';
+                    updateTemplateCharCounter();
+                    
+                    saveBtn.textContent = '💾 Salvar Template';
+                    delete saveBtn.dataset.editId;
+                    
+                    showMessage('message', 'Edição cancelada.', 'info');
+                }
+            }
+        });
+
+        // Auto-refresh dos dados a cada 5 minutos
+        setInterval(() => {
+            if (authToken && document.getElementById('mainInterface').style.display !== 'none') {
+                loadStats();
+                loadChannels();
+            }
+        }, 5 * 60 * 1000);
+
+        // Detectar perda de conexão
+        window.addEventListener('online', () => {
+            showMessage('message', 'Conexão restaurada! 🌐', 'success');
+            loadAllData();
+        });
+
+        window.addEventListener('offline', () => {
+            showMessage('message', 'Conexão perdida. Verifique sua internet. 📡', 'error');
+        });
+
+        // Toast notifications para melhor UX
+        function showToast(message, type = 'info', duration = 3000) {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : type === 'error' ? '#dc3545' : '#17a2b8'};
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+                z-index: 10000;
+                transform: translateX(400px);
+                transition: transform 0.3s ease;
+            `;
+            toast.textContent = message;
+            
+            document.body.appendChild(toast);
+            
+            // Animar entrada
+            setTimeout(() => toast.style.transform = 'translateX(0)', 100);
+            
+            // Remover após duração especificada
+            setTimeout(() => {
+                toast.style.transform = 'translateX(400px)';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, duration);
+        }
+
+        // Confirmação antes de sair da página se há dados não salvos
+        window.addEventListener('beforeunload', function(e) {
+            const hasUnsavedData = 
+                document.getElementById('announcementText').value.trim() ||
+                document.getElementById('templateName').value.trim() ||
+                document.getElementById('templateContent').value.trim();
+                
+            if (hasUnsavedData) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        console.log('🚀 Painel de Anúncios Discord carregado com sucesso!');
+        console.log('📧 Para suporte: contato@seudominio.com');
     </script>
 </body>
 </html>
