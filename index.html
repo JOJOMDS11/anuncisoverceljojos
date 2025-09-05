@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -274,7 +273,7 @@
             }
         }
 
-        /* Roles Selection */
+        /* Roles Selection - CORRIGIDO PARA MÚLTIPLOS CARGOS */
         .roles-section {
             background: #f8f9fa;
             border-radius: 10px;
@@ -298,6 +297,7 @@
             padding: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
         }
 
         .role-item:hover {
@@ -309,11 +309,22 @@
             background: rgba(88, 101, 242, 0.1);
         }
 
+        .role-item.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 5px;
+            right: 8px;
+            color: #5865f2;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
         .role-color {
             width: 12px;
             height: 12px;
             border-radius: 50%;
             margin-right: 8px;
+            flex-shrink: 0;
         }
 
         .role-name {
@@ -321,34 +332,54 @@
             font-size: 14px;
         }
 
-        /* Channel Creation */
-        .channel-creation {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-
-        .channel-type-selector {
-            display: flex;
-            gap: 10px;
+        /* Image Upload Section */
+        .image-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
             margin-bottom: 15px;
         }
 
-        .channel-type-btn {
-            flex: 1;
-            padding: 10px;
-            border: 2px solid #e0e0e0;
-            background: white;
+        .image-upload {
+            border: 2px dashed #5865f2;
             border-radius: 8px;
+            padding: 20px;
+            text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
+            background: white;
         }
 
-        .channel-type-btn.active {
-            border-color: #5865f2;
+        .image-upload:hover {
+            background: rgba(88, 101, 242, 0.05);
+        }
+
+        .image-upload.dragover {
+            border-color: #4752c4;
             background: rgba(88, 101, 242, 0.1);
-            color: #5865f2;
+        }
+
+        .image-preview {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .image-preview img {
+            max-width: 200px;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .image-remove {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            font-size: 12px;
         }
 
         /* Announcement Types */
@@ -434,71 +465,28 @@
             font-size: 14px;
         }
 
-        /* Templates Section */
-        .history-section, .templates-section, .channels-section {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-
-        .template-item, .channel-item {
-            background: #f8f9fa;
-            border-left: 4px solid #5865f2;
-            padding: 20px;
-            margin-bottom: 15px;
-            border-radius: 0 15px 15px 0;
-            transition: all 0.3s ease;
-        }
-
-        .template-item:hover, .channel-item:hover {
-            background: #e9ecef;
-            transform: translateX(5px);
-        }
-
-        .template-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 15px;
-        }
-
-        .template-info {
-            flex-grow: 1;
-        }
-
-        .template-name, .channel-name {
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 5px;
-            font-size: 1.1rem;
-        }
-
-        .template-category, .channel-type {
-            font-size: 0.8rem;
-            color: #5865f2;
+        /* Mentions Preview */
+        .mentions-preview {
             background: rgba(88, 101, 242, 0.1);
-            padding: 2px 8px;
-            border-radius: 12px;
+            border: 1px solid #5865f2;
+            border-radius: 8px;
+            padding: 10px;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .mentions-preview.show {
+            display: block;
+        }
+
+        .mention-tag {
+            background: #5865f2;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 12px;
+            margin: 2px;
             display: inline-block;
-            margin-bottom: 10px;
-        }
-
-        .template-preview {
-            font-size: 0.9rem;
-            color: #666;
-            line-height: 1.4;
-            max-height: 60px;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .template-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
         .success, .error, .info {
@@ -529,43 +517,6 @@
             border: 1px solid #bee5eb;
         }
 
-        .filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-bar input, .filter-bar select {
-            width: auto;
-            min-width: 200px;
-        }
-
-        /* Mentions Preview */
-        .mentions-preview {
-            background: rgba(88, 101, 242, 0.1);
-            border: 1px solid #5865f2;
-            border-radius: 8px;
-            padding: 10px;
-            margin-top: 10px;
-            display: none;
-        }
-
-        .mentions-preview.show {
-            display: block;
-        }
-
-        .mention-tag {
-            background: #5865f2;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-size: 12px;
-            margin: 2px;
-            display: inline-block;
-        }
-
         @media (max-width: 1200px) {
             .panel-grid {
                 grid-template-columns: 1fr;
@@ -589,10 +540,11 @@
             .announcement-type-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-            
-            .channel-creation {
-                grid-template-columns: 1fr;
-            }
+        }
+
+        /* Hidden file input */
+        #imageInput {
+            display: none;
         }
 
         /* Animações */
@@ -713,9 +665,9 @@
                             </select>
                         </div>
 
-                        <!-- Seleção de Cargos -->
+                        <!-- Seleção de Cargos com MULTI-SELEÇÃO -->
                         <div class="roles-section">
-                            <label>Cargos para Mencionar:</label>
+                            <label>Cargos para Mencionar (múltipla seleção):</label>
                             <div class="roles-grid" id="rolesGrid">
                                 <div class="role-item" data-loading="true">
                                     <div class="loading-spinner"></div>
@@ -726,6 +678,19 @@
                                 <label style="margin-bottom: 5px; font-size: 12px;">Menções que serão enviadas:</label>
                                 <div id="mentionTags"></div>
                             </div>
+                        </div>
+
+                        <!-- Seção de Upload de Imagem -->
+                        <div class="image-section">
+                            <label>Imagem (opcional):</label>
+                            <div class="image-upload" id="imageUpload" onclick="document.getElementById('imageInput').click()">
+                                <div>
+                                    🖼️ Clique aqui ou arraste uma imagem<br>
+                                    <small>Formatos: JPG, PNG, GIF, WEBP (máx. 8MB)</small>
+                                </div>
+                            </div>
+                            <input type="file" id="imageInput" accept="image/*">
+                            <div class="image-preview" id="imagePreview"></div>
                         </div>
 
                         <!-- Seletor de Emojis -->
@@ -792,104 +757,22 @@
                             </button>
                         </form>
                     </div>
-
-                    <!-- Criação de Canais -->
-                    <div class="panel-section">
-                        <h2>📺 Criar Canal</h2>
-                        <form id="channelForm">
-                            <div class="channel-type-selector">
-                                <div class="channel-type-btn active" data-type="text">
-                                    💬 Texto
-                                </div>
-                                <div class="channel-type-btn" data-type="voice">
-                                    🔊 Voz
-                                </div>
-                            </div>
-                            
-                            <div class="channel-creation">
-                                <div class="form-group">
-                                    <label for="channelName">Nome do Canal:</label>
-                                    <input type="text" id="channelName" placeholder="nome-do-canal" required>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="categorySelect">Categoria:</label>
-                                    <select id="categorySelect">
-                                        <option value="">Sem categoria</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="channelTopic">Tópico/Descrição:</label>
-                                <input type="text" id="channelTopic" placeholder="Descrição do canal (opcional)" maxlength="1024">
-                            </div>
-                            
-                            <button type="submit" class="btn btn-success" id="createChannelBtn">
-                                ➕ Criar Canal
-                            </button>
-                        </form>
-                    </div>
                 </div>
-            </div>
-
-            <!-- Templates Salvos -->
-            <div class="templates-section">
-                <h2>📚 Templates Salvos</h2>
-                <div class="filter-bar">
-                    <input type="text" id="templateSearch" placeholder="🔍 Buscar templates...">
-                    <select id="categoryFilter">
-                        <option value="">Todas as categorias</option>
-                        <option value="Geral">Geral</option>
-                        <option value="Eventos">Eventos</option>
-                        <option value="Avisos">Avisos</option>
-                        <option value="Torneios">Torneios</option>
-                        <option value="Atualizações">Atualizações</option>
-                    </select>
-                </div>
-                <div id="templatesList"></div>
-            </div>
-
-            <!-- Canais Criados -->
-            <div class="channels-section">
-                <h2>📺 Canais Gerenciados</h2>
-                <div class="filter-bar">
-                    <input type="text" id="channelSearch" placeholder="🔍 Buscar canais...">
-                    <button class="btn btn-small btn-secondary" onclick="loadChannelTemplates()">
-                        🔄 Atualizar
-                    </button>
-                </div>
-                <div id="channelsList"></div>
-            </div>
-
-            <!-- Histórico -->
-            <div class="history-section">
-                <h2>📋 Histórico de Atividades</h2>
-                <div class="filter-bar">
-                    <input type="text" id="historySearch" placeholder="🔍 Buscar no histórico...">
-                    <select id="historyChannelFilter">
-                        <option value="">Todos os canais</option>
-                    </select>
-                </div>
-                <div id="announcementHistory"></div>
             </div>
         </div>
     </div>
 
     <script>
-   const API_BASE = window.location.hostname === 'localhost'
-  ? 'http://localhost:3001/api' // desenvolvimento local
-  : 'https://discord-anuncios.onrender.com/api'; // produção no Render
+        // CONFIGURAÇÃO CORRIGIDA PARA VERCEL
+        const API_BASE = 'https://discord-anuncios.onrender.com/api';
 
         let authToken = localStorage.getItem('authToken');
-        let selectedRoles = [];
+        let selectedRoles = []; // Array para múltiplos cargos
         let selectedAnnouncementType = 'anuncio';
-        let selectedChannelType = 'text';
-        let allTemplates = [];
-        let allChannels = [];
         let allRoles = [];
+        let selectedImage = null; // Para armazenar imagem selecionada
 
-        // Verificar autenticação
+        // Verificar autenticação na inicialização
         document.addEventListener('DOMContentLoaded', function() {
             if (authToken) {
                 verifyToken();
@@ -907,15 +790,6 @@
                     document.querySelectorAll('.announcement-type').forEach(b => b.classList.remove('selected'));
                     this.classList.add('selected');
                     selectedAnnouncementType = this.dataset.type;
-                });
-            });
-
-            // Seletores de tipo de canal
-            document.querySelectorAll('.channel-type-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.channel-type-btn').forEach(b => b.classList.remove('active'));
-                    this.classList.add('active');
-                    selectedChannelType = this.dataset.type;
                 });
             });
 
@@ -939,17 +813,48 @@
             document.getElementById('announcementText').addEventListener('input', updateCharCounter);
             document.getElementById('templateContent').addEventListener('input', updateTemplateCharCounter);
             
-            // Templates
-            document.getElementById('templateSelect').addEventListener('change', function() {
-                if (this.value) {
-                    useTemplate(parseInt(this.value));
-                }
+            // Upload de imagem
+            setupImageUpload();
+        }
+
+        // SETUP PARA UPLOAD DE IMAGEM
+        function setupImageUpload() {
+            const imageUpload = document.getElementById('imageUpload');
+            const imageInput = document.getElementById('imageInput');
+            const imagePreview = document.getElementById('imagePreview');
+
+            // Click para selecionar arquivo
+            imageInput.addEventListener('change', function(e) {
+                handleImageSelect(e.target.files[0]);
             });
 
-            // Filtros
-            document.getElementById('templateSearch').addEventListener('input', renderTemplatesList);
-            document.getElementById('categoryFilter').addEventListener('change', renderTemplatesList);
-            document.getElementById('channelSearch').addEventListener('input', renderChannelsList);
+            // Drag and drop
+            imageUpload.addEventListener('dragover', function(e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            imageUpload.addEventListener('dragleave', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+
+            imageUpload.addEventListener('drop', function(e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleImageSelect(file);
+                }
+            });
+        }
+
+        function handleImageSelect(file) {
+            if (!file) return;
+
+            // Validar arquivo
+            if (!file.type.startsWith('image/')) {
+                showMessage('message', 'Imagem removida.', 'info');
         }
 
         // Verificar token
@@ -984,54 +889,50 @@
             document.getElementById('mainInterface').style.display = 'block';
         }
 
-        // Login
+        // LOGIN CORRIGIDO
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const password = document.getElementById('password').value;
-   const loginBtn = document.getElementById('loginBtn');
-
-loginBtn.addEventListener('click', async (e) => {
-    e.preventDefault(); // impede reload e o "?" na URL
-    loginBtn.disabled = true;
-    loginBtn.innerHTML = 'Verificando...';
-
-    const password = document.getElementById('password').value;
-
-    try {
-        const response = await fetch(`${API_BASE}/login`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ password })
-        });
-
-        const result = await response.json();
-
-        if (response.ok && result.token) {
-            localStorage.setItem('authToken', result.token);
-            showMessage('loginMessage', result.message || 'Login realizado com sucesso!', 'success');
-            setTimeout(() => {
-                window.location.href = '/painel.html';
-            }, 1000);
-        } else {
-            showMessage('loginMessage', result.error || 'Senha incorreta ou erro no login.', 'error');
-        }
-    } catch (error) {
-        console.error('Erro no login:', error);
-        showMessage('loginMessage', 'Erro de conexão com o servidor.', 'error');
-    } finally {
-        loginBtn.disabled = false;
-        loginBtn.innerHTML = 'Entrar';
-    }
-});
-
-});
-
+            e.preventDefault();
             
+            const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
+            
+            loginBtn.disabled = true;
+            loginBtn.innerHTML = '<div class="loading-spinner"></div>Verificando...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok && result.token) {
+                    localStorage.setItem('authToken', result.token);
+                    authToken = result.token;
+                    showMessage('loginMessage', result.message || 'Login realizado com sucesso!', 'success');
+                    
+                    setTimeout(() => {
+                        showMainInterface();
+                        loadAllData();
+                    }, 1000);
+                } else {
+                    showMessage('loginMessage', result.error || 'Senha incorreta.', 'error');
+                }
+            } catch (error) {
+                console.error('Erro no login:', error);
+                showMessage('loginMessage', 'Erro de conexão com o servidor.', 'error');
+            } finally {
+                loginBtn.disabled = false;
+                loginBtn.innerHTML = 'Entrar';
+            }
+        });
 
         // Logout
         function logout() {
             localStorage.removeItem('authToken');
+            authToken = null;
             showLogin();
         }
 
@@ -1041,9 +942,7 @@ loginBtn.addEventListener('click', async (e) => {
                 loadStats(),
                 loadChannels(),
                 loadRoles(),
-                loadTemplates(),
-                loadCategories(),
-                loadHistory()
+                loadTemplates()
             ]);
         }
 
@@ -1057,7 +956,7 @@ loginBtn.addEventListener('click', async (e) => {
                 
                 document.getElementById('statsAnnouncements').textContent = stats.totalAnnouncements || 0;
                 document.getElementById('statsChannels').textContent = stats.channels || 0;
-                document.getElementById('statsRoles').textContent = stats.roles || 0;
+                document.getElementById('statsRoles').textContent = allRoles.length || 0;
             } catch (error) {
                 console.error('Erro ao carregar estatísticas:', error);
             }
@@ -1071,13 +970,8 @@ loginBtn.addEventListener('click', async (e) => {
                 });
                 const data = await response.json();
                 
-                allChannels = data.channels || [];
-                
                 const channelSelect = document.getElementById('channelSelect');
-                const historyChannelFilter = document.getElementById('historyChannelFilter');
-                
                 channelSelect.innerHTML = '<option value="">Selecione um canal</option>';
-                historyChannelFilter.innerHTML = '<option value="">Todos os canais</option>';
                 
                 // Agrupar por servidor
                 Object.keys(data.channelsGrouped || {}).forEach(guildName => {
@@ -1089,15 +983,10 @@ loginBtn.addEventListener('click', async (e) => {
                         option.value = channel.id;
                         option.textContent = `#${channel.name} ${channel.category ? `(${channel.category})` : ''}`;
                         optgroup.appendChild(option);
-                        
-                        const historyOption = option.cloneNode(true);
-                        historyChannelFilter.appendChild(historyOption);
                     });
                     
                     channelSelect.appendChild(optgroup);
                 });
-                
-                renderChannelsList();
                 
             } catch (error) {
                 console.error('Erro ao carregar canais:', error);
@@ -1105,108 +994,81 @@ loginBtn.addEventListener('click', async (e) => {
             }
         }
 
-async function loadRoles(retries = 3) {
-    try {
-        const response = await fetch(`${API_BASE}/roles`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        if (!response.ok) {
-            throw new Error('Erro ao carregar roles: ' + response.status);
-        }
-        const data = await response.json();
-        allRoles = data.roles || [];
-        const rolesGrid = document.getElementById('rolesGrid');
-        rolesGrid.innerHTML = allRoles.map(role => `
-            <div class="role-item" data-role-id="${role.id}">
-                <div class="role-color" style="background-color: #${role.color.toString(16).padStart(6, '0')}"></div>
-                <span class="role-name">${escapeHtml(role.name)}</span>
-            </div>
-        `).join('');
-        setupRoleSelection(); // Chama a seleção corrigida abaixo
-    } catch (error) {
-        if (retries > 0) {
-            console.warn(`Tentando novamente carregar roles (${retries} restantes)...`);
-            setTimeout(() => loadRoles(retries - 1), 2000); // Delay de 2s para retry
-        } else {
-            showMessage('message', 'Falha ao carregar roles após tentativas. Verifique conexão ou bot.', 'error');
-            console.error(error);
-        }
-    }
-}
-let selectedRoles = []; // Array para multi-seleção
-
-function setupRoleSelection() {
-    const roleItems = document.querySelectorAll('.role-item');
-    roleItems.forEach(item => {
-        item.addEventListener('click', function() {
-            const roleId = this.dataset.roleId;
-            if (selectedRoles.includes(roleId)) {
-                selectedRoles = selectedRoles.filter(id => id !== roleId);
-                this.classList.remove('selected');
-            } else {
-                selectedRoles.push(roleId);
-                this.classList.add('selected');
-            }
-            updateMentionsPreview(); // Atualiza preview de menções
-        });
-    });
-}
-
-function updateMentionsPreview() {
-    const preview = document.querySelector('.mentions-preview'); // Assuma que existe no HTML
-    if (selectedRoles.length > 0) {
-        preview.innerHTML = selectedRoles.map(id => {
-            const role = allRoles.find(r => r.id === id);
-            return `<span class="mention-tag">@${escapeHtml(role.name)}</span>`;
-        }).join(' ');
-        preview.classList.add('show');
-    } else {
-        preview.classList.remove('show');
-    }
-}
-
-
-        // Renderizar cargos
-        function renderRoles(roles = allRoles) {
-            const rolesGrid = document.getElementById('rolesGrid');
-            
-            if (!roles || roles.length === 0) {
+        // CARREGAR CARGOS CORRIGIDO
+        async function loadRoles() {
+            try {
+                const response = await fetch(`${API_BASE}/roles`, {
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                allRoles = data.roles || [];
+                renderRoles();
+                
+            } catch (error) {
+                console.error('Erro ao carregar roles:', error);
+                const rolesGrid = document.getElementById('rolesGrid');
                 rolesGrid.innerHTML = `
                     <div class="role-item" style="grid-column: 1/-1; text-align: center; color: #666;">
                         <div style="margin-right: 8px;">⚠️</div>
-                        Nenhum cargo encontrado ou bot sem permissões
+                        Erro ao carregar cargos. Verifique se o bot está online.
+                    </div>
+                `;
+            }
+        }
+
+        // RENDERIZAR CARGOS COM MULTI-SELEÇÃO
+        function renderRoles() {
+            const rolesGrid = document.getElementById('rolesGrid');
+            
+            if (!allRoles || allRoles.length === 0) {
+                rolesGrid.innerHTML = `
+                    <div class="role-item" style="grid-column: 1/-1; text-align: center; color: #666;">
+                        <div style="margin-right: 8px;">⚠️</div>
+                        Nenhum cargo encontrado
                     </div>
                 `;
                 return;
             }
             
-            rolesGrid.innerHTML = roles.map(role => `
-                <div class="role-item" data-role-id="${role.id}" onclick="toggleRole('${role.id}')">
-                    <div class="role-color" style="background-color: ${role.color || '#99aab5'};"></div>
-                    <div class="role-name">${escapeHtml(role.name)}</div>
-                </div>
-            `).join('');
+            rolesGrid.innerHTML = allRoles.map(role => {
+                const roleColor = role.color ? `#${role.color.toString(16).padStart(6, '0')}` : '#99aab5';
+                return `
+                    <div class="role-item" data-role-id="${role.id}">
+                        <div class="role-color" style="background-color: ${roleColor};"></div>
+                        <div class="role-name">${escapeHtml(role.name)}</div>
+                    </div>
+                `;
+            }).join('');
             
-            updateMentionsPreview();
+            // Adicionar event listeners para multi-seleção
+            document.querySelectorAll('.role-item').forEach(roleItem => {
+                roleItem.addEventListener('click', function() {
+                    const roleId = this.dataset.roleId;
+                    if (!roleId) return;
+                    
+                    const index = selectedRoles.indexOf(roleId);
+                    
+                    if (index > -1) {
+                        // Remover da seleção
+                        selectedRoles.splice(index, 1);
+                        this.classList.remove('selected');
+                    } else {
+                        // Adicionar à seleção
+                        selectedRoles.push(roleId);
+                        this.classList.add('selected');
+                    }
+                    
+                    updateMentionsPreview();
+                });
+            });
         }
 
-        // Toggle seleção de cargo
-        function toggleRole(roleId) {
-            const roleElement = document.querySelector(`[data-role-id="${roleId}"]`);
-            const index = selectedRoles.indexOf(roleId);
-            
-            if (index > -1) {
-                selectedRoles.splice(index, 1);
-                roleElement.classList.remove('selected');
-            } else {
-                selectedRoles.push(roleId);
-                roleElement.classList.add('selected');
-            }
-            
-            updateMentionsPreview();
-        }
-
-        // Atualizar preview das menções
+        // ATUALIZAR PREVIEW DE MENÇÕES
         function updateMentionsPreview() {
             const mentionsPreview = document.getElementById('mentionsPreview');
             const mentionTags = document.getElementById('mentionTags');
@@ -1228,105 +1090,26 @@ function updateMentionsPreview() {
             ).join('');
         }
 
- async function loadCategories() {
-    try {
-        const response = await fetch(`${API_BASE}/categories`, {
-            headers: { 'Authorization': `Bearer ${authToken}` }
-        });
-        if (!response.ok) {
-            throw new Error('Erro ao carregar categorias: ' + response.status);
-        }
-        const data = await response.json();
-        const categorySelect = document.getElementById('categorySelect');
-        categorySelect.innerHTML = '<option value="">Sem categoria</option>' + 
-            data.categories.map(cat => `<option value="${cat.id}">${escapeHtml(cat.name)}</option>`).join('');
-    } catch (error) {
-        showMessage('message', 'Erro ao carregar categorias. Tente atualizar.', 'error');
-        console.error(error);
-    }
-}
         // Carregar templates
         async function loadTemplates() {
             try {
                 const response = await fetch(`${API_BASE}/templates`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                allTemplates = await response.json();
+                const allTemplates = await response.json();
                 
-                updateTemplateSelect();
-                renderTemplatesList();
+                updateTemplateSelect(allTemplates);
             } catch (error) {
                 console.error('Erro ao carregar templates:', error);
-                allTemplates = [];
-                renderTemplatesList();
             }
-        }
-
-        // Carregar histórico
-        async function loadHistory() {
-            try {
-                const response = await fetch(`${API_BASE}/history`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const history = await response.json();
-                
-                renderHistory(history);
-            } catch (error) {
-                console.error('Erro ao carregar histórico:', error);
-                renderHistory([]);
-            }
-        }
-
-        // Renderizar histórico
-        function renderHistory(history) {
-            const historyContainer = document.getElementById('announcementHistory');
-            
-            if (!history || history.length === 0) {
-                historyContainer.innerHTML = `
-                    <div style="text-align: center; color: #666; padding: 40px;">
-                        <div style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;">📋</div>
-                        <p>Nenhuma atividade registrada.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            historyContainer.innerHTML = history.map(item => {
-                const typeIcons = {
-                    'anuncio': '📢',
-                    'novidade': '✨',
-                    'atualizacao': '🔄',
-                    'torneio': '🏆',
-                    'evento': '🎉',
-                    'aviso': '⚠️'
-                };
-                
-                return `
-                    <div class="template-item fade-in">
-                        <div class="template-header">
-                            <div class="template-info">
-                                <div class="template-name">
-                                    ${typeIcons[item.type] || '📢'} ${escapeHtml(item.type || 'Anúncio')}
-                                </div>
-                                <div class="template-category">${escapeHtml(item.channelName || 'Canal desconhecido')}</div>
-                                <div class="template-preview">${escapeHtml(item.content || 'Sem conteúdo')}</div>
-                                <div style="font-size: 0.8rem; color: #999; margin-top: 10px;">
-                                    Enviado em ${new Date(item.createdAt || Date.now()).toLocaleString('pt-BR')}
-                                    ${item.mentions ? ` • ${item.mentions} menções` : ''}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }).join('');
         }
 
         // Atualizar select de templates
-        function updateTemplateSelect() {
+        function updateTemplateSelect(templates) {
             const templateSelect = document.getElementById('templateSelect');
             templateSelect.innerHTML = '<option value="">Selecione um template</option>';
             
-            allTemplates.forEach(template => {
+            templates.forEach(template => {
                 const option = document.createElement('option');
                 option.value = template.id;
                 option.textContent = `${template.name} (${template.category})`;
@@ -1334,169 +1117,10 @@ function updateMentionsPreview() {
             });
         }
 
-        // Renderizar lista de templates
-        function renderTemplatesList() {
-            const templatesList = document.getElementById('templatesList');
-            const searchTerm = document.getElementById('templateSearch').value.toLowerCase();
-            const categoryFilter = document.getElementById('categoryFilter').value;
-            
-            let filteredTemplates = allTemplates.filter(template => {
-                const matchesSearch = template.name.toLowerCase().includes(searchTerm) || 
-                                    template.content.toLowerCase().includes(searchTerm);
-                const matchesCategory = !categoryFilter || template.category === categoryFilter;
-                return matchesSearch && matchesCategory;
-            });
-            
-            if (filteredTemplates.length === 0) {
-                templatesList.innerHTML = `
-                    <div style="text-align: center; color: #666; padding: 40px;">
-                        <div style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;">📝</div>
-                        <p>Nenhum template encontrado.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            templatesList.innerHTML = filteredTemplates.map(template => `
-                <div class="template-item fade-in">
-                    <div class="template-header">
-                        <div class="template-info">
-                            <div class="template-name">${escapeHtml(template.name)}</div>
-                            <div class="template-category">${template.category}</div>
-                            <div class="template-preview">${escapeHtml(template.content)}</div>
-                            <div style="font-size: 0.8rem; color: #999; margin-top: 10px;">
-                                Criado em ${new Date(template.createdAt).toLocaleDateString('pt-BR')}
-                                ${template.usageCount ? ` • Usado ${template.usageCount} vezes` : ''}
-                            </div>
-                        </div>
-                        <div class="template-actions">
-                            <button class="btn btn-secondary btn-small" onclick="useTemplate(${template.id})">
-                                ✏️ Usar
-                            </button>
-                            <button class="btn btn-secondary btn-small" onclick="editTemplate(${template.id})">
-                                📝 Editar
-                            </button>
-                            <button class="btn btn-danger btn-small" onclick="deleteTemplate(${template.id})">
-                                🗑️ Excluir
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Renderizar lista de canais
-        function renderChannelsList() {
-            const channelsList = document.getElementById('channelsList');
-            const searchTerm = document.getElementById('channelSearch').value.toLowerCase();
-            
-            let filteredChannels = allChannels.filter(channel => 
-                channel.name.toLowerCase().includes(searchTerm) || 
-                (channel.guild && channel.guild.toLowerCase().includes(searchTerm))
-            );
-            
-            if (filteredChannels.length === 0) {
-                channelsList.innerHTML = `
-                    <div style="text-align: center; color: #666; padding: 40px;">
-                        <div style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;">📺</div>
-                        <p>Nenhum canal encontrado.</p>
-                    </div>
-                `;
-                return;
-            }
-            
-            // Agrupar por servidor
-            const channelsByGuild = filteredChannels.reduce((groups, channel) => {
-                const guildName = channel.guild || 'Servidor desconhecido';
-                if (!groups[guildName]) {
-                    groups[guildName] = [];
-                }
-                groups[guildName].push(channel);
-                return groups;
-            }, {});
-            
-            channelsList.innerHTML = Object.keys(channelsByGuild).map(guildName => `
-                <div style="margin-bottom: 20px;">
-                    <h3 style="color: #5865f2; margin-bottom: 10px; font-size: 1.1rem;">🛡️ ${escapeHtml(guildName)}</h3>
-                    ${channelsByGuild[guildName].map(channel => `
-                        <div class="channel-item">
-                            <div class="channel-name">#${escapeHtml(channel.name)}</div>
-                            <div class="channel-type">${channel.category || 'Sem categoria'}</div>
-                            <div style="font-size: 0.8rem; color: #999; margin-top: 5px;">
-                                ID: ${channel.id} • Tipo: ${channel.type || 'texto'}
-                            </div>
-                        </div>
-                    `).join('')}
-                </div>
-            `).join('');
-        }
-
         // Usar template
         function useTemplate(templateId) {
-            const template = allTemplates.find(t => t.id === templateId);
-            if (template) {
-                document.getElementById('announcementText').value = template.content;
-                document.getElementById('templateSelect').value = templateId;
-                updateCharCounter();
-                showMessage('message', `Template "${template.name}" carregado!`, 'info');
-                
-                document.getElementById('announcementForm').scrollIntoView({ behavior: 'smooth' });
-                
-                // Incrementar contador de uso (opcional)
-                incrementTemplateUsage(templateId);
-            }
-        }
-
-        // Incrementar uso do template
-        async function incrementTemplateUsage(templateId) {
-            try {
-                await fetch(`${API_BASE}/template/${templateId}/use`, {
-                    method: 'POST',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-            } catch (error) {
-                console.error('Erro ao incrementar uso do template:', error);
-            }
-        }
-
-        // Editar template
-        function editTemplate(templateId) {
-            const template = allTemplates.find(t => t.id === templateId);
-            if (template) {
-                document.getElementById('templateName').value = template.name;
-                document.getElementById('templateCategory').value = template.category;
-                document.getElementById('templateContent').value = template.content;
-                
-                const saveBtn = document.getElementById('saveTemplateBtn');
-                saveBtn.textContent = '✏️ Atualizar';
-                saveBtn.dataset.editId = templateId;
-                
-                updateTemplateCharCounter();
-                document.getElementById('templateForm').scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-
-        // Excluir template
-        async function deleteTemplate(templateId) {
-            const template = allTemplates.find(t => t.id === templateId);
-            if (!confirm(`Tem certeza que deseja excluir o template "${template.name}"?`)) return;
-            
-            try {
-                const response = await fetch(`${API_BASE}/template/${templateId}`, {
-                    method: 'DELETE',
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                
-                if (response.ok) {
-                    showMessage('message', 'Template excluído com sucesso!', 'success');
-                    loadTemplates();
-                    loadStats();
-                } else {
-                    showMessage('message', 'Erro ao excluir template.', 'error');
-                }
-            } catch (error) {
-                showMessage('message', 'Erro de conexão.', 'error');
-            }
+            // Esta função será implementada quando você adicionar a funcionalidade completa de templates
+            console.log('Usar template:', templateId);
         }
 
         // Contadores de caracteres
@@ -1535,15 +1159,8 @@ function updateMentionsPreview() {
         // Atualizar dados
         async function refreshChannels() {
             showMessage('message', 'Atualizando dados...', 'info');
-            await Promise.all([loadChannels(), loadRoles(), loadCategories()]);
+            await Promise.all([loadChannels(), loadRoles()]);
             showMessage('message', 'Dados atualizados com sucesso!', 'success');
-        }
-
-        // Carregar templates de canais
-        async function loadChannelTemplates() {
-            showMessage('message', 'Atualizando lista de canais...', 'info');
-            await loadChannels();
-            showMessage('message', 'Lista de canais atualizada!', 'success');
         }
 
         // Limpar formulário
@@ -1552,6 +1169,9 @@ function updateMentionsPreview() {
             document.getElementById('templateSelect').value = '';
             document.getElementById('channelSelect').value = '';
             selectedRoles = [];
+            selectedImage = null;
+            document.getElementById('imagePreview').innerHTML = '';
+            document.getElementById('imageInput').value = '';
             document.querySelectorAll('.role-item').forEach(item => item.classList.remove('selected'));
             document.querySelectorAll('.announcement-type').forEach(item => item.classList.remove('selected'));
             document.querySelector('.announcement-type[data-type="anuncio"]').classList.add('selected');
@@ -1597,8 +1217,13 @@ function updateMentionsPreview() {
                         return `@${role ? role.name : 'Cargo desconhecido'}`;
                     }).join(', ')}
                 </div>` : '';
+
+            const imagePreview = selectedImage ? 
+                `<div style="margin: 15px 0;">
+                    <img src="${URL.createObjectURL(selectedImage)}" style="max-width: 400px; max-height: 300px; border-radius: 8px;">
+                </div>` : '';
             
-            const previewWindow = window.open('', '_blank', 'width=700,height=500');
+            const previewWindow = window.open('', '_blank', 'width=700,height=600');
             previewWindow.document.write(`
                 <html>
                 <head>
@@ -1660,6 +1285,7 @@ function updateMentionsPreview() {
                         <strong>🎯 JOJO ANÚNCIOS - PREVIEW</strong><br>
                         <strong>Canal:</strong> ${channelName}<br>
                         <strong>Tipo:</strong> ${typeNames[selectedAnnouncementType]}
+                        ${selectedImage ? '<br><strong>Com imagem anexa</strong>' : ''}
                     </div>
                     ${mentionsText ? `<div class="mentions-info">${mentionsText}</div>` : ''}
                     <div class="embed">
@@ -1667,8 +1293,9 @@ function updateMentionsPreview() {
                             ${typeIcons[selectedAnnouncementType]} ${typeNames[selectedAnnouncementType]}
                         </div>
                         <div class="embed-description">${content.replace(/\n/g, '<br>')}</div>
+                        ${imagePreview}
                         <div class="embed-footer">
-                            JOJO ANÚNCIOS POR PAINEL WEB • ${new Date().toLocaleString('pt-BR')}
+                            JOJO ANÚNCIOS • ${new Date().toLocaleString('pt-BR')}
                         </div>
                     </div>
                 </body>
@@ -1676,7 +1303,7 @@ function updateMentionsPreview() {
             `);
         }
 
-        // Enviar anúncio
+        // ENVIAR ANÚNCIO COM SUPORTE A IMAGENS E MÚLTIPLOS CARGOS
         document.getElementById('announcementForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1693,18 +1320,23 @@ function updateMentionsPreview() {
             sendBtn.innerHTML = '<div class="loading-spinner"></div>Enviando...';
             
             try {
+                // Preparar dados para envio
+                const formData = new FormData();
+                formData.append('channelId', channelId);
+                formData.append('content', content);
+                formData.append('roles', JSON.stringify(selectedRoles));
+                formData.append('type', selectedAnnouncementType);
+                
+                if (selectedImage) {
+                    formData.append('image', selectedImage);
+                }
+                
                 const response = await fetch(`${API_BASE}/announcement`, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json',
                         'Authorization': `Bearer ${authToken}`
                     },
-                    body: JSON.stringify({ 
-                        channelId, 
-                        content, 
-                        roles: selectedRoles,
-                        type: selectedAnnouncementType
-                    })
+                    body: formData
                 });
                 
                 const result = await response.json();
@@ -1713,141 +1345,17 @@ function updateMentionsPreview() {
                     showMessage('message', 'Anúncio enviado com sucesso! 🎉', 'success');
                     clearForm();
                     loadStats();
-                    loadHistory();
                 } else {
                     showMessage('message', result.error || 'Erro ao enviar anúncio.', 'error');
                 }
             } catch (error) {
+                console.error('Erro ao enviar anúncio:', error);
                 showMessage('message', 'Erro de conexão com o servidor.', 'error');
             } finally {
                 sendBtn.disabled = false;
                 sendBtn.innerHTML = '📤 Enviar Anúncio';
             }
         });
-
-        // Salvar template
-        document.getElementById('templateForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('templateName').value.trim();
-            const content = document.getElementById('templateContent').value.trim();
-            const category = document.getElementById('templateCategory').value;
-            const saveBtn = document.getElementById('saveTemplateBtn');
-            const isEditing = saveBtn.dataset.editId;
-            
-            if (!name || !content) {
-                showMessage('message', 'Nome e conteúdo são obrigatórios.', 'error');
-                return;
-            }
-            
-            saveBtn.disabled = true;
-            saveBtn.innerHTML = isEditing ? 
-                '<div class="loading-spinner"></div>Atualizando...' : 
-                '<div class="loading-spinner"></div>Salvando...';
-            
-            try {
-                const url = isEditing ? 
-                    `${API_BASE}/template/${isEditing}` : 
-                    `${API_BASE}/template`;
-                
-                const method = isEditing ? 'PUT' : 'POST';
-                
-                const response = await fetch(url, {
-                    method,
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ name, content, category })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    const successMessage = isEditing ? 
-                        'Template atualizado com sucesso! ✏️' : 
-                        'Template salvo com sucesso! 💾';
-                    
-                    showMessage('message', successMessage, 'success');
-                    
-                    // Limpar formulário
-                    document.getElementById('templateName').value = '';
-                    document.getElementById('templateContent').value = '';
-                    document.getElementById('templateCategory').value = 'Geral';
-                    updateTemplateCharCounter();
-                    
-                    // Resetar botão
-                    saveBtn.textContent = '💾 Salvar';
-                    delete saveBtn.dataset.editId;
-                    
-                    loadTemplates();
-                    loadStats();
-                } else {
-                    showMessage('message', result.error || 'Erro ao salvar template.', 'error');
-                }
-            } catch (error) {
-                showMessage('message', 'Erro de conexão com o servidor.', 'error');
-            } finally {
-                saveBtn.disabled = false;
-                saveBtn.innerHTML = isEditing ? '✏️ Atualizar' : '💾 Salvar';
-            }
-        });
-
-     // Criar canal
-document.getElementById('channelForm').addEventListener('submit', async function(e) {
-    e.preventDefault();
-    
-    const name = document.getElementById('channelName').value.trim().toLowerCase().replace(/\s+/g, '-');
-    const topic = document.getElementById('channelTopic').value.trim();
-    const categoryId = document.getElementById('categorySelect').value;
-    const createBtn = document.getElementById('createChannelBtn');
-    
-    if (!name) {
-        showMessage('message', 'Nome do canal é obrigatório.', 'error');
-        return;
-    }
-    
-    createBtn.disabled = true;
-    createBtn.innerHTML = '<div class="loading-spinner"></div>Criando...';
-    
-    try {
-        // AQUI! Substitua pelo seu snippet corrigido:
-        const response = await fetch(`${API_BASE}/create-channel`, { // <--- Corrigido para /create-channel
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${authToken}`
-            },
-            body: JSON.stringify({ 
-                name, 
-                topic, 
-                type: selectedChannelType || 'text', // Default text se não definido
-                categoryId: categoryId || null
-            })
-        });
-        
-        const result = await response.json();
-        
-        if (response.ok) {
-            showMessage('message', 'Canal criado com sucesso! 📺', 'success');
-            
-            // Limpar formulário
-            document.getElementById('channelName').value = '';
-            document.getElementById('channelTopic').value = '';
-            document.getElementById('categorySelect').value = '';
-            
-            loadChannels();
-            loadStats();
-        } else {
-            showMessage('message', result.error || 'Erro ao criar canal.', 'error');
-        }
-    } catch (error) {
-        showMessage('message', 'Erro de conexão com o servidor.', 'error');
-    } finally {
-        createBtn.disabled = false;
-        createBtn.innerHTML = '➕ Criar Canal';
-    }
-});
 
         // Função para mostrar mensagens
         function showMessage(containerId, message, type) {
@@ -1904,214 +1412,38 @@ document.getElementById('channelForm').addEventListener('submit', async function
                 previewAnnouncement();
             }
         });
-
-        // Adicionar tooltips informativos
-        function addTooltips() {
-            const tooltipElements = [
-                { id: 'channelSelect', text: 'Selecione o canal onde o anúncio será enviado' },
-                { id: 'templateSelect', text: 'Escolha um template salvo para preencher automaticamente' },
-                { id: 'announcementText', text: 'Digite sua mensagem. Use Ctrl+Enter para enviar rapidamente' }
-            ];
-            
-            tooltipElements.forEach(({ id, text }) => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.title = text;
-                }
-            });
-        }
-
-        // Auto-save do conteúdo do formulário
-        function enableAutoSave() {
-            const textArea = document.getElementById('announcementText');
-            const AUTOSAVE_KEY = 'jojo_anuncios_draft';
-            
-            // Carregar draft ao iniciar
-            const savedDraft = localStorage.getItem(AUTOSAVE_KEY);
-            if (savedDraft && !textArea.value) {
-                textArea.value = savedDraft;
-                updateCharCounter();
-                showMessage('message', 'Rascunho recuperado automaticamente.', 'info');
-            }
-            
-            // Salvar automaticamente enquanto digita
-            let saveTimer;
-            textArea.addEventListener('input', function() {
-                clearTimeout(saveTimer);
-                saveTimer = setTimeout(() => {
-                    if (this.value.trim()) {
-                        localStorage.setItem(AUTOSAVE_KEY, this.value);
-                    } else {
-                        localStorage.removeItem(AUTOSAVE_KEY);
-                    }
-                }, 1000);
-            });
-            
-            // Limpar draft ao enviar
-            document.getElementById('announcementForm').addEventListener('submit', function() {
-                localStorage.removeItem(AUTOSAVE_KEY);
-            });
-        }
-
-        // Validação em tempo real
-        function setupFormValidation() {
-            const channelSelect = document.getElementById('channelSelect');
-            const announcementText = document.getElementById('announcementText');
-            const sendBtn = document.getElementById('sendBtn');
-            
-            function validateForm() {
-                const isValid = channelSelect.value && announcementText.value.trim();
-                sendBtn.disabled = !isValid;
-                
-                if (!isValid) {
-                    sendBtn.style.opacity = '0.5';
-                } else {
-                    sendBtn.style.opacity = '1';
-                }
-            }
-            
-            channelSelect.addEventListener('change', validateForm);
-            announcementText.addEventListener('input', validateForm);
-            
-            // Validação inicial
-            validateForm();
-        }
-
-        // Melhorar experiência de busca
-        function enhanceSearch() {
-            // Debounce para os filtros de busca
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
-            
-            // Aplicar debounce aos campos de busca
-            const searches = [
-                { id: 'templateSearch', callback: renderTemplatesList },
-                { id: 'channelSearch', callback: renderChannelsList },
-                { id: 'historySearch', callback: () => loadHistory() }
-            ];
-            
-            searches.forEach(({ id, callback }) => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.addEventListener('input', debounce(callback, 300));
-                }
-            });
-        }
-
-        // Contador de caracteres em tempo real melhorado
-        function enhanceCharCounters() {
-            const counters = [
-                { textId: 'announcementText', counterId: 'charCounter', max: 2000 },
-                { textId: 'templateContent', counterId: 'templateCharCounter', max: 2000 }
-            ];
-            
-            counters.forEach(({ textId, counterId, max }) => {
-                const textElement = document.getElementById(textId);
-                const counterElement = document.getElementById(counterId);
-                
-                if (textElement && counterElement) {
-                    textElement.addEventListener('input', function() {
-                        const length = this.value.length;
-                        const remaining = max - length;
-                        
-                        let text = `${length}/${max} caracteres`;
-                        if (remaining < 200) {
-                            text += ` (${remaining} restantes)`;
-                        }
-                        
-                        counterElement.textContent = text;
-                        
-                        // Atualizar classes
-                        counterElement.className = 'char-counter';
-                        if (length > max * 0.9) {
-                            counterElement.className += ' danger';
-                        } else if (length > max * 0.75) {
-                            counterElement.className += ' warning';
-                        }
-                    });
-                }
-            });
-        }
-
-        // Inicializar funcionalidades extras
-        function initializeExtraFeatures() {
-            addTooltips();
-            enableAutoSave();
-            setupFormValidation();
-            enhanceSearch();
-            enhanceCharCounters();
-        }
-
-        // Chamar inicialização extra após carregar a interface
-        const originalShowMainInterface = showMainInterface;
-        showMainInterface = function() {
-            originalShowMainInterface();
-            setTimeout(initializeExtraFeatures, 100);
-        };
-
-        // Easter egg - Konami Code
-        let konamiCode = [];
-        const konami = [38,38,40,40,37,39,37,39,66,65];
-        
-        document.addEventListener('keydown', function(e) {
-            konamiCode.push(e.keyCode);
-            if (konamiCode.length > konami.length) {
-                konamiCode.shift();
-            }
-            
-            if (konamiCode.join(',') === konami.join(',')) {
-                showMessage('message', '🎉 JOJO MODE ATIVADO! Você descobriu o código secreto!', 'success');
-                document.body.style.animation = 'rainbow 2s linear infinite';
-                
-                const style = document.createElement('style');
-                style.textContent = `
-                    @keyframes rainbow {
-                        0% { filter: hue-rotate(0deg); }
-                        100% { filter: hue-rotate(360deg); }
-                    }
-                `;
-                document.head.appendChild(style);
-                
-                setTimeout(() => {
-                    document.body.style.animation = '';
-                    style.remove();
-                }, 10000);
-                
-                konamiCode = [];
-            }
-        });
-
-        // Animações de entrada
-        function animateElements() {
-            const elements = document.querySelectorAll('.panel-section, .template-item, .channel-item');
-            elements.forEach((el, index) => {
-                el.style.opacity = '0';
-                el.style.transform = 'translateY(20px)';
-                
-                setTimeout(() => {
-                    el.style.transition = 'all 0.5s ease';
-                    el.style.opacity = '1';
-                    el.style.transform = 'translateY(0)';
-                }, index * 100);
-            });
-        }
-
-        // Chamar animações quando carregar dados
-        const originalLoadAllData = loadAllData;
-        loadAllData = async function() {
-            await originalLoadAllData();
-            setTimeout(animateElements, 200);
-        };
-
     </script>
 </body>
-</html>
+</html>Por favor, selecione apenas arquivos de imagem.', 'error');
+                return;
+            }
+
+            if (file.size > 8 * 1024 * 1024) { // 8MB
+                showMessage('message', 'Imagem muito grande. Máximo 8MB.', 'error');
+                return;
+            }
+
+            selectedImage = file;
+
+            // Mostrar preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const imagePreview = document.getElementById('imagePreview');
+                imagePreview.innerHTML = `
+                    <img src="${e.target.result}" alt="Preview">
+                    <br>
+                    <button type="button" class="image-remove" onclick="removeImage()">
+                        🗑️ Remover Imagem
+                    </button>
+                `;
+            };
+            reader.readAsDataURL(file);
+
+            showMessage('message', '✅ Imagem carregada com sucesso!', 'success');
+        }
+function removeImage() {
+    selectedImage = null;
+    document.getElementById('imagePreview').innerHTML = '';
+    document.getElementById('imageInput').value = '';
+    showMessage('message', 'Imagem removida.', 'info');
+}
