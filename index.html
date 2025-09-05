@@ -274,7 +274,7 @@
             }
         }
 
-        /* Roles Selection - CORRIGIDO PARA MÚLTIPLOS CARGOS */
+        /* Roles Selection */
         .roles-section {
             background: #f8f9fa;
             border-radius: 10px;
@@ -383,7 +383,7 @@
             font-size: 12px;
         }
 
-        /* Announcement Types */
+        /* Announcement Types - CORRIGIDO */
         .announcement-type-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
@@ -399,6 +399,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             background: white;
+            position: relative;
         }
 
         .announcement-type:hover {
@@ -419,6 +420,51 @@
         .announcement-type-name {
             font-weight: 600;
             font-size: 14px;
+        }
+
+        /* Botão de deletar tipo customizado */
+        .delete-type-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 10px;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .announcement-type.custom:hover .delete-type-btn {
+            display: flex;
+        }
+
+        /* Novo tipo de anúncio form */
+        .new-type-form {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 2px dashed #5865f2;
+        }
+
+        .new-type-form h3 {
+            color: #5865f2;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 100px;
+            gap: 10px;
+            align-items: end;
+            margin-bottom: 10px;
         }
 
         /* Emoji Picker */
@@ -490,29 +536,58 @@
             display: inline-block;
         }
 
-        /* Channel Creation Section */
-        .channel-form-preview {
-            background: rgba(88, 101, 242, 0.1);
-            border: 1px solid #5865f2;
-            border-radius: 8px;
+        /* Templates Section - MELHORADA */
+        .template-list {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            border-radius: 10px;
             padding: 10px;
-            margin-top: 10px;
-            display: none;
+            margin-bottom: 15px;
         }
 
-        .channel-form-preview.show {
-            display: block;
+        .template-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            margin-bottom: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
-        .channel-preview {
-            font-family: 'Courier New', monospace;
+        .template-item:hover {
+            background: rgba(88, 101, 242, 0.1);
+        }
+
+        .template-item.selected {
+            background: rgba(88, 101, 242, 0.2);
+            border: 1px solid #5865f2;
+        }
+
+        .template-name {
+            font-weight: 600;
             font-size: 14px;
-            color: #5865f2;
         }
 
-        .channel-type-indicator {
-            display: inline-block;
-            margin-right: 5px;
+        .template-category {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .template-actions {
+            display: flex;
+            gap: 5px;
+        }
+
+        .template-actions button {
+            padding: 2px 6px;
+            font-size: 10px;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
         }
 
         .success, .error, .info {
@@ -565,6 +640,11 @@
             
             .announcement-type-grid {
                 grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
             }
         }
 
@@ -633,39 +713,31 @@
                     <h2>📢 Criar Anúncio</h2>
                     <div id="message"></div>
                     
+                    <!-- Formulário para criar novos tipos -->
+                    <div class="new-type-form">
+                        <h3>➕ Criar Novo Tipo de Anúncio</h3>
+                        <form id="newTypeForm">
+                            <div class="form-row">
+                                <div>
+                                    <label for="newTypeIcon" style="margin-bottom: 5px;">Emoji:</label>
+                                    <input type="text" id="newTypeIcon" placeholder="📢" maxlength="2" style="text-align: center;">
+                                </div>
+                                <div>
+                                    <label for="newTypeName" style="margin-bottom: 5px;">Nome:</label>
+                                    <input type="text" id="newTypeName" placeholder="Ex: Mega Stream" maxlength="30">
+                                </div>
+                                <div>
+                                    <button type="submit" class="btn btn-success btn-small">Criar</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    
                     <!-- Tipo de Anúncio -->
                     <div class="form-group">
                         <label>Tipo de Anúncio:</label>
-                        <div class="announcement-type-grid">
-                            <div class="announcement-type selected" data-type="anuncio">
-                                <div class="announcement-type-icon">📢</div>
-                                <div class="announcement-type-name">Anúncio</div>
-                            </div>
-                            <div class="announcement-type" data-type="novidade">
-                                <div class="announcement-type-icon">✨</div>
-                                <div class="announcement-type-name">Novidade</div>
-                            </div>
-                            <div class="announcement-type" data-type="atualizacao">
-                                <div class="announcement-type-icon">🔄</div>
-                                <div class="announcement-type-name">Atualização</div>
-                            </div>
-                            <div class="announcement-type" data-type="draft">
-                                <div class="announcement-type-icon">🏆</div>
-                                <div class="announcement-type-name">Inscrições draft</div>
-                            </div>
-                            <div class="announcement-type" data-type="evento">
-                                <div class="announcement-type-icon">🎉</div>
-                                <div class="announcement-type-name">Evento</div>
-                            </div>
-                            <div class="announcement-type" data-type="vod">
-                                <div class="announcement-type-icon">📹</div>
-                                <div class="announcement-type-name">VOD</div>
-                            </div>
-
-                            <div class="announcement-type" data-type="aviso">
-                                <div class="announcement-type-icon">⚠️</div>
-                                <div class="announcement-type-name">Aviso</div>
-                            </div>
+                        <div class="announcement-type-grid" id="announcementTypeGrid">
+                            <!-- Tipos serão carregados dinamicamente -->
                         </div>
                     </div>
                     
@@ -694,6 +766,9 @@
                             <select id="templateSelect">
                                 <option value="">Selecione um template</option>
                             </select>
+                            <div class="template-list" id="templateList">
+                                <!-- Templates aparecerão aqui -->
+                            </div>
                         </div>
 
                         <!-- Seleção de Cargos com MULTI-SELEÇÃO -->
@@ -740,6 +815,10 @@
                                 <button type="button" class="emoji-btn" data-emoji="🚨">🚨</button>
                                 <button type="button" class="emoji-btn" data-emoji="⌚">⌚</button>
                                 <button type="button" class="emoji-btn" data-emoji="✨">✨</button>
+                                <button type="button" class="emoji-btn" data-emoji="📹">📹</button>
+                                <button type="button" class="emoji-btn" data-emoji="📺">📺</button>
+                                <button type="button" class="emoji-btn" data-emoji="🎬">🎬</button>
+                                <button type="button" class="emoji-btn" data-emoji="🔴">🔴</button>
                             </div>
                         </div>
                         
@@ -757,6 +836,43 @@
 
                 <!-- Seção de Gerenciamento -->
                 <div>
+                    <!-- Templates MELHORADOS -->
+                    <div class="panel-section" style="margin-bottom: 20px;">
+                        <h2>📝 Gerenciar Templates</h2>
+                        <form id="templateForm">
+                            <div class="form-group">
+                                <label for="templateName">Nome:</label>
+                                <input type="text" id="templateName" placeholder="Ex: Evento Semanal" required maxlength="100">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="templateCategory">Categoria:</label>
+                                <select id="templateCategory">
+                                    <option value="Geral">Geral</option>
+                                    <option value="Eventos">Eventos</option>
+                                    <option value="Avisos">Avisos</option>
+                                    <option value="Torneios">Torneios</option>
+                                    <option value="Atualizações">Atualizações</option>
+                                    <option value="Streams">Streams</option>
+                                    <option value="VODs">VODs</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="templateContent">Conteúdo:</label>
+                                <textarea id="templateContent" placeholder="Conteúdo do template..." required maxlength="2000"></textarea>
+                                <div class="char-counter" id="templateCharCounter">0/2000 caracteres</div>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-secondary" id="saveTemplateBtn">
+                                💾 Salvar Template
+                            </button>
+                        </form>
+                        
+                        <!-- Lista de templates salvos -->
+                        <div id="savedTemplates" style="margin-top: 20px;"></div>
+                    </div>
+
                     <!-- Criação de Canais -->
                     <div class="panel-section" style="margin-bottom: 20px;">
                         <h2>📺 Criar Canal</h2>
@@ -765,12 +881,6 @@
                                 <label for="channelName">Nome do Canal:</label>
                                 <input type="text" id="channelName" placeholder="Ex: novo-canal" required maxlength="100">
                                 <small style="color: #666; font-size: 12px;">Será convertido automaticamente para formato válido</small>
-                                <div class="channel-form-preview" id="channelPreview">
-                                    <div class="channel-preview">
-                                        <span class="channel-type-indicator" id="channelTypeIcon">💬</span>
-                                        <span id="formattedChannelName">#canal-exemplo</span>
-                                    </div>
-                                </div>
                             </div>
                             
                             <div class="form-group">
@@ -788,46 +898,8 @@
                                 </select>
                             </div>
                             
-                            <div class="quick-actions">
-                                <button type="button" class="btn btn-secondary btn-small" onclick="refreshCategories()">
-                                    🔄 Atualizar Categorias
-                                </button>
-                            </div>
-                            
                             <button type="submit" class="btn btn-success" id="createChannelBtn">
                                 ✨ Criar Canal
-                            </button>
-                        </form>
-                    </div>
-
-                    <!-- Templates -->
-                    <div class="panel-section" style="margin-bottom: 20px;">
-                        <h2>📝 Template Rápido</h2>
-                        <form id="templateForm">
-                            <div class="form-group">
-                                <label for="templateName">Nome:</label>
-                                <input type="text" id="templateName" placeholder="Ex: Evento Semanal" required maxlength="100">
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="templateCategory">Categoria:</label>
-                                <select id="templateCategory">
-                                    <option value="Geral">Geral</option>
-                                    <option value="Eventos">Eventos</option>
-                                    <option value="Avisos">Avisos</option>
-                                    <option value="Torneios">Torneios</option>
-                                    <option value="Atualizações">Atualizações</option>
-                                </select>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="templateContent">Conteúdo:</label>
-                                <textarea id="templateContent" placeholder="Conteúdo do template..." required maxlength="2000"></textarea>
-                                <div class="char-counter" id="templateCharCounter">0/2000 caracteres</div>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-secondary" id="saveTemplateBtn">
-                                💾 Salvar
                             </button>
                         </form>
                     </div>
@@ -837,14 +909,29 @@
     </div>
 
     <script>
-        // CONFIGURAÇÃO CORRIGIDA PARA VERCEL
+        // CONFIGURAÇÃO CORRIGIDA
         const API_BASE = 'https://discord-anuncios.onrender.com/api';
 
         let authToken = localStorage.getItem('authToken');
-        let selectedRoles = []; // Array para múltiplos cargos
-        let selectedAnnouncementType = 'anuncio';
+        let selectedRoles = [];
+        let selectedAnnouncementType = { id: 'anuncio', icon: '📢', name: 'ANÚNCIO' };
         let allRoles = [];
-        let selectedImage = null; // Para armazenar imagem selecionada
+        let selectedImage = null;
+        let allTemplates = [];
+        let customAnnouncementTypes = JSON.parse(localStorage.getItem('customAnnouncementTypes') || '[]');
+
+        // TIPOS PADRÃO COM NOMES EM MAIÚSCULA
+        const defaultAnnouncementTypes = [
+            { id: 'anuncio', icon: '📢', name: 'ANÚNCIO' },
+            { id: 'novidade', icon: '✨', name: 'NOVIDADE' },
+            { id: 'atualizacao', icon: '🔄', name: 'ATUALIZAÇÃO' },
+            { id: 'draft', icon: '🏆', name: 'INSCRIÇÕES DRAFT' },
+            { id: 'evento', icon: '🎉', name: 'EVENTO' },
+            { id: 'vod', icon: '📹', name: 'VOD' },
+            { id: 'aviso', icon: '⚠️', name: 'AVISO IMPORTANTE' },
+            { id: 'stream', icon: '🔴', name: 'LIVE STREAM' },
+            { id: 'torneio', icon: '🏆', name: 'TORNEIO' }
+        ];
 
         // Verificar autenticação na inicialização
         document.addEventListener('DOMContentLoaded', function() {
@@ -858,15 +945,16 @@
         });
 
         function setupEventListeners() {
-            // Seletores de tipo de anúncio
-            document.querySelectorAll('.announcement-type').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    document.querySelectorAll('.announcement-type').forEach(b => b.classList.remove('selected'));
-                    this.classList.add('selected');
-                    selectedAnnouncementType = this.dataset.type;
-                });
-            });
-
+            // Contadores de caracteres
+            document.getElementById('announcementText').addEventListener('input', updateCharCounter);
+            document.getElementById('templateContent').addEventListener('input', updateTemplateCharCounter);
+            
+            // Upload de imagem
+            setupImageUpload();
+            
+            // Form para criar novo tipo
+            document.getElementById('newTypeForm').addEventListener('submit', handleNewType);
+            
             // Emojis
             document.querySelectorAll('.emoji-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
@@ -883,30 +971,119 @@
                 });
             });
 
-            // Contadores de caracteres
-            document.getElementById('announcementText').addEventListener('input', updateCharCounter);
-            document.getElementById('templateContent').addEventListener('input', updateTemplateCharCounter);
-            
-            // Preview do nome do canal
-            document.getElementById('channelName').addEventListener('input', updateChannelPreview);
-            document.getElementById('channelType').addEventListener('change', updateChannelPreview);
-            
-            // Upload de imagem
-            setupImageUpload();
+            // Template select change
+            document.getElementById('templateSelect').addEventListener('change', function() {
+                const templateId = this.value;
+                if (templateId) {
+                    const template = allTemplates.find(t => t.id == templateId);
+                    if (template) {
+                        document.getElementById('announcementText').value = template.content;
+                        updateCharCounter();
+                        showMessage('message', `Template "${template.name}" carregado!`, 'success');
+                    }
+                }
+            });
         }
 
-        // SETUP PARA UPLOAD DE IMAGEM - CORRIGIDO
+        // CRIAR NOVO TIPO DE ANÚNCIO
+        function handleNewType(e) {
+            e.preventDefault();
+            
+            const icon = document.getElementById('newTypeIcon').value.trim() || '📢';
+            const name = document.getElementById('newTypeName').value.trim();
+            
+            if (!name) {
+                showMessage('message', 'Digite um nome para o novo tipo!', 'error');
+                return;
+            }
+            
+            // Verificar se já existe
+            const allTypes = [...defaultAnnouncementTypes, ...customAnnouncementTypes];
+            if (allTypes.some(t => t.name.toLowerCase() === name.toLowerCase())) {
+                showMessage('message', 'Já existe um tipo com esse nome!', 'error');
+                return;
+            }
+            
+            const newType = {
+                id: name.toLowerCase().replace(/\s+/g, '_'),
+                icon: icon,
+                name: name.toUpperCase()
+            };
+            
+            customAnnouncementTypes.push(newType);
+            localStorage.setItem('customAnnouncementTypes', JSON.stringify(customAnnouncementTypes));
+            
+            renderAnnouncementTypes();
+            document.getElementById('newTypeForm').reset();
+            showMessage('message', `Tipo "${newType.name}" criado com sucesso! 🎉`, 'success');
+        }
+
+        // RENDERIZAR TIPOS DE ANÚNCIO
+        function renderAnnouncementTypes() {
+            const grid = document.getElementById('announcementTypeGrid');
+            const allTypes = [...defaultAnnouncementTypes, ...customAnnouncementTypes];
+            
+            grid.innerHTML = allTypes.map((type, index) => {
+                const isCustom = index >= defaultAnnouncementTypes.length;
+                const isSelected = selectedAnnouncementType.id === type.id;
+                
+                return `
+                    <div class="announcement-type ${isSelected ? 'selected' : ''} ${isCustom ? 'custom' : ''}" 
+                         data-type-id="${type.id}" 
+                         data-type-icon="${type.icon}" 
+                         data-type-name="${type.name}">
+                        <div class="announcement-type-icon">${type.icon}</div>
+                        <div class="announcement-type-name">${type.name}</div>
+                        ${isCustom ? `<button class="delete-type-btn" onclick="deleteCustomType('${type.id}')" title="Remover">×</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+            
+            // Adicionar event listeners
+            document.querySelectorAll('.announcement-type').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Remove seleção anterior
+                    document.querySelectorAll('.announcement-type').forEach(b => b.classList.remove('selected'));
+                    
+                    // Adiciona seleção atual
+                    this.classList.add('selected');
+                    
+                    // Atualiza tipo selecionado
+                    selectedAnnouncementType = {
+                        id: this.dataset.typeId,
+                        icon: this.dataset.typeIcon,
+                        name: this.dataset.typeName
+                    };
+                });
+            });
+        }
+
+        // DELETAR TIPO CUSTOMIZADO
+        function deleteCustomType(typeId) {
+            if (confirm('Tem certeza que deseja remover este tipo de anúncio?')) {
+                customAnnouncementTypes = customAnnouncementTypes.filter(t => t.id !== typeId);
+                localStorage.setItem('customAnnouncementTypes', JSON.stringify(customAnnouncementTypes));
+                
+                // Se o tipo deletado estava selecionado, selecionar o padrão
+                if (selectedAnnouncementType.id === typeId) {
+                    selectedAnnouncementType = defaultAnnouncementTypes[0];
+                }
+                
+                renderAnnouncementTypes();
+                showMessage('message', 'Tipo de anúncio removido!', 'info');
+            }
+        }
+
+        // SETUP PARA UPLOAD DE IMAGEM
         function setupImageUpload() {
             const imageUpload = document.getElementById('imageUpload');
             const imageInput = document.getElementById('imageInput');
             const imagePreview = document.getElementById('imagePreview');
 
-            // Click para selecionar arquivo
             imageInput.addEventListener('change', function(e) {
                 handleImageSelect(e.target.files[0]);
             });
 
-            // Drag and drop
             imageUpload.addEventListener('dragover', function(e) {
                 e.preventDefault();
                 this.classList.add('dragover');
@@ -927,24 +1104,21 @@
             });
         }
 
-        // FUNÇÃO CORRIGIDA PARA LIDAR COM SELEÇÃO DE IMAGEM
         function handleImageSelect(file) {
             if (!file) return;
 
-            // Validar arquivo
             if (!file.type.startsWith('image/')) {
                 showMessage('message', 'Por favor, selecione apenas arquivos de imagem.', 'error');
                 return;
             }
 
-            if (file.size > 8 * 1024 * 1024) { // 8MB
+            if (file.size > 8 * 1024 * 1024) {
                 showMessage('message', 'Imagem muito grande. Máximo 8MB.', 'error');
                 return;
             }
 
             selectedImage = file;
 
-            // Mostrar preview
             const reader = new FileReader();
             reader.onload = function(e) {
                 const imagePreview = document.getElementById('imagePreview');
@@ -987,7 +1161,6 @@
             }
         }
 
-        // Mostrar interfaces
         function showLogin() {
             document.getElementById('loginContainer').style.display = 'flex';
             document.getElementById('mainInterface').style.display = 'none';
@@ -998,9 +1171,10 @@
         function showMainInterface() {
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('mainInterface').style.display = 'block';
+            renderAnnouncementTypes(); // Renderizar tipos ao mostrar interface
         }
 
-        // LOGIN CORRIGIDO
+        // LOGIN
         document.getElementById('loginForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1040,7 +1214,6 @@
             }
         });
 
-        // Logout
         function logout() {
             localStorage.removeItem('authToken');
             authToken = null;
@@ -1058,7 +1231,6 @@
             ]);
         }
 
-        // Carregar estatísticas
         async function loadStats() {
             try {
                 const response = await fetch(`${API_BASE}/stats`, {
@@ -1074,7 +1246,6 @@
             }
         }
 
-        // Carregar canais
         async function loadChannels() {
             try {
                 const response = await fetch(`${API_BASE}/channels`, {
@@ -1085,7 +1256,6 @@
                 const channelSelect = document.getElementById('channelSelect');
                 channelSelect.innerHTML = '<option value="">Selecione um canal</option>';
                 
-                // Agrupar por servidor
                 Object.keys(data.channelsGrouped || {}).forEach(guildName => {
                     const optgroup = document.createElement('optgroup');
                     optgroup.label = guildName;
@@ -1106,7 +1276,6 @@
             }
         }
 
-        // Carregar categorias
         async function loadCategories() {
             try {
                 const response = await fetch(`${API_BASE}/categories`, {
@@ -1132,106 +1301,9 @@
                 
             } catch (error) {
                 console.error('Erro ao carregar categorias:', error);
-                const categorySelect = document.getElementById('channelCategory');
-                categorySelect.innerHTML = '<option value="">Erro ao carregar categorias</option>';
             }
         }
 
-        // Atualizar categorias
-        async function refreshCategories() {
-            showMessage('message', 'Atualizando categorias...', 'info');
-            await loadCategories();
-            showMessage('message', 'Categorias atualizadas com sucesso!', 'success');
-        }
-
-        // Preview do nome do canal
-        function updateChannelPreview() {
-            const channelNameInput = document.getElementById('channelName');
-            const channelTypeSelect = document.getElementById('channelType');
-            const channelPreview = document.getElementById('channelPreview');
-            const formattedChannelName = document.getElementById('formattedChannelName');
-            const channelTypeIcon = document.getElementById('channelTypeIcon');
-            
-            const rawName = channelNameInput.value.trim();
-            
-            if (rawName) {
-                // Formatar nome do canal (Discord format)
-                const formatted = rawName
-                    .toLowerCase()
-                    .replace(/\s+/g, '-')
-                    .replace(/[^a-z0-9\-]/g, '')
-                    .replace(/-+/g, '-')
-                    .replace(/^-|-$/g, '');
-                
-                const channelType = channelTypeSelect.value;
-                const icon = channelType === 'voice' ? '🔊' : '💬';
-                const prefix = channelType === 'voice' ? '' : '#';
-                
-                channelTypeIcon.textContent = icon;
-                formattedChannelName.textContent = `${prefix}${formatted}`;
-                channelPreview.classList.add('show');
-            } else {
-                channelPreview.classList.remove('show');
-            }
-        }
-
-        // Criar canal
-        document.getElementById('channelForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const channelName = document.getElementById('channelName').value;
-            const channelType = document.getElementById('channelType').value;
-            const channelCategory = document.getElementById('channelCategory').value;
-            const createBtn = document.getElementById('createChannelBtn');
-            
-            if (!channelName.trim()) {
-                showMessage('message', 'Nome do canal é obrigatório.', 'error');
-                return;
-            }
-            
-            createBtn.disabled = true;
-            createBtn.innerHTML = '<div class="loading-spinner"></div>Criando...';
-            
-            try {
-                const response = await fetch(`${API_BASE}/create-channel`, {
-                    method: 'POST',
-                    headers: {
-                        'Authorization': `Bearer ${authToken}`,
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        name: channelName.trim(),
-                        type: channelType,
-                        categoryId: channelCategory || null
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    showMessage('message', `Canal "${channelName}" criado com sucesso! 🎉`, 'success');
-                    document.getElementById('channelForm').reset();
-                    
-                    // Atualizar lista de canais após 2 segundos
-                    setTimeout(async () => {
-                        await loadChannels();
-                        showMessage('message', 'Lista de canais atualizada!', 'info');
-                    }, 2000);
-                    
-                    loadStats();
-                } else {
-                    showMessage('message', result.error || 'Erro ao criar canal.', 'error');
-                }
-            } catch (error) {
-                console.error('Erro ao criar canal:', error);
-                showMessage('message', 'Erro de conexão com o servidor.', 'error');
-            } finally {
-                createBtn.disabled = false;
-                createBtn.innerHTML = '✨ Criar Canal';
-            }
-        });
-
-        // CARREGAR CARGOS CORRIGIDO
         async function loadRoles() {
             try {
                 const response = await fetch(`${API_BASE}/roles`, {
@@ -1258,7 +1330,6 @@
             }
         }
 
-        // RENDERIZAR CARGOS COM MULTI-SELEÇÃO
         function renderRoles() {
             const rolesGrid = document.getElementById('rolesGrid');
             
@@ -1282,7 +1353,6 @@
                 `;
             }).join('');
             
-            // Adicionar event listeners para multi-seleção
             document.querySelectorAll('.role-item').forEach(roleItem => {
                 roleItem.addEventListener('click', function() {
                     const roleId = this.dataset.roleId;
@@ -1291,11 +1361,9 @@
                     const index = selectedRoles.indexOf(roleId);
                     
                     if (index > -1) {
-                        // Remover da seleção
                         selectedRoles.splice(index, 1);
                         this.classList.remove('selected');
                     } else {
-                        // Adicionar à seleção
                         selectedRoles.push(roleId);
                         this.classList.add('selected');
                     }
@@ -1305,7 +1373,6 @@
             });
         }
 
-        // ATUALIZAR PREVIEW DE MENÇÕES
         function updateMentionsPreview() {
             const mentionsPreview = document.getElementById('mentionsPreview');
             const mentionTags = document.getElementById('mentionTags');
@@ -1327,21 +1394,27 @@
             ).join('');
         }
 
-        // Carregar templates
+        // CARREGAR E RENDERIZAR TEMPLATES CORRIGIDO
         async function loadTemplates() {
             try {
                 const response = await fetch(`${API_BASE}/templates`, {
                     headers: { 'Authorization': `Bearer ${authToken}` }
                 });
-                const allTemplates = await response.json();
                 
+                if (!response.ok) {
+                    throw new Error(`Erro HTTP: ${response.status}`);
+                }
+                
+                allTemplates = await response.json();
                 updateTemplateSelect(allTemplates);
+                renderSavedTemplates(allTemplates);
+                
             } catch (error) {
                 console.error('Erro ao carregar templates:', error);
+                showMessage('message', 'Erro ao carregar templates.', 'error');
             }
         }
 
-        // Atualizar select de templates
         function updateTemplateSelect(templates) {
             const templateSelect = document.getElementById('templateSelect');
             templateSelect.innerHTML = '<option value="">Selecione um template</option>';
@@ -1352,6 +1425,89 @@
                 option.textContent = `${template.name} (${template.category})`;
                 templateSelect.appendChild(option);
             });
+        }
+
+        function renderSavedTemplates(templates) {
+            const savedTemplatesDiv = document.getElementById('savedTemplates');
+            
+            if (templates.length === 0) {
+                savedTemplatesDiv.innerHTML = `
+                    <div class="info">
+                        ℹ️ Nenhum template salvo ainda.
+                    </div>
+                `;
+                return;
+            }
+            
+            savedTemplatesDiv.innerHTML = `
+                <h3 style="color: #5865f2; margin-bottom: 15px;">📚 Templates Salvos (${templates.length})</h3>
+                <div class="template-list">
+                    ${templates.map(template => `
+                        <div class="template-item" data-template-id="${template.id}">
+                            <div>
+                                <div class="template-name">${escapeHtml(template.name)}</div>
+                                <div class="template-category">${escapeHtml(template.category)}</div>
+                            </div>
+                            <div class="template-actions">
+                                <button onclick="useTemplate(${template.id})" class="btn-success" title="Usar">📄</button>
+                                <button onclick="editTemplate(${template.id})" class="btn-secondary" title="Editar">✏️</button>
+                                <button onclick="deleteTemplate(${template.id})" class="btn-danger" title="Excluir">🗑️</button>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function useTemplate(templateId) {
+            const template = allTemplates.find(t => t.id === templateId);
+            if (template) {
+                document.getElementById('announcementText').value = template.content;
+                document.getElementById('templateSelect').value = templateId;
+                updateCharCounter();
+                showMessage('message', `Template "${template.name}" aplicado!`, 'success');
+            }
+        }
+
+        function editTemplate(templateId) {
+            const template = allTemplates.find(t => t.id === templateId);
+            if (template) {
+                document.getElementById('templateName').value = template.name;
+                document.getElementById('templateCategory').value = template.category;
+                document.getElementById('templateContent').value = template.content;
+                document.getElementById('saveTemplateBtn').textContent = '✏️ Atualizar Template';
+                document.getElementById('saveTemplateBtn').dataset.editId = templateId;
+                updateTemplateCharCounter();
+                showMessage('message', `Editando template "${template.name}"`, 'info');
+            }
+        }
+
+        async function deleteTemplate(templateId) {
+            const template = allTemplates.find(t => t.id === templateId);
+            if (!template) return;
+            
+            if (!confirm(`Tem certeza que deseja excluir o template "${template.name}"?`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`${API_BASE}/template/${templateId}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${authToken}` }
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('message', 'Template excluído com sucesso!', 'success');
+                    loadTemplates(); // Recarregar templates
+                } else {
+                    showMessage('message', result.error || 'Erro ao excluir template.', 'error');
+                }
+            } catch (error) {
+                console.error('Erro ao excluir template:', error);
+                showMessage('message', 'Erro de conexão com o servidor.', 'error');
+            }
         }
 
         // Contadores de caracteres
@@ -1387,32 +1543,29 @@
             }
         }
 
-        // Atualizar dados
         async function refreshChannels() {
             showMessage('message', 'Atualizando dados...', 'info');
             await Promise.all([loadChannels(), loadRoles(), loadCategories()]);
             showMessage('message', 'Dados atualizados com sucesso!', 'success');
         }
 
-        // Limpar formulário
         function clearForm() {
             document.getElementById('announcementText').value = '';
             document.getElementById('templateSelect').value = '';
             document.getElementById('channelSelect').value = '';
             selectedRoles = [];
             selectedImage = null;
+            selectedAnnouncementType = defaultAnnouncementTypes[0];
             document.getElementById('imagePreview').innerHTML = '';
             document.getElementById('imageInput').value = '';
             document.querySelectorAll('.role-item').forEach(item => item.classList.remove('selected'));
-            document.querySelectorAll('.announcement-type').forEach(item => item.classList.remove('selected'));
-            document.querySelector('.announcement-type[data-type="anuncio"]').classList.add('selected');
-            selectedAnnouncementType = 'anuncio';
+            
+            renderAnnouncementTypes(); // Re-renderizar para mostrar seleção correta
             updateCharCounter();
             updateMentionsPreview();
             showMessage('message', 'Formulário limpo!', 'info');
         }
 
-        // Visualizar anúncio
         function previewAnnouncement() {
             const content = document.getElementById('announcementText').value;
             const channelSelect = document.getElementById('channelSelect');
@@ -1422,24 +1575,6 @@
                 showMessage('message', 'Digite uma mensagem para visualizar.', 'error');
                 return;
             }
-
-            const typeIcons = {
-                'anuncio': '📢',
-                'novidade': '✨',
-                'atualizacao': '🔄',
-                'torneio': '🏆',
-                'evento': '🎉',
-                'aviso': '⚠️'
-            };
-
-            const typeNames = {
-                'anuncio': 'Anúncio',
-                'novidade': 'Novidade',
-                'atualizacao': 'Atualização',
-                'torneio': 'Inscrição de Torneio',
-                'evento': 'Evento',
-                'aviso': 'Aviso'
-            };
             
             const mentionsText = selectedRoles.length > 0 ? 
                 `<div style="margin-bottom: 10px; color: #5865f2; font-weight: bold;">
@@ -1515,13 +1650,13 @@
                     <div class="channel-info">
                         <strong>🎯 JOJO ANÚNCIOS - PREVIEW</strong><br>
                         <strong>Canal:</strong> ${channelName}<br>
-                        <strong>Tipo:</strong> ${typeNames[selectedAnnouncementType]}
+                        <strong>Tipo:</strong> ${selectedAnnouncementType.name}
                         ${selectedImage ? '<br><strong>Com imagem anexa</strong>' : ''}
                     </div>
                     ${mentionsText ? `<div class="mentions-info">${mentionsText}</div>` : ''}
                     <div class="embed">
                         <div class="embed-title">
-                            ${typeIcons[selectedAnnouncementType]} ${typeNames[selectedAnnouncementType]}
+                            ${selectedAnnouncementType.icon} ${selectedAnnouncementType.name}
                         </div>
                         <div class="embed-description">${content.replace(/\n/g, '<br>')}</div>
                         ${imagePreview}
@@ -1534,7 +1669,7 @@
             `);
         }
 
-        // ENVIAR ANÚNCIO COM SUPORTE A IMAGENS E MÚLTIPLOS CARGOS
+        // ENVIAR ANÚNCIO CORRIGIDO COM TIPO CORRETO
         document.getElementById('announcementForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -1551,12 +1686,15 @@
             sendBtn.innerHTML = '<div class="loading-spinner"></div>Enviando...';
             
             try {
-                // Preparar dados para envio
                 const formData = new FormData();
                 formData.append('channelId', channelId);
                 formData.append('content', content);
                 formData.append('roles', JSON.stringify(selectedRoles));
-                formData.append('type', selectedAnnouncementType);
+                
+                // ENVIAR DADOS DO TIPO CORRETOS
+                formData.append('type', selectedAnnouncementType.id);
+                formData.append('typeName', selectedAnnouncementType.name);
+                formData.append('icon', selectedAnnouncementType.icon);
                 
                 if (selectedImage) {
                     formData.append('image', selectedImage);
@@ -1573,7 +1711,7 @@
                 const result = await response.json();
                 
                 if (response.ok) {
-                    showMessage('message', 'Anúncio enviado com sucesso! 🎉', 'success');
+                    showMessage('message', `${selectedAnnouncementType.icon} Anúncio "${selectedAnnouncementType.name}" enviado com sucesso! 🎉`, 'success');
                     clearForm();
                     loadStats();
                 } else {
@@ -1588,16 +1726,17 @@
             }
         });
 
-        // Salvar template
+        // SALVAR TEMPLATE CORRIGIDO
         document.getElementById('templateForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const name = document.getElementById('templateName').value;
-            const content = document.getElementById('templateContent').value;
+            const name = document.getElementById('templateName').value.trim();
+            const content = document.getElementById('templateContent').value.trim();
             const category = document.getElementById('templateCategory').value;
             const saveBtn = document.getElementById('saveTemplateBtn');
+            const editId = saveBtn.dataset.editId;
             
-            if (!name.trim() || !content.trim()) {
+            if (!name || !content) {
                 showMessage('message', 'Preencha todos os campos do template.', 'error');
                 return;
             }
@@ -1606,22 +1745,38 @@
             saveBtn.innerHTML = '<div class="loading-spinner"></div>Salvando...';
             
             try {
-                const response = await fetch(`${API_BASE}/template`, {
-                    method: 'POST',
+                const url = editId ? `${API_BASE}/template/${editId}` : `${API_BASE}/template`;
+                const method = editId ? 'PUT' : 'POST';
+                
+                const response = await fetch(url, {
+                    method: method,
                     headers: {
                         'Authorization': `Bearer ${authToken}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ name, content, category })
+                    body: JSON.stringify({ 
+                        name, 
+                        content, 
+                        category,
+                        icon: selectedAnnouncementType.icon,
+                        typeName: selectedAnnouncementType.name
+                    })
                 });
                 
                 const result = await response.json();
                 
                 if (response.ok) {
-                    showMessage('message', 'Template salvo com sucesso! 💾', 'success');
+                    const action = editId ? 'atualizado' : 'salvo';
+                    showMessage('message', `Template "${name}" ${action} com sucesso! 💾`, 'success');
+                    
+                    // Resetar form
                     document.getElementById('templateForm').reset();
+                    document.getElementById('saveTemplateBtn').textContent = '💾 Salvar Template';
+                    delete document.getElementById('saveTemplateBtn').dataset.editId;
                     updateTemplateCharCounter();
-                    loadTemplates();
+                    
+                    // Recarregar templates
+                    await loadTemplates();
                 } else {
                     showMessage('message', result.error || 'Erro ao salvar template.', 'error');
                 }
@@ -1630,7 +1785,63 @@
                 showMessage('message', 'Erro de conexão com o servidor.', 'error');
             } finally {
                 saveBtn.disabled = false;
-                saveBtn.innerHTML = '💾 Salvar';
+                const action = editId ? 'Atualizar' : 'Salvar';
+                saveBtn.innerHTML = `💾 ${action} Template`;
+            }
+        });
+
+        // CRIAR CANAL
+        document.getElementById('channelForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const channelName = document.getElementById('channelName').value;
+            const channelType = document.getElementById('channelType').value;
+            const channelCategory = document.getElementById('channelCategory').value;
+            const createBtn = document.getElementById('createChannelBtn');
+            
+            if (!channelName.trim()) {
+                showMessage('message', 'Nome do canal é obrigatório.', 'error');
+                return;
+            }
+            
+            createBtn.disabled = true;
+            createBtn.innerHTML = '<div class="loading-spinner"></div>Criando...';
+            
+            try {
+                const response = await fetch(`${API_BASE}/create-channel`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${authToken}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: channelName.trim(),
+                        type: channelType,
+                        categoryId: channelCategory || null
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (response.ok) {
+                    showMessage('message', `Canal "${channelName}" criado com sucesso! 🎉`, 'success');
+                    document.getElementById('channelForm').reset();
+                    
+                    setTimeout(async () => {
+                        await loadChannels();
+                        showMessage('message', 'Lista de canais atualizada!', 'info');
+                    }, 2000);
+                    
+                    loadStats();
+                } else {
+                    showMessage('message', result.error || 'Erro ao criar canal.', 'error');
+                }
+            } catch (error) {
+                console.error('Erro ao criar canal:', error);
+                showMessage('message', 'Erro de conexão com o servidor.', 'error');
+            } finally {
+                createBtn.disabled = false;
+                createBtn.innerHTML = '✨ Criar Canal';
             }
         });
 
@@ -1654,7 +1865,6 @@
             }, 5000);
         }
 
-        // Função para escapar HTML
         function escapeHtml(text) {
             if (!text) return '';
             const map = {
@@ -1669,7 +1879,6 @@
 
         // Atalhos de teclado
         document.addEventListener('keydown', function(e) {
-            // Ctrl+Enter para enviar anúncio
             if (e.ctrlKey && e.key === 'Enter') {
                 const announcementText = document.getElementById('announcementText');
                 if (document.activeElement === announcementText) {
@@ -1677,97 +1886,16 @@
                 }
             }
             
-            // Ctrl+L para limpar formulário
             if (e.ctrlKey && e.key === 'l') {
                 e.preventDefault();
                 clearForm();
             }
             
-            // Ctrl+P para preview
             if (e.ctrlKey && e.key === 'p') {
                 e.preventDefault();
                 previewAnnouncement();
             }
-            
-            // Ctrl+N para criar novo canal
-            if (e.ctrlKey && e.key === 'n') {
-                e.preventDefault();
-                document.getElementById('channelName').focus();
-            }
         });
-    // ==== TIPOS DE ANÚNCIOS CUSTOM ====
-let customTypes = JSON.parse(localStorage.getItem('customTypes') || '[]');
-
-function defaultTypes(){
-    return [
-        {icon:'📢',name:'Anúncio',id:'anuncio'},
-        {icon:'✨',name:'Novidade',id:'novidade'},
-        {icon:'🔄',name:'Atualização',id:'atualizacao'},
-        {icon:'🎉',name:'Evento',id:'evento'},
-        {icon:'⚠️',name:'Aviso',id:'aviso'}
-    ];
-}
-
-function renderCustomTypes(){
-    const grid=document.querySelector('.announcement-type-grid');
-    if(!grid) return;
-    // limpar
-    grid.innerHTML='';
-    [...defaultTypes(),...customTypes].forEach((t,i)=>{
-        const div=document.createElement('div');
-        div.className='announcement-type';
-        div.dataset.type=t.id||t.name.toLowerCase();
-        div.innerHTML=`<div class="announcement-type-icon">${t.icon}</div><div class="announcement-type-name">${t.name}</div>`;
-        if(i>=defaultTypes().length){
-            const del=document.createElement('button');
-            del.textContent='🗑️';
-            del.style.marginTop='5px';
-            del.onclick=(e)=>{e.stopPropagation();deleteType(i-defaultTypes().length);};
-            div.appendChild(del);
-        }
-        div.addEventListener('click',function(){
-            document.querySelectorAll('.announcement-type').forEach(el=>el.classList.remove('selected'));
-            this.classList.add('selected');
-            selectedAnnouncementType=this.dataset.type;
-        });
-        grid.appendChild(div);
-    });
-}
-
-function addType(icon,name){
-    customTypes.push({icon,name,id:name.toLowerCase()});
-    localStorage.setItem('customTypes',JSON.stringify(customTypes));
-    renderCustomTypes();
-}
-function deleteType(idx){
-    customTypes.splice(idx,1);
-    localStorage.setItem('customTypes',JSON.stringify(customTypes));
-    renderCustomTypes();
-}
-
-// Form para criar tipo
-document.addEventListener('DOMContentLoaded',()=>{
-    const container=document.querySelector('.panel-section');
-    if(container){
-        const form=document.createElement('form');
-        form.innerHTML=`
-            <h3>➕ Novo Tipo</h3>
-            <input type="text" id="newTypeIcon" placeholder="Ícone" maxlength="2" style="width:60px;padding:5px;">
-            <input type="text" id="newTypeName" placeholder="Nome do Tipo" style="padding:5px;">
-            <button type="submit" class="btn btn-small">Criar</button>
-        `;
-        form.addEventListener('submit',e=>{
-            e.preventDefault();
-            const icon=document.getElementById('newTypeIcon').value||'📢';
-            const name=document.getElementById('newTypeName').value.trim();
-            if(name){ addType(icon,name); form.reset(); }
-        });
-        container.appendChild(form);
-        renderCustomTypes();
-    }
-});
-
-
-</script>
+    </script>
 </body>
 </html>
