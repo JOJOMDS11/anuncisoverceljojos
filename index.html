@@ -1534,6 +1534,40 @@
             `);
         }
 
+        async function loadAnnouncementTypes() {
+    const res = await fetch('/api/announcement-types');
+    const types = await res.json();
+    const container = document.getElementById('announcement-types');
+    container.innerHTML = '';
+    types.forEach(t => {
+        const btn = document.createElement('div');
+        btn.className = 'announcement-type';
+        btn.innerHTML = `
+            <span class="announcement-type-icon">${t.icon}</span>
+            <span class="announcement-type-name">${t.name}</span>
+        `;
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.announcement-type').forEach(el => el.classList.remove('selected'));
+            btn.classList.add('selected');
+        });
+        container.appendChild(btn);
+    });
+}
+
+document.getElementById('add-type-btn').addEventListener('click', async () => {
+    const name = prompt('Nome do tipo:');
+    const icon = prompt('Ícone (emoji):', '📢');
+    if (!name) return;
+    await fetch('/api/announcement-types', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, icon })
+    });
+    loadAnnouncementTypes();
+});
+
+loadAnnouncementTypes();
+
         // ENVIAR ANÚNCIO COM SUPORTE A IMAGENS E MÚLTIPLOS CARGOS
         document.getElementById('announcementForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1551,14 +1585,31 @@
             sendBtn.innerHTML = '<div class="loading-spinner"></div>Enviando...';
             
             try {
-                // Preparar dados para envio
-                const formData = new FormData();
-                formData.append('channelId', channelId);
-                formData.append('content', content);
-                formData.append('roles', JSON.stringify(selectedRoles));
-                formData.append('type', selectedAnnouncementType);
-                
-                if (selectedImage) {
+      document.getElementById('announcementForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData(e.target);
+
+    // Captura o tipo selecionado e envia junto
+    const selectedTypeEl = document.querySelector('.announcement-type.selected');
+    if (selectedTypeEl) {
+        const iconEl = selectedTypeEl.querySelector('.announcement-type-icon');
+        const nameEl = selectedTypeEl.querySelector('.announcement-type-name');
+        formData.append('icon', iconEl ? iconEl.textContent.trim() : '📢');
+        formData.append('typeName', nameEl ? nameEl.textContent.trim() : 'Anúncio');
+    }
+
+    // Aqui continua o envio normal
+    const res = await fetch('/api/announcement', {
+        method: 'POST',
+        body: formData
+    });
+
+    const result = await res.json();
+    console.log(result);
+});
+
+ (selectedImage) {
                     formData.append('image', selectedImage);
                 }
                 
