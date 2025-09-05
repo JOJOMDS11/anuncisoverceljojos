@@ -1100,31 +1100,27 @@
             }
         }
 
-// Exemplo para a função que carrega os cargos
 async function loadRoles() {
     try {
-        const token = localStorage.getItem('authToken');
-
         const response = await fetch(`${API_BASE}/roles`, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // JWT do login
-            }
+            headers: { 'Authorization': `Bearer ${authToken}` }
         });
-
         if (!response.ok) {
-            throw new Error(`Erro na API: ${response.status} ${response.statusText}`);
+            throw new Error('Erro ao carregar roles: ' + response.status);
         }
-
         const data = await response.json();
-        console.log('Cargos recebidos:', data);
-
-        // Aqui você continua com o código que popula o select de cargos
-        // populateRoles(data.roles);
-
+        allRoles = data.roles || [];
+        const rolesGrid = document.getElementById('rolesGrid');
+        rolesGrid.innerHTML = allRoles.map(role => `
+            <div class="role-item" data-role-id="${role.id}">
+                <div class="role-color" style="background-color: #${role.color.toString(16).padStart(6, '0')}"></div>
+                <span class="role-name">${escapeHtml(role.name)}</span>
+            </div>
+        `).join('');
+        setupRoleSelection(); // Chame se necessário
     } catch (error) {
-        console.error('Erro ao carregar cargos:', error);
-        // Aqui você pode exibir uma mensagem no painel
+        showMessage('message', 'Erro ao carregar roles. Verifique o console ou rede.', 'error');
+        console.error(error);
     }
 }
 
@@ -1190,29 +1186,23 @@ async function loadRoles() {
             ).join('');
         }
 
-        // Carregar categorias
-        async function loadCategories() {
-            try {
-                const response = await fetch(`${API_BASE}/categories`, {
-                    headers: { 'Authorization': `Bearer ${authToken}` }
-                });
-                const categories = await response.json();
-                
-                const categorySelect = document.getElementById('categorySelect');
-                categorySelect.innerHTML = '<option value="">Sem categoria</option>';
-                
-                categories.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category.id;
-                    option.textContent = category.name;
-                    categorySelect.appendChild(option);
-                });
-                
-            } catch (error) {
-                console.error('Erro ao carregar categorias:', error);
-            }
+ async function loadCategories() {
+    try {
+        const response = await fetch(`${API_BASE}/categories`, {
+            headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        if (!response.ok) {
+            throw new Error('Erro ao carregar categorias: ' + response.status);
         }
-
+        const data = await response.json();
+        const categorySelect = document.getElementById('categorySelect');
+        categorySelect.innerHTML = '<option value="">Sem categoria</option>' + 
+            data.categories.map(cat => `<option value="${cat.id}">${escapeHtml(cat.name)}</option>`).join('');
+    } catch (error) {
+        showMessage('message', 'Erro ao carregar categorias. Tente atualizar.', 'error');
+        console.error(error);
+    }
+}
         // Carregar templates
         async function loadTemplates() {
             try {
