@@ -1100,7 +1100,7 @@
             }
         }
 
-async function loadRoles() {
+async function loadRoles(retries = 3) {
     try {
         const response = await fetch(`${API_BASE}/roles`, {
             headers: { 'Authorization': `Bearer ${authToken}` }
@@ -1117,12 +1117,49 @@ async function loadRoles() {
                 <span class="role-name">${escapeHtml(role.name)}</span>
             </div>
         `).join('');
-        setupRoleSelection(); // Chame se necessário
+        setupRoleSelection(); // Chama a seleção corrigida abaixo
     } catch (error) {
-        showMessage('message', 'Erro ao carregar roles. Verifique o console ou rede.', 'error');
-        console.error(error);
+        if (retries > 0) {
+            console.warn(`Tentando novamente carregar roles (${retries} restantes)...`);
+            setTimeout(() => loadRoles(retries - 1), 2000); // Delay de 2s para retry
+        } else {
+            showMessage('message', 'Falha ao carregar roles após tentativas. Verifique conexão ou bot.', 'error');
+            console.error(error);
+        }
     }
 }
+let selectedRoles = []; // Array para multi-seleção
+
+function setupRoleSelection() {
+    const roleItems = document.querySelectorAll('.role-item');
+    roleItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const roleId = this.dataset.roleId;
+            if (selectedRoles.includes(roleId)) {
+                selectedRoles = selectedRoles.filter(id => id !== roleId);
+                this.classList.remove('selected');
+            } else {
+                selectedRoles.push(roleId);
+                this.classList.add('selected');
+            }
+            updateMentionsPreview(); // Atualiza preview de menções
+        });
+    });
+}
+
+function updateMentionsPreview() {
+    const preview = document.querySelector('.mentions-preview'); // Assuma que existe no HTML
+    if (selectedRoles.length > 0) {
+        preview.innerHTML = selectedRoles.map(id => {
+            const role = allRoles.find(r => r.id === id);
+            return `<span class="mention-tag">@${escapeHtml(role.name)}</span>`;
+        }).join(' ');
+        preview.classList.add('show');
+    } else {
+        preview.classList.remove('show');
+    }
+}
+
 
         // Renderizar cargos
         function renderRoles(roles = allRoles) {
@@ -1751,60 +1788,61 @@ async function loadRoles() {
             }
         });
 
-        // Criar canal
-        document.getElementById('channelForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const name = document.getElementById('channelName').value.trim().toLowerCase().replace(/\s+/g, '-');
-            const topic = document.getElementById('channelTopic').value.trim();
-            const categoryId = document.getElementById('categorySelect').value;
-            const createBtn = document.getElementById('createChannelBtn');
-            
-            if (!name) {
-                showMessage('message', 'Nome do canal é obrigatório.', 'error');
-                return;
-            }
-            
-            createBtn.disabled = true;
-            createBtn.innerHTML = '<div class="loading-spinner"></div>Criando...';
-            
-            try {
-                const response = await fetch(`${API_BASE}/channel`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${authToken}`
-                    },
-                    body: JSON.stringify({ 
-                        name, 
-                        topic, 
-                        type: selectedChannelType,
-                        categoryId: categoryId || null
-                    })
-                });
-                
-                const result = await response.json();
-                
-                if (response.ok) {
-                    showMessage('message', 'Canal criado com sucesso! 📺', 'success');
-                    
-                    // Limpar formulário
-                    document.getElementById('channelName').value = '';
-                    document.getElementById('channelTopic').value = '';
-                    document.getElementById('categorySelect').value = '';
-                    
-                    loadChannels();
-                    loadStats();
-                } else {
-                    showMessage('message', result.error || 'Erro ao criar canal.', 'error');
-                }
-            } catch (error) {
-                showMessage('message', 'Erro de conexão com o servidor.', 'error');
-            } finally {
-                createBtn.disabled = false;
-                createBtn.innerHTML = '➕ Criar Canal';
-            }
+     // Criar canal
+document.getElementById('channelForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const name = document.getElementById('channelName').value.trim().toLowerCase().replace(/\s+/g, '-');
+    const topic = document.getElementById('channelTopic').value.trim();
+    const categoryId = document.getElementById('categorySelect').value;
+    const createBtn = document.getElementById('createChannelBtn');
+    
+    if (!name) {
+        showMessage('message', 'Nome do canal é obrigatório.', 'error');
+        return;
+    }
+    
+    createBtn.disabled = true;
+    createBtn.innerHTML = '<div class="loading-spinner"></div>Criando...';
+    
+    try {
+        // AQUI! Substitua pelo seu snippet corrigido:
+        const response = await fetch(`${API_BASE}/create-channel`, { // <--- Corrigido para /create-channel
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${authToken}`
+            },
+            body: JSON.stringify({ 
+                name, 
+                topic, 
+                type: selectedChannelType || 'text', // Default text se não definido
+                categoryId: categoryId || null
+            })
         });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            showMessage('message', 'Canal criado com sucesso! 📺', 'success');
+            
+            // Limpar formulário
+            document.getElementById('channelName').value = '';
+            document.getElementById('channelTopic').value = '';
+            document.getElementById('categorySelect').value = '';
+            
+            loadChannels();
+            loadStats();
+        } else {
+            showMessage('message', result.error || 'Erro ao criar canal.', 'error');
+        }
+    } catch (error) {
+        showMessage('message', 'Erro de conexão com o servidor.', 'error');
+    } finally {
+        createBtn.disabled = false;
+        createBtn.innerHTML = '➕ Criar Canal';
+    }
+});
 
         // Função para mostrar mensagens
         function showMessage(containerId, message, type) {
